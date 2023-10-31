@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
+import 'forgotpassword_page.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -111,21 +113,25 @@ class _LoginPageState extends State<LoginPage>{
     );
   }
 
-  Widget buildForgotPassBtn(){
+  Widget buildForgotPassBtn() {
     return Container(
       alignment: Alignment.centerRight,
       child: TextButton(
-          onPressed: ()=> print("Forgot Passord pressed"),
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.only(right: 0),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+          );
+        },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.only(right: 0),
+        ),
+        child: Text(
+          'Forgot Password?',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
-          child:Text(
-            'Forgot Password?',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-            ),
-          )
+        ),
       ),
     );
   }
