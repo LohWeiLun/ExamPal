@@ -13,6 +13,8 @@ import 'Pages/login_page.dart';
 import 'Pages/schedule_page.dart';
 import 'Pages/signup_page.dart';
 import 'Pages/timer_page.dart';
+import 'Pages/forgotpassword_page.dart';
+import 'Pages/imagetopdf_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
       //home: LoginPage(),
       //home: SignUpPage(),
       //home: TimerPage(),
+      home: ImageToPdf(),
       //home: SchedulePage(),
       //home: ProfilePage(),
       home: const RootPage(),
