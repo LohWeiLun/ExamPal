@@ -14,21 +14,21 @@ List<Category> categoryList = [
   Category(
     name: 'Schedule',
     noOfCourses: 55,
-    thumbnail: 'assets/icons/laptop.jpg',
+    thumbnail: 'assets/icons/accounting.png',
   ),
   Category(
     name: 'Fast Notes',
     noOfCourses: 20,
-    thumbnail: 'assets/icons/accounting.jpg',
+    thumbnail: 'assets/icons/accounting.png',
   ),
   Category(
     name: 'File Conversion',
     noOfCourses: 16,
-    thumbnail: 'assets/icons/photography.jpg',
+    thumbnail: 'assets/icons/photography.png',
   ),
   Category(
     name: 'Voice-To-Text',
     noOfCourses: 25,
-    thumbnail: 'assets/icons/design.jpg',
+    thumbnail: 'assets/icons/design.png',
   ),
 ];
