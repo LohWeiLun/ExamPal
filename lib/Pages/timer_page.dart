@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../Widgets/button_widget.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class TimerPage extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _TimerPageState extends State<TimerPage>{
       resetTimer();
     }
 
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if(seconds > 0){
         setState(() => seconds--);
       } else {
@@ -95,7 +96,7 @@ class _TimerPageState extends State<TimerPage>{
       children: [
         CircularProgressIndicator(
           value: seconds / maxSeconds,
-          valueColor: AlwaysStoppedAnimation(Colors.white),
+          valueColor: const AlwaysStoppedAnimation(Colors.white),
           strokeWidth: 12,
           backgroundColor: Colors.greenAccent,
         ),
@@ -106,11 +107,11 @@ class _TimerPageState extends State<TimerPage>{
 
   Widget buildTime() {
     if(seconds == 0) {
-      return Icon(Icons.done, color: Colors.greenAccent, size: 112);
+      return const Icon(Icons.done, color: Colors.greenAccent, size: 112);
     } else {
       return Text(
         '$seconds',
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
           fontSize: 80,
