@@ -62,28 +62,38 @@ class _ImageToPdfState extends State<ImageToPdf> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _imageFiles.isNotEmpty
-              ? Column(
-            children: _imageFiles.map((file) {
-              return Image.file(file);
-            }).toList(),
-          )
-              : Text('No image selected'),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: _pickImage,
-            child: Text('Select Image'),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: _convertToPdf,
-            child: Text('Convert to PDF'),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Image to PDF Converter'),
+      ),
+      body: Container(
+        color: Color(0xffc1e1e9), // Background color
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _imageFiles.isNotEmpty
+                ? Column(
+              children: _imageFiles.map((file) {
+                return Card(
+                  elevation: 4, // Add elevation for a card-like effect
+                  child: Image.file(file),
+                );
+              }).toList(),
+            )
+                : Text('No image selected'),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: Text('Select Image'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _convertToPdf,
+              child: Text('Convert to PDF'),
+            ),
+          ],
+        ),
       ),
     );
   }
