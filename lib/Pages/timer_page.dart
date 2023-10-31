@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../Widgets/button_widget.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class TimerPage extends StatefulWidget {
   @override

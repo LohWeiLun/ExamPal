@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       //home: LoginPage(),
       //home: SignUpPage(),
       //home: TimerPage(),
-      home: ImageToPdf(),
+      //home: ImageToPdf(),
       //home: SchedulePage(),
       //home: ProfilePage(),
       home: const RootPage(),
@@ -54,7 +54,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage>{
-  final List<Widget> _tabItems = [TimerPage(), HomePage(), SchedulePage()];
+  final List<Widget> _tabItems = [TimerPage(), HomePage(), ProfilePage()];
   int _activePage = 0;
 
   @override
