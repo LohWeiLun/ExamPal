@@ -6,10 +6,12 @@ import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
 import 'package:exampal/Pages/profile_page.dart';
 import 'package:exampal/Pages/recentnotes.dart';
+import 'package:exampal/Pages/voicetotext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
+
 
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
