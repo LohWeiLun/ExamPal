@@ -1,9 +1,7 @@
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Constants/font.dart';
 import '../Widgets/custom_icon_button.dart';
 
 class FastNotePage extends StatefulWidget {
@@ -16,9 +14,7 @@ class FastNotePage extends StatefulWidget {
 class _FastNotePageState extends State<FastNotePage> {
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
-
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -27,7 +23,7 @@ class _FastNotePageState extends State<FastNotePage> {
           backgroundColor: const Color(0xffecf1f2),
           color: Color(0xffc1e1e9),
           animationDuration: Duration(milliseconds: 300),
-          onTap: (index){
+          onTap: (index) {
             print(index);
           },
           items: [
@@ -52,53 +48,52 @@ class _FastNotePageState extends State<FastNotePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IntrinsicHeight(
-                  child: Stack(
-                    children: [
-                      Align(
-                        child: Text(
-                          'Fast Note',
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
-                          height: 35,
-                          width: 35,
-                          onTap: () => Navigator.pop(context),
-                        ),
-                      ),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    CustomIconButton(
+                      child: const Icon(Icons.arrow_back),
+                      height: 35,
+                      width: 35,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Fast Note',
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                Expanded(child: Container(
-                  color: Colors.red,
-                )),
+                Expanded(
+                  child: Container(
+                    color: Colors.red,
+                  ),
+                ),
                 Expanded(
                   flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.vertical(top:Radius.circular(16)),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     child: Column(
                       children: [
                         Expanded(
-                          flex : 3,
+                          flex: 3,
                           child: Container(
                             padding: EdgeInsets.all(12),
                             color: Colors.green,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Recent Notes",
-                                  style: textStyle(
-                                      font: poppins
+                                Text(
+                                  "Recent Notes",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 SizedBox(height: 12),
@@ -109,19 +104,34 @@ class _FastNotePageState extends State<FastNotePage> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  child:ListView.separated(
+                                  child: ListView.separated(
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemBuilder: ((context,index) {
+                                    itemBuilder: ((context, index) {
                                       return ListTile(
                                         leading: Image.asset('assets/images/pdf.png'),
-                                        title: Text("Filename", style: textStyle(font: poppins,color: Colors.white),
+                                        title: Text(
+                                          "Filename",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        subtitle: Text("Path To File", style: textStyle(font: poppins,color: Colors.white,size: 14),
+                                        subtitle: Text(
+                                          "Path To File",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                          ),
                                         ),
-                                        trailing: IconButton(onPressed: (){},icon: const Icon(Icons.cancel,color: Colors.white)),
+                                        trailing: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.cancel, color: Colors.white),
+                                        ),
                                       );
-                                    }), separatorBuilder: ((context,index) => Divider(color: Colors.white)),
+                                    }),
+                                    separatorBuilder: ((context, index) => Divider(color: Colors.white)),
                                     itemCount: 3,
                                   ),
                                 ),
@@ -140,12 +150,16 @@ class _FastNotePageState extends State<FastNotePage> {
                                   child: Row(
                                     children: [
                                       buttonWidget(
-                                        color: Colors.blue,ontap: (){},path: "assets/images/internet.png",
+                                        color: Colors.blue,
+                                        onTap: () {},
+                                        path: "assets/images/internet.png",
                                         title: "Create PDF",
                                       ),
                                       const SizedBox(width: 12),
                                       buttonWidget(
-                                        color: Colors.blue,ontap: (){},path: "assets/images/pdf_file.png",
+                                        color: Colors.blue,
+                                        onTap: () {},
+                                        path: "assets/images/pdf_file.png",
                                         title: "Select File",
                                       ),
                                     ],
@@ -153,7 +167,9 @@ class _FastNotePageState extends State<FastNotePage> {
                                 ),
                                 const SizedBox(height: 12),
                                 buttonWidget(
-                                  color: Colors.blue,ontap: (){},path: "assets/images/pdf_file.png",
+                                  color: Colors.blue,
+                                  onTap: () {},
+                                  path: "assets/images/pdf_file.png",
                                   title: "Create PDF",
                                 ),
                               ],
@@ -172,13 +188,11 @@ class _FastNotePageState extends State<FastNotePage> {
     );
   }
 
-  Widget buttonWidget({color,path,title,ontap}){
+  Widget buttonWidget({color, path, title, onTap}) {
     return Expanded(
-      child:
-      GestureDetector(
-        onTap: ontap,
-        child:
-        Container(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
@@ -188,8 +202,13 @@ class _FastNotePageState extends State<FastNotePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset("$path",width: 45,),
-              Text("$title",style: textStyle(font: poppins,color: Colors.white),
+              Image.asset("$path", width: 45),
+              Text(
+                "$title",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -198,5 +217,3 @@ class _FastNotePageState extends State<FastNotePage> {
     );
   }
 }
-
-

@@ -1,6 +1,11 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:exampal/Pages/FileConversion_page.dart';
+import 'package:exampal/Pages/activity_page.dart';
+import 'package:exampal/Pages/community_page.dart';
+import 'package:exampal/Pages/friendlist_page.dart';
 import 'package:exampal/Pages/profile_page.dart';
+import 'package:exampal/Pages/recentnotes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -41,7 +46,13 @@ class MyApp extends StatelessWidget {
       //home: ImageToPdf(),
       //home: SchedulePage(),
       //home: ProfilePage(),
-      home: const RootPage(),
+      //home: const RootPage(),
+      //home: FileConversionPage(),
+      //home: ActivityPage(),
+      //home: CommunityPage(),
+      //home: FriendsListPage(),
+      //home: FastNotePage(),
+      home: VoiceToTextPage(),
     );
   }
 }
