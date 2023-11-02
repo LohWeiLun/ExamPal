@@ -5,7 +5,14 @@ import 'package:exampal/widgets/back_button.dart';
 import 'package:exampal/widgets/my_text_field.dart';
 import 'package:exampal/Pages/schedule_page.dart';
 
-class CreateNewTaskPage extends StatelessWidget {
+class CreateNewTaskPage extends StatefulWidget {
+  const CreateNewTaskPage({Key? key}) : super(key: key);
+
+  @override
+  State<CreateNewTaskPage> createState() => _CreateNewTaskPageState();
+}
+
+class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

@@ -6,17 +6,11 @@ import 'package:exampal/Widgets/task_column.dart';
 import 'package:exampal/Widgets/active_project_card.dart';
 import 'package:exampal/Widgets/top_container.dart';
 
-class SchedulePage extends StatelessWidget {
-  Text subheading(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-          color: LightColors.kDarkBlue,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2),
-    );
-  }
+class SchedulePage extends StatefulWidget {
+  const SchedulePage({Key? key}) : super(key: key);
+
+  @override
+  State<SchedulePage> createState() => _SchedulePageState();
 
   static CircleAvatar calendarIcon() {
     return const CircleAvatar(
@@ -27,6 +21,19 @@ class SchedulePage extends StatelessWidget {
         size: 20.0,
         color: Colors.white,
       ),
+    );
+  }
+}
+
+class _SchedulePageState extends State<SchedulePage> {
+  Text subheading(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+          color: LightColors.kDarkBlue,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2),
     );
   }
 
@@ -128,7 +135,7 @@ class SchedulePage extends StatelessWidget {
                                         builder: (context) => CalendarPage()),
                                   );
                                 },
-                                child: calendarIcon(),
+                                child: SchedulePage.calendarIcon(),
                               ),
                             ],
                           ),
@@ -213,4 +220,5 @@ class SchedulePage extends StatelessWidget {
       ),
     );
   }
+
 }
