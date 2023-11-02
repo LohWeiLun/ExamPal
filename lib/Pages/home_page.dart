@@ -1,5 +1,4 @@
 
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../Models/category.dart';
@@ -17,28 +16,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffecf1f2),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: const Color(0xffecf1f2),
-        color: Color(0xffc1e1e9),
-        animationDuration: Duration(milliseconds: 300),
-        onTap: (index){
-          print(index);
-        },
-        items: [
-          Icon(
-            Icons.group,
-            color: Colors.black87,
-          ),
-          Icon(
-            Icons.add,
-            color: Colors.black87,
-          ),
-          Icon(
-            Icons.person,
-            color: Colors.black87,
-          ),
-        ],
-      ),
       body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(25.0),
@@ -47,7 +24,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -74,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         padding: EdgeInsets.all(13),
-                        child: Icon(
+                        child: const Icon(
                           Icons.settings,
                           color: Colors.black87,
                         )
