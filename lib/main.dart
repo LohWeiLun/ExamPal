@@ -4,8 +4,10 @@ import 'package:exampal/Pages/FileConversion_page.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
+import 'package:exampal/Pages/noteSummarization.dart';
 import 'package:exampal/Pages/profile_page.dart';
 import 'package:exampal/Pages/recentnotes.dart';
+import 'package:exampal/Pages/settings.dart';
 import 'package:exampal/Pages/updated_homepage.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
@@ -18,6 +20,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
+import 'Pages/Figma/voicetotextpage.dart';
 import 'Pages/home_page.dart';
 import 'Pages/schedule_page.dart';
 import 'Pages/timer_page.dart';
@@ -54,11 +57,14 @@ class MyApp extends StatelessWidget {
       //home: FriendsListPage(),
       //home: FastNotePage(),
       //home: VoiceToTextPage(),
-      home: SignInPage(),
+      //home: SignInPage(),
       //home: UpdatedSignUpPage(),
-      //home: UpdatedHomePage(),
+      home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
+      //home: NoteSummarizationPage(),
+      //home: VoiceToText(),
+      //home: SettingsPage(),
     );
   }
 }
