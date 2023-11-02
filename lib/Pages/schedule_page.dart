@@ -43,13 +43,14 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            TopContainer(
-              height: 200,
-              width: width,
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Column(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              TopContainer(
+                height: 250,
+                width: width,
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     const Row(
@@ -80,7 +81,7 @@ class _SchedulePageState extends State<SchedulePage> {
                               backgroundColor: LightColors.kBlue,
                               radius: 35.0,
                               backgroundImage: AssetImage(
-                                'assets/images/avatar.png',
+                                "assets/icons/profile.png",
                               ),
                             ),
                           ),
@@ -106,107 +107,6 @@ class _SchedulePageState extends State<SchedulePage> {
                                 ),
                               ),
                             ],
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              subheading('My Tasks'),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => CalendarPage()),
-                                  );
-                                },
-                                child: SchedulePage.calendarIcon(),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 15.0),
-                          TaskColumn(
-                            icon: Icons.alarm,
-                            iconBackgroundColor: LightColors.kRed,
-                            title: 'To Do',
-                            subtitle: '5 tasks now. 1 started',
-                          ),
-                          const SizedBox(
-                            height: 15.0,
-                          ),
-                          TaskColumn(
-                            icon: Icons.blur_circular,
-                            iconBackgroundColor: LightColors.kDarkYellow,
-                            title: 'In Progress',
-                            subtitle: '1 tasks now. 1 started',
-                          ),
-                          const SizedBox(height: 15.0),
-                          TaskColumn(
-                            icon: Icons.check_circle_outline,
-                            iconBackgroundColor: LightColors.kBlue,
-                            title: 'Done',
-                            subtitle: '18 tasks now. 13 started',
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      color: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          subheading('Active Projects'),
-                          const SizedBox(height: 5.0),
-                          Row(
-                            children: <Widget>[
-                              ActiveProjectsCard(
-                                cardColor: LightColors.kGreen,
-                                loadingPercent: 0.25,
-                                title: 'Medical App',
-                                subtitle: '9 hours progress',
-                              ),
-                              const SizedBox(width: 20.0),
-                              ActiveProjectsCard(
-                                cardColor: LightColors.kRed,
-                                loadingPercent: 0.6,
-                                title: 'Making History Notes',
-                                subtitle: '20 hours progress',
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              ActiveProjectsCard(
-                                cardColor: LightColors.kDarkYellow,
-                                loadingPercent: 0.45,
-                                title: 'Sports App',
-                                subtitle: '5 hours progress',
-                              ),
-                              const SizedBox(width: 20.0),
-                              ActiveProjectsCard(
-                                cardColor: LightColors.kBlue,
-                                loadingPercent: 0.9,
-                                title: 'Online Flutter Course',
-                                subtitle: '23 hours progress',
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -214,11 +114,105 @@ class _SchedulePageState extends State<SchedulePage> {
                   ],
                 ),
               ),
-            ),
-          ],
+              Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        subheading('My Tasks'),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CalendarPage()),
+                            );
+                          },
+                          child: SchedulePage.calendarIcon(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15.0),
+                    TaskColumn(
+                      icon: Icons.alarm,
+                      iconBackgroundColor: LightColors.kRed,
+                      title: 'To Do',
+                      subtitle: '5 tasks now. 1 started',
+                    ),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    TaskColumn(
+                      icon: Icons.blur_circular,
+                      iconBackgroundColor: LightColors.kDarkYellow,
+                      title: 'In Progress',
+                      subtitle: '1 tasks now. 1 started',
+                    ),
+                    const SizedBox(height: 15.0),
+                    TaskColumn(
+                      icon: Icons.check_circle_outline,
+                      iconBackgroundColor: LightColors.kBlue,
+                      title: 'Done',
+                      subtitle: '18 tasks now. 13 started',
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    subheading('Active Projects'),
+                    const SizedBox(height: 5.0),
+                    Row(
+                      children: <Widget>[
+                        ActiveProjectsCard(
+                          cardColor: LightColors.kGreen,
+                          loadingPercent: 0.25,
+                          title: 'Medical App',
+                          subtitle: '9 hours progress',
+                        ),
+                        const SizedBox(width: 20.0),
+                        ActiveProjectsCard(
+                          cardColor: LightColors.kRed,
+                          loadingPercent: 0.6,
+                          title: 'Making History Notes',
+                          subtitle: '20 hours progress',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        ActiveProjectsCard(
+                          cardColor: LightColors.kDarkYellow,
+                          loadingPercent: 0.45,
+                          title: 'Sports App',
+                          subtitle: '5 hours progress',
+                        ),
+                        const SizedBox(width: 20.0),
+                        ActiveProjectsCard(
+                          cardColor: LightColors.kBlue,
+                          loadingPercent: 0.9,
+                          title: 'Online Flutter Course',
+                          subtitle: '23 hours progress',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
 }

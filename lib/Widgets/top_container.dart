@@ -13,7 +13,7 @@ class TopContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding!=null ? padding : EdgeInsets.symmetric(horizontal: 20.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: LightColors.kDarkYellow,
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(40.0),
