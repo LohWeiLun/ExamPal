@@ -6,6 +6,9 @@ import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
 import 'package:exampal/Pages/profile_page.dart';
 import 'package:exampal/Pages/recentnotes.dart';
+import 'package:exampal/Pages/updated_homepage.dart';
+import 'package:exampal/Pages/updated_loginpage.dart';
+import 'package:exampal/Pages/updated_signuppage.dart';
 import 'package:exampal/Pages/voicetotext.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +57,9 @@ class MyApp extends StatelessWidget {
       //home: CommunityPage(),
       //home: FriendsListPage(),
       //home: FastNotePage(),
-      home: VoiceToTextPage(),
+      //home: VoiceToTextPage(),
+      //home: SignInPage(),
+      home: UpdatedHomePage(),
     );
   }
 }
