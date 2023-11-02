@@ -1,10 +1,20 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:exampal/Pages/FileConversion_page.dart';
+import 'package:exampal/Pages/activity_page.dart';
+import 'package:exampal/Pages/community_page.dart';
+import 'package:exampal/Pages/friendlist_page.dart';
 import 'package:exampal/Pages/profile_page.dart';
-import 'package:exampal/Pages/settings.dart';
+import 'package:exampal/Pages/recentnotes.dart';
+import 'package:exampal/Pages/updated_homepage.dart';
+import 'package:exampal/Pages/updated_loginpage.dart';
+import 'package:exampal/Pages/updated_signuppage.dart';
+import 'package:exampal/Pages/voicetotext.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
+
 
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
@@ -41,7 +51,15 @@ class MyApp extends StatelessWidget {
       //home: ImageToPdf(),
       //home: SchedulePage(),
       //home: ProfilePage(),
-      home: const RootPage(),
+      //home: const RootPage(),
+      //home: FileConversionPage(),
+      //home: ActivityPage(),
+      //home: CommunityPage(),
+      //home: FriendsListPage(),
+      //home: FastNotePage(),
+      //home: VoiceToTextPage(),
+      //home: SignInPage(),
+      home: UpdatedHomePage(),
     );
   }
 }
@@ -54,7 +72,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage>{
-  final List<Widget> _tabItems = [SettingsPage(), SchedulePage(), ProfilePage()];
+  final List<Widget> _tabItems = [TimerPage(), HomePage(), ProfilePage()];
   int _activePage = 0;
 
   @override
