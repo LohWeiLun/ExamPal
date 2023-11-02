@@ -34,9 +34,7 @@ dependencies:
   image_picker: ^0.8.4
   pdf: ^3.6.0
   path_provider: ^2.1.1
-  speech_to_text: ^6.4.0
-  highlight_text: ^1.7.0
-  avatar_glow: ^2.0.2
+  percent_indicator: ^4.2.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -75,6 +73,7 @@ flutter:
     - assets/icons/design.png
     - assets/icons/laptop.png
     - assets/icons/photography.png
+    - assets/icons/profile.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -95,6 +94,20 @@ flutter:
     - family: poppins_bold
       fonts:
         - asset: assets/fonts/poppin_bold.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
 
   #   - family: Schyler
   #     fonts:

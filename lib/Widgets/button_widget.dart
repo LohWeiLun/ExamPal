@@ -18,7 +18,7 @@ class ButtonWidget extends StatelessWidget{
   Widget build(BuildContext context) => ElevatedButton(
     style: ElevatedButton.styleFrom(
       backgroundColor: backgroundColor,
-      padding: EdgeInsets.symmetric(horizontal: 32,vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 16),
     ),
     child: Text(
       text,

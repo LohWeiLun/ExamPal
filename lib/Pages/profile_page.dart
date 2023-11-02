@@ -1,3 +1,4 @@
+import 'package:exampal/Pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,6 +11,29 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.green,
+          ),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.green,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => SettingsPage()));
+            },
+          ),
+        ],
+      ),
       body: Container(
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
@@ -45,8 +69,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: BoxShape.circle,
                           image: const DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://images.pexels.com/photos/3307758/pexels-photo-3307758.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=250",
+                              image: AssetImage(
+                                "assets/icons/profile.png",
                               ))),
                     ),
                     Positioned(
@@ -77,7 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
               buildTextField("Full Name", "Dor Alex", false),
               buildTextField("E-mail", "alexd@gmail.com", false),
               buildTextField("Password", "********", true),
-              buildTextField("Location", "TLV, Israel", false),
               const SizedBox(
                 height: 35,
               ),

@@ -1,7 +1,7 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/profile_page.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:exampal/Pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
@@ -54,7 +54,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage>{
-  final List<Widget> _tabItems = [TimerPage(), HomePage(), ProfilePage()];
+  final List<Widget> _tabItems = [SettingsPage(), SchedulePage(), ProfilePage()];
   int _activePage = 0;
 
   @override
