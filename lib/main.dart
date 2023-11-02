@@ -19,9 +19,7 @@ import 'package:get_storage/get_storage.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
 import 'Pages/home_page.dart';
-import 'Pages/login_page.dart';
 import 'Pages/schedule_page.dart';
-import 'Pages/signup_page.dart';
 import 'Pages/timer_page.dart';
 import 'Pages/forgotpassword_page.dart';
 import 'Pages/imagetopdf_page.dart';
@@ -45,8 +43,6 @@ class MyApp extends StatelessWidget {
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
       //home: HomePage(),
-      //home: LoginPage(),
-      //home: SignUpPage(),
       //home: TimerPage(),
       //home: ImageToPdf(),
       //home: SchedulePage(),
@@ -58,8 +54,10 @@ class MyApp extends StatelessWidget {
       //home: FriendsListPage(),
       //home: FastNotePage(),
       //home: VoiceToTextPage(),
-      //home: SignInPage(),
-      home: UpdatedHomePage(),
+      home: SignInPage(),
+      //home: UpdatedSignUpPage(),
+      //home: UpdatedHomePage(),
+      //home: ForgotPasswordPage(),
     );
   }
 }

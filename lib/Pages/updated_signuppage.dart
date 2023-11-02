@@ -6,7 +6,7 @@ class UpdatedSignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
+      body: SingleChildScrollView( // Wrap your entire content with SingleChildScrollView
         child: Container(
           child: Column(
             children: <Widget>[

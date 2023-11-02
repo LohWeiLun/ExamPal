@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'forgotpassword_page.dart'; // Import the ForgotPasswordPage
 
 class SignInPage extends StatelessWidget {
   @override
@@ -125,6 +127,10 @@ class SignInPage extends StatelessWidget {
                                   border: InputBorder.none,
                                   hintText: "Email or Phone number",
                                   hintStyle: TextStyle(color: Colors.grey[700]),
+                                  prefixIcon: Icon(
+                                    Icons.email, // Add the email icon here
+                                    color: Color.fromRGBO(143, 148, 251, 1),
+                                  ),
                                 ),
                               ),
                             ),
@@ -136,6 +142,10 @@ class SignInPage extends StatelessWidget {
                                   border: InputBorder.none,
                                   hintText: "Password",
                                   hintStyle: TextStyle(color: Colors.grey[700]),
+                                  prefixIcon: Icon(
+                                    Icons.lock, // Add the password icon here
+                                    color: Color.fromRGBO(143, 148, 251, 1),
+                                  ),
                                 ),
                               ),
                             )
@@ -179,18 +189,31 @@ class SignInPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10), // Add more spacing below the new option
-                    FadeInUp(
-                      duration: Duration(milliseconds: 2000),
-                      child: Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          color: Color.fromRGBO(143, 148, 251, 1),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to the ForgotPasswordPage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: FadeInUp(
+                        duration: Duration(milliseconds: 2000),
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            color: Color.fromRGBO(143, 148, 251, 1),
+                            decoration: TextDecoration.underline,
+                            decorationColor: Color.fromRGBO(143, 148, 251, 1),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
