@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       //home: HomePage(),
       //home: TimerPage(),
       //home: ImageToPdf(),
-      //home: SchedulePage(),
+      home: SchedulePage(),
       //home: ProfilePage(),
       //home: const RootPage(),
       //home: FileConversionPage(),
