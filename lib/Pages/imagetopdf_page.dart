@@ -4,25 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
-/*
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Image to PDF Converter')),
-        body: ImageToPdf(),
-      ),
-    );
-  }
-}
-
-
- */
 
 class ImageToPdf extends StatefulWidget {
   @override

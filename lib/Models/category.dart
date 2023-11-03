@@ -2,11 +2,13 @@ class Category {
   String thumbnail;
   String name;
   int noOfCourses;
+  double bottomPadding; // Add a new property for padding
 
   Category({
     required this.name,
     required this.noOfCourses,
     required this.thumbnail,
+    this.bottomPadding = 5.8, // Default padding value
   });
 }
 

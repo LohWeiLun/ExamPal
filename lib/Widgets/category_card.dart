@@ -1,3 +1,4 @@
+import 'package:exampal/Pages/schedule_page.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/size.dart';
@@ -15,7 +16,7 @@ class CategoryCard extends StatelessWidget{
   Widget build(BuildContext context){
     return GestureDetector(
       onTap: ()=> Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> const FastNotePage())),
+          MaterialPageRoute(builder: (context)=> const SchedulePage())),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

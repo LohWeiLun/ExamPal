@@ -1,3 +1,5 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -205,18 +207,29 @@ class UpdatedSignUpPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     // Add a "Already have an account? Login" option
-                    FadeInUp(
-                      duration: Duration(milliseconds: 2000),
-                      child: Text(
-                        "Already have an account? Login",
-                        style: TextStyle(
-                          color: Color.fromRGBO(143, 148, 251, 1),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to the sign-in page
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SignInPage(),
+                          ),
+                        );
+                      },
+                      child: FadeInUp(
+                        duration: Duration(milliseconds: 2000),
+                        child: Text(
+                          "Already have an account? Login",
+                          style: TextStyle(
+                            color: Color.fromRGBO(143, 148, 251, 1),
+                            decoration: TextDecoration.underline, // Add underline
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
