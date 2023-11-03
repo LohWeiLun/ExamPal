@@ -3,7 +3,7 @@ import 'package:exampal/constants/colors.dart';
 import 'package:exampal/constants/size.dart';
 import 'package:exampal/Models/category.dart';
 import 'package:exampal/Pages/schedule_page.dart';
-import 'package:exampal/Pages/fastnote_page.dart';
+import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -103,7 +103,7 @@ class CategoryCard extends StatelessWidget {
     if (category.name == 'Schedule') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SchedulePage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNotePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceToTextPage()));
     } else if (category.name == 'File Conversion') {

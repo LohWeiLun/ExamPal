@@ -1,3 +1,4 @@
+/*
 import 'package:exampal/Pages/schedule_page.dart';
 import 'package:flutter/material.dart';
 
@@ -55,6 +56,6 @@ class CategoryCard extends StatelessWidget{
     );
   }
 
-
 }
 
+*/

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FastNotePage extends StatelessWidget {
+class FastNoteFunctionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +20,10 @@ class FastNotePage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            // Part 1: Display recent notes accessed by users (you can use a ListView or other widget)
+            // Part 1: Display recent notes accessed by users
+            // You can use a ListView or other widget to display the notes
             // Replace with your actual note list widget
+            // Example: RecentNotesListWidget(),
 
             SizedBox(height: 20),
             ElevatedButton(
@@ -53,8 +55,10 @@ class FastNotePage extends StatelessWidget {
                 ),
               ),
             ),
-            // Part 2: Function to create PDF documents (you can implement this functionality)
+            // Part 2: Function to create PDF documents
+            // You can implement this functionality
             // Add your PDF creation functionality here
+            // Example: ElevatedButton(onPressed: createPDF, child: Text('Create PDF')),
 
             SizedBox(height: 20),
             Container(
@@ -76,8 +80,10 @@ class FastNotePage extends StatelessWidget {
                 ),
               ),
             ),
-            // Part 2: Function to summarize notes (you can implement this functionality)
+            // Part 2: Function to summarize notes
+            // You can implement this functionality
             // Add your note summarization functionality here
+            // Example: ElevatedButton(onPressed: summarizeNotes, child: Text('Summarize Notes')),
           ],
         ),
       ),

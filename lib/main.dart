@@ -14,6 +14,7 @@ import 'package:exampal/Pages/updated_homepage.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
 import 'package:exampal/Pages/voicetotext.dart';
+import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -66,13 +67,13 @@ class MyApp extends StatelessWidget {
       //home: VoiceToTextPage(),
       //home: SignInPage(),
       //home: UpdatedSignUpPage(),
-      //home: UpdatedFastNotePage(),
       //home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
-      home: RootPage(),
+      //home: RootPage(),
       //home: NoteSummarizationPage(),
       //home: VoiceToText(),
       //home: SettingsPage(),
+      home: FastNoteFunctionPage(),
     );
   }
 }
