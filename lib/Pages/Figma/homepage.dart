@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
 
+import '../FileConversion_page.dart';
+import '../voicetotext.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
 
@@ -19,17 +22,16 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        body: Column(
-          children: const [
-            AppBar(),
-            Expanded(
+    return Scaffold(
+      body: Column(
+        children: [
+          AppBar(),
+          Expanded(
+            child: SingleChildScrollView(  // Wrap Body with SingleChildScrollView
               child: Body(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -59,7 +61,7 @@ class Body extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
-                        ?.copyWith(color: LightColors.kPrimaryColor),
+                        ?.copyWith(color: Colors.blue), // Change color as desired
                   ),
                 )
               ],
@@ -97,15 +99,22 @@ class CategoryCard extends StatelessWidget {
     required this.category,
   }) : super(key: key);
 
+  void navigateToCategoryPage(BuildContext context) {
+    if (category.name == 'Schedule') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SchedulePage()));
+    } else if (category.name == 'Fast Note') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNotePage()));
+    } else if (category.name == 'Voice-To-Text') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceToTextPage()));
+    } else if (category.name == 'File Conversion') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FileConversionPage()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SchedulePage(),
-        ),
-      ),
+      onTap: () => navigateToCategoryPage(context),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -126,7 +135,7 @@ class CategoryCard extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Image.asset(
                 category.thumbnail,
-                height: kCategoryCardImageSize,
+                height: 100, // Adjust the image size as needed
               ),
             ),
             const SizedBox(
