@@ -47,7 +47,7 @@ class _SchedulePageState extends State<SchedulePage> {
           child: Column(
             children: <Widget>[
               TopContainer(
-                height: 250,
+                height: 230,
                 width: width,
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Column(

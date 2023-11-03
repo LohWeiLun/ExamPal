@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "642833300398",
+    "project_id": "exampal-c51c4",
+    "storage_bucket": "exampal-c51c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642833300398:android:378e6e0aa9f77de310a63f",
+        "android_client_info": {
+          "package_name": "tarumt.fyp.exampal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg_cBYCRXxbMpHP83V0tLAlh8zGNKN4ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

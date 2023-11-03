@@ -10,6 +10,8 @@ import 'package:exampal/Pages/updated_homepage.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
 import 'package:exampal/Pages/voicetotext.dart';
+import 'package:exampal/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -27,6 +29,7 @@ import 'Pages/imagetopdf_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

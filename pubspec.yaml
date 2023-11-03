@@ -45,6 +45,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   get_storage:
   get:
+  firebase_core: ^2.21.0
 
 
 dev_dependencies:
