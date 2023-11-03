@@ -1,5 +1,6 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/FileConversion_page.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
@@ -21,6 +22,7 @@ import 'package:get_storage/get_storage.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
 import 'Pages/Figma/voicetotextpage.dart';
+import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/home_page.dart';
 import 'Pages/schedule_page.dart';
 import 'Pages/timer_page.dart';
@@ -59,7 +61,8 @@ class MyApp extends StatelessWidget {
       //home: VoiceToTextPage(),
       //home: SignInPage(),
       //home: UpdatedSignUpPage(),
-      home: UpdatedHomePage(),
+      home: UpdatedFastNotePage(),
+      //home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: NoteSummarizationPage(),
