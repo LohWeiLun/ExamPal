@@ -14,5 +14,8 @@ class LightColors  {
 
   static const Color kDarkBlue = Color(0xFF0D253F);
 
+  static const kPrimaryColor = Color(0xff6849ef);
+  static const kPrimaryLight = Color(0xff8a72f1);
+
 
 }

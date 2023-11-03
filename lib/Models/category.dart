@@ -2,13 +2,11 @@ class Category {
   String thumbnail;
   String name;
   int noOfCourses;
-  double bottomPadding; // Add a new property for padding
 
   Category({
     required this.name,
     required this.noOfCourses,
     required this.thumbnail,
-    this.bottomPadding = 5.8, // Default padding value
   });
 }
 
@@ -16,21 +14,21 @@ List<Category> categoryList = [
   Category(
     name: 'Schedule',
     noOfCourses: 55,
-    thumbnail: 'assets/icons/accounting.png',
+    thumbnail: 'assets/icons/laptop.jpg',
   ),
   Category(
-    name: 'Fast Notes',
+    name: 'Fast Note',
     noOfCourses: 20,
-    thumbnail: 'assets/icons/accounting.png',
-  ),
-  Category(
-    name: 'File Conversion',
-    noOfCourses: 16,
-    thumbnail: 'assets/icons/photography.png',
+    thumbnail: 'assets/icons/accounting.jpg',
   ),
   Category(
     name: 'Voice-To-Text',
+    noOfCourses: 16,
+    thumbnail: 'assets/icons/photography.jpg',
+  ),
+  Category(
+    name: 'File Conversion',
     noOfCourses: 25,
-    thumbnail: 'assets/icons/design.png',
+    thumbnail: 'assets/icons/design.jpg',
   ),
 ];

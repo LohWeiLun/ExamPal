@@ -73,10 +73,10 @@ flutter:
 
 
   assets:
-    - assets/icons/accounting.png
-    - assets/icons/design.png
-    - assets/icons/laptop.png
-    - assets/icons/photography.png
+    - assets/icons/accounting.jpg
+    - assets/icons/design.jpg
+    - assets/icons/laptop.jpg
+    - assets/icons/photography.jpg
     - assets/icons/profile.png
     - assets/images/background.png
     - assets/images/clock.png

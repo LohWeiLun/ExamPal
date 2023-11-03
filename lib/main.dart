@@ -1,6 +1,7 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/FileConversion_page.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
@@ -25,11 +26,11 @@ import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
 import 'Pages/Figma/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
-import 'Pages/home_page.dart';
 import 'Pages/schedule_page.dart';
 import 'Pages/timer_page.dart';
 import 'Pages/forgotpassword_page.dart';
 import 'Pages/imagetopdf_page.dart';
+import 'Pages/Figma/homepage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeService().theme,
-      home: HomePage(),
+      //home: Homepage(),
       //home: RecentFilesPage(),
       //home: TimerPage(),
       //home: ImageToPdf(),
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
       //home: UpdatedFastNotePage(),
       //home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
-      //home: RootPage(),
+      home: RootPage(),
       //home: NoteSummarizationPage(),
       //home: VoiceToText(),
       //home: SettingsPage(),
@@ -84,7 +85,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage>{
-  final List<Widget> _tabItems = [TimerPage(), HomePage(), ProfilePage()];
+  final List<Widget> _tabItems = [TimerPage(), Homepage(), ProfilePage()];
   int _activePage = 0;
 
   @override
