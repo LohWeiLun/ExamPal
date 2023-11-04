@@ -1,3 +1,4 @@
+import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -162,12 +163,24 @@ class ForgotPasswordPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10), // Add spacing between "Send Reset Link" and the new option
-                    FadeInUp(
-                      duration: Duration(milliseconds: 2000),
-                      child: Text(
-                        "Remember your password? Login",
-                        style: TextStyle(
-                          color: Color.fromRGBO(143, 148, 251, 1),
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to the login page here
+                        // You can use Navigator.push to navigate to the login page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInPage(), // Replace LoginPage with your actual login page
+                          ),
+                        );
+                      },
+                      child: FadeInUp(
+                        duration: Duration(milliseconds: 2000),
+                        child: Text(
+                          "Remember your password? Login",
+                          style: TextStyle(
+                            color: Color.fromRGBO(143, 148, 251, 1),
+                          ),
                         ),
                       ),
                     ),
