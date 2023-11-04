@@ -11,6 +11,7 @@ import 'package:exampal/Widgets/search_textfield.dart';
 
 import '../FileConversion_page.dart';
 import '../voicetotext.dart';
+import '../Figma/course_screen.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           AppBar(),
           Expanded(
-            child: SingleChildScrollView(  // Wrap Body with SingleChildScrollView
+            child: SingleChildScrollView(
               child: Body(),
             ),
           ),
@@ -55,7 +56,10 @@ class Body extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Navigate to the FeaturedScreen page when "See All" is tapped
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseScreen()));
+                  },
                   child: Text(
                     "See All",
                     style: Theme.of(context)

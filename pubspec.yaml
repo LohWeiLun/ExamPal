@@ -82,6 +82,9 @@ flutter:
     - assets/images/clock.png
     - assets/images/light-1.png
     - assets/images/light-2.png
+    - assets/icons/flutter.jpg
+    - assets/icons/react.jpg
+    - assets/icons/node.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

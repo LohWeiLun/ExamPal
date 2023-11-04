@@ -69,11 +69,11 @@ class MyApp extends StatelessWidget {
       //home: UpdatedSignUpPage(),
       //home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
-      //home: RootPage(),
+      home: RootPage(),
       //home: NoteSummarizationPage(),
       //home: VoiceToText(),
       //home: SettingsPage(),
-      home: FastNoteFunctionPage(),
+      //home: FastNoteFunctionPage(),
     );
   }
 }
