@@ -46,6 +46,7 @@ dependencies:
   get_storage:
   get:
   firebase_core: ^2.21.0
+  firebase_analytics: ^10.6.3
 
 
 dev_dependencies:
