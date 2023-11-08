@@ -21,22 +21,17 @@ class UpdatedSignUpPage extends StatelessWidget {
     _confirmpasswordController.dispose();
   }
 
-  Future signUp() async {
-    if (passwordConfirmed()) {
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-        // Handle successful registration here
-        addUserDetails(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-        );
-      } catch (e) {
-        // Handle any errors that occurred during registration (e.g., email already in use, invalid email, etc.)
-        print("Error during registration: $e, Please Try Again");
-      }
+  Future signUp() async{
+    if (passwordConfirmed()){
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      addUserDetails(
+          _nameController.text,
+          _emailController.text
+      );
     }
   }
 
@@ -236,7 +231,11 @@ class UpdatedSignUpPage extends StatelessWidget {
                     ),
                     SizedBox(height: 30),
                     GestureDetector(
-                      onTap: (){
+                      onTap: (
+                          )async {
+                        await signUp();
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>SignInPage()));
+                        /*
                         FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                               email: _emailController.text,
@@ -251,6 +250,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           print("Error during registration: ${error.toString()}, Please Try Again");
                         });
                         // Navigate to the sign-in page
+                        */
                       },
                       child: Container(
                         height: 50,

@@ -85,7 +85,8 @@ class MyApp extends StatelessWidget {
         },
       ),
       */
-      home: UpdatedSignUpPage(),
+      //home: UpdatedSignUpPage(),
+      home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: AddPostScreen(),
