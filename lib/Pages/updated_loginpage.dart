@@ -1,4 +1,6 @@
 import 'package:exampal/Pages/updated_signuppage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'forgotpassword_page.dart';
@@ -6,6 +8,22 @@ import 'updated_homepage.dart';
 import 'updated_signuppage.dart'; // Import the UpdatedSignUpPage
 
 class SignInPage extends StatelessWidget {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+    );
+  }
+
+  @override
+  void dispose(){
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,9 +143,10 @@ class SignInPage extends StatelessWidget {
                                 ),
                               ),
                               child: TextField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Email or Phone number",
+                                  hintText: "Email",
                                   hintStyle: TextStyle(color: Colors.grey[700]),
                                   prefixIcon: Icon(
                                     Icons.email,
@@ -139,6 +158,7 @@ class SignInPage extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
+                                controller: _passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -158,6 +178,8 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: 30),
                     FadeInUp(
                       duration: Duration(milliseconds:1900),
+                      child:GestureDetector(
+                        onTap: signIn,
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -179,6 +201,7 @@ class SignInPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ),
                     ),
                     SizedBox(height: 10),
                     GestureDetector(

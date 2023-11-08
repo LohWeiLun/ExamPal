@@ -1,9 +1,61 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:get/get.dart';
 
 class UpdatedSignUpPage extends StatelessWidget {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
+
+  @override
+  void dispose(){
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmpasswordController.dispose();
+  }
+
+  Future signUp() async {
+    if (passwordConfirmed()) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        // Handle successful registration here
+      } catch (e) {
+        // Handle any errors that occurred during registration (e.g., email already in use, invalid email, etc.)
+        print("Error during registration: $e, Please Try Again");
+      }
+
+      addUserDetails(
+          _nameController.text.trim(),
+          _emailController.text.trim(),
+      );
+    }
+  }
+
+  Future addUserDetails(String name, String email) async{
+    await FirebaseFirestore.instance.collection('user').add({
+      'name': name,
+      'email address': email,
+    });
+  }
+
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() == _confirmpasswordController.text.trim()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +158,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _nameController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Name",
@@ -127,6 +180,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Email Address",
@@ -148,6 +202,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -170,6 +225,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _confirmpasswordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -180,9 +236,15 @@ class UpdatedSignUpPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 30),
-                    // Replace the "Login" button with a "Sign Up" button
-                    FadeInUp(
-                      duration: Duration(milliseconds: 1900),
+                    GestureDetector(
+                      onTap: (){
+                        // Navigate to the sign-in page
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SignInPage(),
+                          ),
+                        );
+                      },
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -206,7 +268,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    // Add a "Already have an account? Login" option
                     GestureDetector(
                       onTap: () {
                         // Navigate to the sign-in page
@@ -222,7 +283,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                           "Already have an account? Login",
                           style: TextStyle(
                             color: Color.fromRGBO(143, 148, 251, 1),
-                            decoration: TextDecoration.underline, // Add underline
                           ),
                         ),
                       ),
@@ -237,3 +297,5 @@ class UpdatedSignUpPage extends StatelessWidget {
     );
   }
 }
+
+
