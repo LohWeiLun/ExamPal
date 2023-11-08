@@ -14,6 +14,7 @@ import 'package:exampal/Pages/updated_loginpage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
 import 'package:exampal/Pages/voicetotext.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Screens/feed_screen.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
       ),
       */
       //home: UpdatedSignUpPage(),
-      home: UpdatedHomePage(),
+      home: FeedScreen(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: AddPostScreen(),
