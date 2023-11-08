@@ -18,4 +18,9 @@ class LightColors  {
   static const kPrimaryLight = Color(0xff8a72f1);
 
 
+  static const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+  static const mobileSearchColor = Color.fromRGBO(38, 38, 38, 1);
+
+
+
 }

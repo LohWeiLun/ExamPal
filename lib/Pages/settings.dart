@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -94,7 +95,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
                 child: const Text("SIGN OUT",
                     style: TextStyle(
                         fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
