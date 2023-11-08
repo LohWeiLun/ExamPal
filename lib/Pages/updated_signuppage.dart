@@ -29,15 +29,14 @@ class UpdatedSignUpPage extends StatelessWidget {
           password: _passwordController.text.trim(),
         );
         // Handle successful registration here
+        addUserDetails(
+          _nameController.text.trim(),
+          _emailController.text.trim(),
+        );
       } catch (e) {
         // Handle any errors that occurred during registration (e.g., email already in use, invalid email, etc.)
         print("Error during registration: $e, Please Try Again");
       }
-
-      addUserDetails(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-      );
     }
   }
 
@@ -238,12 +237,20 @@ class UpdatedSignUpPage extends StatelessWidget {
                     SizedBox(height: 30),
                     GestureDetector(
                       onTap: (){
+                        FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,)
+                            .then((value){
+                              print("Account Created");
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SignInPage(),
+                            ),
+                          );
+                        }).onError((error, stackTrace) {
+                          print("Error during registration: ${error.toString()}, Please Try Again");
+                        });
                         // Navigate to the sign-in page
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => SignInPage(),
-                          ),
-                        );
                       },
                       child: Container(
                         height: 50,

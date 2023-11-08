@@ -98,6 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ElevatedButton(
                 onPressed: () {
                   FirebaseAuth.instance.signOut().then((value){
+                    print("Succesfully Signed Out");
                     Navigator.push(context,MaterialPageRoute(builder: (context)=> SignInPage()));
                   });
                 },

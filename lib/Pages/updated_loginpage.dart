@@ -1,3 +1,4 @@
+import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,13 +11,6 @@ import 'updated_signuppage.dart'; // Import the UpdatedSignUpPage
 class SignInPage extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  Future signIn() async{
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-    );
-  }
 
   @override
   void dispose(){
@@ -179,7 +173,11 @@ class SignInPage extends StatelessWidget {
                     FadeInUp(
                       duration: Duration(milliseconds:1900),
                       child:GestureDetector(
-                        onTap: signIn,
+                        onTap: (){
+                          FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text).then((value){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
+                          });
+                        },
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(

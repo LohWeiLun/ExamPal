@@ -73,6 +73,7 @@ class MyApp extends StatelessWidget {
       //home: FriendsListPage(),
       //home: FastNotePage(),
       //home: VoiceToTextPage(),
+      /*
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -83,7 +84,8 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-      //home: UpdatedSignUpPage(),
+      */
+      home: UpdatedSignUpPage(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: AddPostScreen(),
