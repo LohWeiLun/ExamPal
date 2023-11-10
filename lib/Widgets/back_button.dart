@@ -3,6 +3,8 @@ import 'package:exampal/Constants/colors.dart';
 
 
 class MyBackButton extends StatelessWidget {
+  const MyBackButton({super.key});
+
  
 
   @override
@@ -13,7 +15,7 @@ class MyBackButton extends StatelessWidget {
         onTap: (){
           Navigator.pop(context);
         },
-          child: Align(
+          child: const Align(
           alignment: Alignment.centerLeft,
           child: Icon(
             Icons.arrow_back_ios,

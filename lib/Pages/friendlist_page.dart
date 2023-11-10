@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: FriendsListPage(),
   ));
 }
@@ -13,6 +13,8 @@ class Friend {
 }
 
 class FriendsListPage extends StatefulWidget {
+  const FriendsListPage({super.key});
+
   @override
   _FriendsListPageState createState() => _FriendsListPageState();
 }
@@ -25,13 +27,13 @@ class _FriendsListPageState extends State<FriendsListPage> {
     Friend('Friend 4'),
     Friend('Friend 5'),
   ];
-  TextEditingController _friendNameController = TextEditingController();
+  final TextEditingController _friendNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friends List'),
+        title: const Text('Friends List'),
         backgroundColor: Colors.blue,
       ),
       body: buildFriendsList(),
@@ -45,7 +47,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
       itemBuilder: (context, index) {
         return Card(
           elevation: 3,
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: ListTile(
             leading: CircleAvatar(
               // You can add custom profile pictures here if needed
@@ -54,7 +56,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
             ),
             title: Text(
               friends[index].name,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         );
@@ -65,8 +67,8 @@ class _FriendsListPageState extends State<FriendsListPage> {
   Widget buildAddFriendButton() {
     return FloatingActionButton(
       onPressed: () => _showAddFriendDialog(),
-      child: Icon(Icons.person_add),
       backgroundColor: Colors.blue,
+      child: const Icon(Icons.person_add),
     );
   }
 
@@ -75,13 +77,13 @@ class _FriendsListPageState extends State<FriendsListPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Friend'),
+          title: const Text('Add Friend'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _friendNameController,
-                decoration: InputDecoration(labelText: 'Friend Name'),
+                decoration: const InputDecoration(labelText: 'Friend Name'),
               ),
             ],
           ),
@@ -90,7 +92,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -102,7 +104,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
                 }
                 Navigator.of(context).pop();
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         );

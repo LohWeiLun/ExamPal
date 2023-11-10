@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ActivityPage extends StatefulWidget {
+  const ActivityPage({super.key});
+
   @override
   _ActivityPageState createState() => _ActivityPageState();
 }
@@ -28,7 +30,7 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Activity Page'),
+        title: const Text('Activity Page'),
       ),
       body: ListView.builder(
         itemCount: activities.length,
@@ -53,7 +55,7 @@ enum ActivityType { post, like, comment }
 class ActivityCard extends StatelessWidget {
   final Activity activity;
 
-  ActivityCard({required this.activity});
+  const ActivityCard({super.key, required this.activity});
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +74,9 @@ class ActivityCard extends StatelessWidget {
     }
 
     return Card(
-      margin: EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
       child: ListTile(
-        leading: Icon(Icons.person),
+        leading: const Icon(Icons.person),
         title: Text('${activity.friendName} $activityTypeText activity'),
         subtitle: Text(activity.activityText),
       ),

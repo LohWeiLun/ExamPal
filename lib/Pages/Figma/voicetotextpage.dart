@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class VoiceToText extends StatelessWidget {
+  const VoiceToText({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Voice-To-Text'),
+        title: const Text('Voice-To-Text'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Covert voice to text',
               style: TextStyle(
                 color: Color(0xFF1F1F39),
@@ -20,14 +22,14 @@ class VoiceToText extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Add Media button action
               },
-              child: Text('Add Media'),
+              child: const Text('Add Media'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 200,
               height: 100,
@@ -35,7 +37,7 @@ class VoiceToText extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Record',
                   style: TextStyle(
@@ -47,7 +49,7 @@ class VoiceToText extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 200,
               height: 100,
@@ -55,7 +57,7 @@ class VoiceToText extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Upload a File',
                   style: TextStyle(
@@ -67,7 +69,7 @@ class VoiceToText extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 200,
               height: 100,
@@ -75,7 +77,7 @@ class VoiceToText extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Text To Speech',
                   style: TextStyle(

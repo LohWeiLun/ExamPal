@@ -7,13 +7,15 @@ import 'package:path_provider/path_provider.dart';
 
 
 class ImageToPdf extends StatefulWidget {
+  const ImageToPdf({super.key});
+
   @override
   _ImageToPdfState createState() => _ImageToPdfState();
 }
 
 class _ImageToPdfState extends State<ImageToPdf> {
   final _picker = ImagePicker();
-  List<File> _imageFiles = [];
+  final List<File> _imageFiles = [];
 
   Future<void> _convertToPdf() async {
     final pdf = pw.Document();
@@ -47,11 +49,11 @@ class _ImageToPdfState extends State<ImageToPdf> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image to PDF Converter'),
+        title: const Text('Image to PDF Converter'),
       ),
       body: Container(
-        color: Color(0xffc1e1e9), // Background color
-        padding: EdgeInsets.all(16),
+        color: const Color(0xffc1e1e9), // Background color
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -64,16 +66,16 @@ class _ImageToPdfState extends State<ImageToPdf> {
                 );
               }).toList(),
             )
-                : Text('No image selected'),
-            SizedBox(height: 10),
+                : const Text('No image selected'),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _pickImage,
-              child: Text('Select Image'),
+              child: const Text('Select Image'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _convertToPdf,
-              child: Text('Convert to PDF'),
+              child: const Text('Convert to PDF'),
             ),
           ],
         ),
