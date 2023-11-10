@@ -7,6 +7,8 @@ import 'package:exampal/Pages/create_new_task_page.dart';
 import 'package:exampal/widgets/back_button.dart';
 
 class CalendarPage extends StatelessWidget {
+  const CalendarPage({super.key});
+
   Widget _dashedText() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -55,7 +57,7 @@ class CalendarPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CreateNewTaskPage(),
+                              builder: (context) => const CreateNewTaskPage(),
                             ),
                           );
                         },
@@ -151,24 +153,24 @@ class CalendarPage extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             children: <Widget>[
                               _dashedText(),
-                              TaskContainer(
+                              const TaskContainer(
                                 title: 'Project Research',
                                 subtitle:
                                     'Discuss with the colleagues about the future plan',
                                 boxColor: LightColors.kLightYellow2,
                               ),
                               _dashedText(),
-                              TaskContainer(
+                              const TaskContainer(
                                 title: 'Work on Medical App',
                                 subtitle: 'Add medicine tab',
                                 boxColor: LightColors.kLavender,
                               ),
-                              TaskContainer(
+                              const TaskContainer(
                                 title: 'Call',
                                 subtitle: 'Call to david',
                                 boxColor: LightColors.kPalePink,
                               ),
-                              TaskContainer(
+                              const TaskContainer(
                                 title: 'Design Meeting',
                                 subtitle:
                                     'Discuss with designers for new task for the medical app',

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CommunityHomepage extends StatefulWidget {
+  const CommunityHomepage({super.key});
+
   @override
   _CommunityHomepageState createState() => _CommunityHomepageState();
 }
@@ -19,7 +21,7 @@ class _CommunityHomepageState extends State<CommunityHomepage> {
           "assets/logo/exampalLogo.png",
           height: 50,
         ),
-        actions: [
+        actions: const [
           SizedBox(
             width: 50, // Add your desired spacing between icons here
             child: Icon(
@@ -66,8 +68,8 @@ class _CommunityHomepageState extends State<CommunityHomepage> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10),
-                            Text(
+                            const SizedBox(height: 10),
+                            const Text(
                               "Profile Name",
                               style: TextStyle(
                                   fontSize: 12, color: Colors.black87),
@@ -77,7 +79,7 @@ class _CommunityHomepageState extends State<CommunityHomepage> {
                       )),
             ),
           ),
-          Divider(),
+          const Divider(),
           Column(
             children: List.generate(
               1,
@@ -87,7 +89,7 @@ class _CommunityHomepageState extends State<CommunityHomepage> {
                   Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: CircleAvatar(
                           radius: 14,
                           backgroundImage: AssetImage(
@@ -101,10 +103,10 @@ class _CommunityHomepageState extends State<CommunityHomepage> {
                           ),
                         ),
                       ),
-                      Text("Profile Name"),
-                      Spacer(),
+                      const Text("Profile Name"),
+                      const Spacer(),
                       IconButton(
-                        icon: Icon(Icons.more_vert),
+                        icon: const Icon(Icons.more_vert),
                         onPressed: () {},
                       )
                     ],

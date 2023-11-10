@@ -20,10 +20,10 @@ class ButtonWidget extends StatelessWidget{
       backgroundColor: backgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 16),
     ),
+    onPressed: onClicked,
     child: Text(
       text,
       style: TextStyle(fontSize: 20, color: color),
     ),
-    onPressed: onClicked,
   );
 }

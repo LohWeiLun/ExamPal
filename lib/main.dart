@@ -1,38 +1,17 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
-import 'package:exampal/Pages/FileConversion_page.dart';
-import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
-import 'package:exampal/Pages/friendlist_page.dart';
-import 'package:exampal/Pages/noteSummarization.dart';
 import 'package:exampal/Pages/profile_page.dart';
-import 'package:exampal/Pages/recentnotes.dart';
-import 'package:exampal/Pages/settings.dart';
 import 'package:exampal/Pages/updated_homepage.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
-import 'package:exampal/Pages/updated_signuppage.dart';
-import 'package:exampal/Pages/voicetotext.dart';
-import 'package:exampal/Pages/Figma/fastnotepage.dart';
-import 'package:exampal/Screens/feed_screen.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
 
-import 'Constants/theme.dart';
-import 'Constants/theme_services.dart';
-import 'Pages/Figma/voicetotextpage.dart';
-import 'Pages/Figma/fastnotepage.dart';
-import 'Pages/schedule_page.dart';
 import 'Pages/timer_page.dart';
-import 'Pages/forgotpassword_page.dart';
-import 'Pages/imagetopdf_page.dart';
-import 'Pages/Figma/homepage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +29,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ExamPal',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           elevation: 1,
           color: Colors.white,
         ),
@@ -74,20 +53,17 @@ class MyApp extends StatelessWidget {
       //home: FriendsListPage(),
       //home: FastNotePage(),
       //home: VoiceToTextPage(),
-      /*
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Homepage();
+            return const RootPage();
           } else {
             return SignInPage();
           }
         },
       ),
-      */
       //home: UpdatedSignUpPage(),
-      home: FeedScreen(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: AddPostScreen(),
@@ -107,8 +83,8 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  final List<Widget> _tabItems = [TimerPage(), Homepage(), ProfilePage()];
-  int _activePage = 0;
+  final List<Widget> _tabItems = [const CommunityPage(), const UpdatedHomePage(), const ProfilePage()];
+  int _activePage = 1;
 
   @override
   Widget build(BuildContext context) {

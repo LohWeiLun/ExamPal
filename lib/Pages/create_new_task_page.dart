@@ -62,7 +62,7 @@ class _CreateNewTaskPageState extends State<CreateNewTaskPage> {
                           icon: downwardIcon,
                         ),
                       ),
-                      SchedulePage.calendarIcon(),
+                      SchedulePage.circleAddIcon(),
                     ],
                   )
                     ],

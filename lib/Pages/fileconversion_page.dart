@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileConversionPage extends StatefulWidget {
+  const FileConversionPage({super.key});
+
   @override
   _FileConversionPageState createState() => _FileConversionPageState();
 }
@@ -50,33 +52,33 @@ class _FileConversionPageState extends State<FileConversionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('File Conversion'),
+        title: const Text('File Conversion'),
       ),
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text('Choose File: '),
+                  const Text('Choose File: '),
                   ElevatedButton(
                     onPressed: _pickFile,
-                    child: Text('Pick File'),
+                    child: const Text('Pick File'),
                   ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text('Selected File: '),
+                  const Text('Selected File: '),
                   Text(_file != null ? _file!.path : 'No file selected'),
                 ],
               ),
               DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Select File Type'),
+                decoration: const InputDecoration(labelText: 'Select File Type'),
                 items: <String>['pdf', 'docx'] // Add more file types as needed
                     .map((String value) {
                   return DropdownMenuItem<String>(
@@ -100,7 +102,7 @@ class _FileConversionPageState extends State<FileConversionPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text('Converted File: '),
+                  const Text('Converted File: '),
                   Text(
                     _convertedFilePath != null ? _convertedFilePath! : 'No file converted',
                   ),
