@@ -1,4 +1,4 @@
-/*
+
 import 'package:provider/provider.dart';
 import 'package:exampal/Models/user.dart' as model;
 import 'package:flutter/cupertino.dart';
@@ -11,13 +11,13 @@ class MobileScreenLayout extends StatefulWidget{
   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();
 }
 
-class _MobileScreenLayoutState extends State<MobileScreenLayout>{
+class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
-  Widget build(BuildContext.context){
-    model.User user = Provider.of<UserProvider>(context).getUser;
-
-
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('This is Mobile'),
+      ),
+    );
   }
 }
-
-*/

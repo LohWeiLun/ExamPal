@@ -81,8 +81,8 @@ class _PostCardState extends State<PostCard> {
           Row(
             children: [
               IconButton(onPressed: () {},icon:const Icon(Icons.favorite, color:Colors.red,)),
-              IconButton(onPressed: () {},icon:const Icon(Icons.comment_outlined,)),
-              IconButton(onPressed: () {},icon:const Icon(Icons.send,)),
+              IconButton(onPressed: () {},icon:const Icon(Icons.comment_outlined,color:Colors.black87)),
+              IconButton(onPressed: () {},icon:const Icon(Icons.send,color:Colors.black87)),
               Expanded(child: Align(alignment: Alignment.bottomRight,child: IconButton(icon: const Icon(Icons.bookmark_border),
                 onPressed: () {},
               ),),),

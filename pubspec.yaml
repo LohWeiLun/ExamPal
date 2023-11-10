@@ -32,7 +32,7 @@ dependencies:
     sdk: flutter
 
   email_validator: '^2.1.16'
-  image_picker: ^0.8.4
+  image_picker: ^1.0.4
   pdf: ^3.6.0
   path_provider: ^2.1.1
   percent_indicator: ^4.2.3
@@ -59,6 +59,8 @@ dependencies:
   firebase_storage: ^11.4.1
   cloud_firestore: ^4.12.2
   flutter_svg: ^2.0.9
+  emoji_picker_flutter: ^1.6.3
+
 
 
 dev_dependencies:
@@ -99,6 +101,8 @@ flutter:
     - assets/icons/react.jpg
     - assets/icons/node.png
     - assets/logo/exampalLogo.png
+    - assets/icons/groups.svg
+    - assets/icons/person.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
