@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:exampal/Pages/settings.dart';
 import 'package:flutter/material.dart';
 import '../Constants/theme.dart';
@@ -12,9 +13,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String? name = '';
   String? email = '';
   String? avatar = '';
+
+  bool _nameValid = true;
+  bool _emailValid = true;
+
+  TextEditingController editNameController = TextEditingController();
+  TextEditingController editEmailController = TextEditingController();
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -32,15 +40,36 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Future<void> showUserNameDialogAlert() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog();
-        });
-  }
+  int maxName = 40;
 
-  bool showPassword = false;
+  updateProfileData() {
+    setState(() {
+      editNameController.text
+          .trim()
+          .length > maxName || editNameController.text
+          .trim()
+          .isEmpty
+          ? _nameValid = false
+          : _nameValid = true;
+      editEmailController.text
+          .trim()
+          .isNotEmpty ||
+          EmailValidator.validate(editEmailController.text.trim())
+          ? _emailValid = true
+          : _emailValid = false;
+    });
+
+    if (_nameValid && _emailValid) {
+      FirebaseFirestore.instance
+          .collection("user")
+          .doc(FirebaseAuth.instance.currentUser!.uid).update(
+          {"name": editNameController.text,
+            "email": editEmailController.text,});
+
+      SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
+  }
 
   @override
   void initState() {
@@ -51,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text("Edit Profile"),
         backgroundColor: lightBlue2,
@@ -85,7 +115,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
+                              color: Theme
+                                  .of(context)
+                                  .scaffoldBackgroundColor),
                           boxShadow: [
                             BoxShadow(
                                 spreadRadius: 2,
@@ -110,7 +142,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             shape: BoxShape.circle,
                             border: Border.all(
                               width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                              color: Theme
+                                  .of(context)
+                                  .scaffoldBackgroundColor,
                             ),
                             color: Colors.grey,
                           ),
@@ -128,30 +162,38 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 35.0),
                 child: TextField(
+                  controller: editNameController,
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(bottom: 3),
                       labelText: "Full Name",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
+                      errorText: _nameValid
+                          ? null
+                          : "Name exceeded max limit ($maxName characters)",
                       hintText: name!,
                       hintStyle: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.grey,
                       )),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 35.0),
                 child: TextField(
+                  controller: editEmailController,
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.only(bottom: 3),
                       labelText: "Email",
                       floatingLabelBehavior: FloatingLabelBehavior.always,
+                      errorText: _emailValid
+                          ? null
+                          : "Email is invalid",
                       hintText: email!,
                       hintStyle: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.grey,
                       )),
                 ),
               ),
@@ -162,7 +204,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: (){
+                      updateProfileData();
+                    },
                     child: const Text(
                       "SAVE",
                       style: TextStyle(

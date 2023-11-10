@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  email_validator: '^2.1.16'
   image_picker: ^0.8.4
   pdf: ^3.6.0
   path_provider: ^2.1.1
