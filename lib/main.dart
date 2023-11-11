@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
@@ -24,7 +25,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
@@ -37,10 +37,11 @@ import 'Pages/imagetopdf_page.dart';
 import 'Pages/Figma/homepage.dart';
 import 'Pages/Friends/Screen/friends_homepage.dart';
 import 'Pages/Friends/Screen/friends_homepagescreen.dart';
-
+import 'Pages/Friends/Screen/cameraScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   await GetStorage.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());

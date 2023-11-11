@@ -1,4 +1,5 @@
 import 'package:exampal/Pages/Friends/Page/chatpage.dart';
+import 'package:exampal/Pages/Friends/Screen/cameraScreen.dart';
 import 'package:flutter/material.dart';
 
 class FriendsHomescreen extends StatefulWidget {
@@ -24,7 +25,10 @@ class _FriendsHomescreenState extends State<FriendsHomescreen>
       appBar: AppBar(
         title: Text("ExamPal"),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.camera_alt)),
+          IconButton(onPressed: () {/*Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CameraScreen()),
+          );*/}, icon: Icon(Icons.camera_alt)),
           IconButton(onPressed: () {}, icon: Icon(Icons.search)),
           PopupMenuButton<String>(
             onSelected: (value){
@@ -60,7 +64,7 @@ class _FriendsHomescreenState extends State<FriendsHomescreen>
       body: TabBarView(
         controller: _controller,
         children: [
-          Text("community"),
+          CameraScreen(),
           ChatPage(),
           Text("Updates"),
           Text("calls"),
