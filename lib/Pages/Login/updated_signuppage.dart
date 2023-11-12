@@ -1,18 +1,27 @@
 import 'dart:typed_data';
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exampal/Pages/updated_loginpage.dart';
+import 'package:exampal/Constants/utils.dart';
+import 'package:exampal/Firebase/auth_methods.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
-class UpdatedSignUpPage extends StatelessWidget {
+class UpdatedSignUpPage extends StatefulWidget {
+  @override
+  _UpdatedSignUpPageState createState() => _UpdatedSignUpPageState();
+}
+
+class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -20,44 +29,19 @@ class UpdatedSignUpPage extends StatelessWidget {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmpasswordController.dispose();
+    super.dispose();
   }
 
-  Future signUp() async{
-    if (passwordConfirmed()){
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      addUserDetails(
-          _nameController.text,
-          _emailController.text
-      );
-    }
-  }
-
-  Future<String> addUserDetails(String name, String email) async {
-    try {
-      DocumentReference docRef = await FirebaseFirestore.instance.collection('user').add({
-        'name': name,
-        'email address': email,
-      });
-
-      // Get the user ID from the document reference after adding the document
-      String userId = docRef.id;
-
-      // Update the document with the 'uid' field
-      await docRef.update({'uid': userId});
-
-      return userId;
-    } catch (error) {
-      print("Error adding user details: $error");
-      return "Error";
-    }
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
   }
 
   bool passwordConfirmed() {
-    if (_passwordController.text.trim() == _confirmpasswordController.text.trim()) {
+    if (_passwordController.text.trim() ==
+        _confirmpasswordController.text.trim()) {
       return true;
     } else {
       return false;
@@ -68,7 +52,7 @@ class UpdatedSignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView( // Wrap your entire content with SingleChildScrollView
+      body: SingleChildScrollView(
         child: Container(
           child: Column(
             children: <Widget>[
@@ -153,7 +137,42 @@ class UpdatedSignUpPage extends StatelessWidget {
                 padding: EdgeInsets.all(30.0),
                 child: Column(
                   children: <Widget>[
-                    // Add a TextField for Name
+                    FadeInUp(
+                      duration: Duration(milliseconds: 1800),
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          // Remove the bottom border
+                          border: Border(
+                            bottom: BorderSide.none,
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            _image != null
+                                ? CircleAvatar(
+                              radius: 64,
+                              backgroundImage: MemoryImage(_image!),
+                              backgroundColor: Colors.red,
+                            )
+                                : const CircleAvatar(
+                              radius: 64,
+                              backgroundImage: NetworkImage(
+                                  'https://i.stack.imgur.com/l60Hf.png'),
+                              backgroundColor: Colors.red,
+                            ),
+                            Positioned(
+                              bottom: -10,
+                              left: 80,
+                              child: IconButton(
+                                onPressed: selectImage,
+                                icon: const Icon(Icons.add_a_photo),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     FadeInUp(
                       duration: Duration(milliseconds: 1800),
                       child: Container(
@@ -175,7 +194,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Add a TextField for Email Address
                     FadeInUp(
                       duration: Duration(milliseconds: 1800),
                       child: Container(
@@ -197,7 +215,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Add a TextField for Password
                     FadeInUp(
                       duration: Duration(milliseconds: 1800),
                       child: Container(
@@ -220,7 +237,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Add a TextField for Confirm Password
                     FadeInUp(
                       duration: Duration(milliseconds: 1800),
                       child: Container(
@@ -245,26 +261,21 @@ class UpdatedSignUpPage extends StatelessWidget {
                     ),
                     SizedBox(height: 30),
                     GestureDetector(
-                      onTap: (
-                          )async {
-                        await signUp();
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>SignInPage()));
-                        /*
-                        FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text,)
-                            .then((value){
-                              print("Account Created");
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => SignInPage(),
-                            ),
-                          );
-                        }).onError((error, stackTrace) {
-                          print("Error during registration: ${error.toString()}, Please Try Again");
-                        });
-                        // Navigate to the sign-in page
-                        */
+                      onTap: () async {
+                        String res = await AuthMethods().signUpUser(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          username: _nameController.text,
+                          file: _image!,
+                        );
+                        print(res);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignInPage(),
+                          ),
+                        );
                       },
                       child: Container(
                         height: 50,

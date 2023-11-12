@@ -1,5 +1,5 @@
-import 'package:exampal/Pages/updated_loginpage.dart';
-import 'package:exampal/Pages/updated_signuppage.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
+import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
@@ -168,3 +168,5 @@ class UpdatedHomePage extends StatelessWidget {
     );
   }
 }
+
+

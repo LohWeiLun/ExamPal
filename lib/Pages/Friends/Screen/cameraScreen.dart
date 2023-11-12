@@ -19,11 +19,10 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   CameraController? _cameraController;
   Future<void>? cameraValue;
-
   bool isRecording = false;
   bool flash = false;
   bool isCameraFront = true;
-  double transform = pi;
+  double transform = 0;
 
   @override
   void initState() {
@@ -31,16 +30,16 @@ class _CameraScreenState extends State<CameraScreen> {
     _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    _cameraController = CameraController(cameras[0], ResolutionPreset.high);
-    cameraValue = _cameraController!.initialize();
-  }
-
   @override
   void dispose() {
     _cameraController?.dispose();
     super.dispose();
+  }
+
+  Future<void> _initializeCamera() async {
+    cameras = await availableCameras();
+    _cameraController = CameraController(cameras[0], ResolutionPreset.high);
+    cameraValue = _cameraController!.initialize();
   }
 
   @override

@@ -1,7 +1,6 @@
-
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../Widgets/button_widget.dart';
+import '../../Widgets/button_widget.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});

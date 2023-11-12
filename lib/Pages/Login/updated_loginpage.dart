@@ -1,12 +1,11 @@
+
 import 'package:exampal/Pages/Figma/homepage.dart';
-import 'package:exampal/Pages/updated_signuppage.dart';
+import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'forgotpassword_page.dart';
-import 'updated_homepage.dart';
-import 'updated_signuppage.dart'; // Import the UpdatedSignUpPage
 
 class SignInPage extends StatelessWidget {
   final _emailController = TextEditingController();

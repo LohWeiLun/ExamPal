@@ -1,18 +1,19 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
-import 'package:exampal/Pages/FileConversion_page.dart';
+import 'package:exampal/Pages/Login/backupSignUp.dart';
+import 'package:exampal/Pages/Notes/FileConversion_page.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
-import 'package:exampal/Pages/noteSummarization.dart';
-import 'package:exampal/Pages/profile_page.dart';
-import 'package:exampal/Pages/recentnotes.dart';
-import 'package:exampal/Pages/settings.dart';
-import 'package:exampal/Pages/updated_homepage.dart';
-import 'package:exampal/Pages/updated_loginpage.dart';
-import 'package:exampal/Pages/updated_signuppage.dart';
-import 'package:exampal/Pages/voicetotext.dart';
+import 'package:exampal/Pages/Notes/noteSummarization.dart';
+import 'package:exampal/Pages/UserProfile/profile_page.dart';
+import 'package:exampal/Pages/Notes/recentnotes.dart';
+import 'package:exampal/Pages/UserProfile/settings.dart';
+import 'package:exampal/Pages/Login/updated_homepage.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
+import 'package:exampal/Pages/Login/updated_signuppage.dart';
+import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Responsive/mobile_screen_layout.dart';
 import 'package:exampal/Screens/feed_screen.dart';
@@ -27,12 +28,12 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
-import 'Pages/Figma/voicetotextpage.dart';
+import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
-import 'Pages/schedule_page.dart';
-import 'Pages/timer_page.dart';
-import 'Pages/forgotpassword_page.dart';
-import 'Pages/imagetopdf_page.dart';
+import 'Pages/Timetable/schedule_page.dart';
+import 'Pages/Timetable/timer_page.dart';
+import 'Pages/Login/forgotpassword_page.dart';
+import 'Pages/Notes/imagetopdf_page.dart';
 import 'Pages/Figma/homepage.dart';
 import 'Pages/Friends/Screen/friends_homepage.dart';
 import 'Pages/Friends/Screen/friends_homepagescreen.dart';
@@ -92,12 +93,13 @@ class MyApp extends StatelessWidget {
         },
       ),
       */
-      //home: UpdatedSignUpPage(),
+      home: UpdatedSignUpPage(),
       //home: UpdatedHomePage(),
       //home: ForgotPasswordPage(),
       //home: RootPage(),
       //home: AddPostScreen(),
-      home: FriendsHomescreen(),
+      //home: FriendsHomescreen(),
+      //home: FeedScreen(),
       //home: NoteSummarizationPage(),
       //home: VoiceToText(),
       //home: SettingsPage(),

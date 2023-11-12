@@ -48,7 +48,7 @@ class CameraViewPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 150,
               child: Image.file(
                 File(path),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             ),
             Positioned(
