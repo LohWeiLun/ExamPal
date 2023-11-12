@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../Screen/cameraScreen.dart';
 
 class CameraPage extends StatelessWidget {
