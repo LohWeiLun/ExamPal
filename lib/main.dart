@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
@@ -38,6 +37,7 @@ import 'Pages/Figma/homepage.dart';
 import 'Pages/Friends/Screen/friends_homepage.dart';
 import 'Pages/Friends/Screen/friends_homepagescreen.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
+import 'package:camera/camera.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
