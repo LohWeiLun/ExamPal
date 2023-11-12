@@ -1,4 +1,7 @@
+import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/updated_signuppage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'forgotpassword_page.dart';
@@ -6,6 +9,15 @@ import 'updated_homepage.dart';
 import 'updated_signuppage.dart'; // Import the UpdatedSignUpPage
 
 class SignInPage extends StatelessWidget {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +72,7 @@ class SignInPage extends StatelessWidget {
                       width: 80,
                       height: 150,
                       child: FadeInUp(
-                        duration: Duration(milliseconds:1300),
+                        duration: Duration(milliseconds: 1300),
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -72,9 +84,9 @@ class SignInPage extends StatelessWidget {
                     ),
                     Positioned(
                       child: FadeInUp(
-                        duration: Duration(milliseconds:1600),
+                        duration: Duration(milliseconds: 1600),
                         child: Container(
-                          margin: EdgeInsets.only(top:50),
+                          margin: EdgeInsets.only(top: 50),
                           child: Center(
                             child: Text(
                               "Login",
@@ -96,7 +108,7 @@ class SignInPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     FadeInUp(
-                      duration: Duration(milliseconds:1800),
+                      duration: Duration(milliseconds: 1800),
                       child: Container(
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
@@ -125,9 +137,10 @@ class SignInPage extends StatelessWidget {
                                 ),
                               ),
                               child: TextField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Email or Phone number",
+                                  hintText: "Email",
                                   hintStyle: TextStyle(color: Colors.grey[700]),
                                   prefixIcon: Icon(
                                     Icons.email,
@@ -139,6 +152,7 @@ class SignInPage extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
+                                controller: _passwordController,
                                 obscureText: true,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -157,24 +171,38 @@ class SignInPage extends StatelessWidget {
                     ),
                     SizedBox(height: 30),
                     FadeInUp(
-                      duration: Duration(milliseconds:1900),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromRGBO(143, 148, 251, 1),
-                              Color.fromRGBO(143, 148, 251, .6),
-                            ],
+                      duration: Duration(milliseconds: 1900),
+                      child: GestureDetector(
+                        onTap: () {
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text)
+                              .then((value) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Homepage()));
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(143, 148, 251, 1),
+                                Color.fromRGBO(143, 148, 251, .6),
+                              ],
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                          child: Center(
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -192,7 +220,7 @@ class SignInPage extends StatelessWidget {
                         );
                       },
                       child: FadeInUp(
-                        duration: Duration(milliseconds:2000),
+                        duration: Duration(milliseconds: 2000),
                         child: Text(
                           "Forgot Password?",
                           style: TextStyle(
@@ -214,7 +242,7 @@ class SignInPage extends StatelessWidget {
                         );
                       },
                       child: FadeInUp(
-                        duration: Duration(milliseconds:2000),
+                        duration: Duration(milliseconds: 2000),
                         child: Text(
                           "Sign Up Now",
                           style: TextStyle(

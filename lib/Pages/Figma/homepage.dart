@@ -1,12 +1,9 @@
 import 'package:exampal/Pages/settings.dart';
-import 'package:exampal/constants/colors.dart';
-import 'package:exampal/constants/size.dart';
 import 'package:exampal/Models/category.dart';
 import 'package:exampal/Pages/schedule_page.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
 
 import '../FileConversion_page.dart';
@@ -23,7 +20,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         children: [
           AppBar(),
@@ -58,7 +55,7 @@ class Body extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     // Navigate to the FeaturedScreen page when "See All" is tapped
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CourseScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CourseScreen()));
                   },
                   child: Text(
                     "See All",
@@ -105,11 +102,11 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SchedulePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteFunctionPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FastNoteFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceToTextPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextPage()));
     } else if (category.name == 'File Conversion') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => FileConversionPage()));
     }
@@ -197,7 +194,7 @@ class AppBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                    MaterialPageRoute(builder: (context) => const SettingsPage()),
                   );
                 },
                 child: CircleButton(

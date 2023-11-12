@@ -31,21 +31,40 @@ dependencies:
   flutter:
     sdk: flutter
 
-  image_picker: ^0.8.4
+  email_validator: '^2.1.16'
+  image_picker: ^1.0.4
   pdf: ^3.6.0
   path_provider: ^2.1.1
   percent_indicator: ^4.2.3
   file_picker: ^6.0.0
   speech_to_text: ^6.4.0
   animate_do: ^3.1.2
+  camera: ^0.10.5+5
+  path_provider_android: ^2.1.1
+  path: ^1.8.3
+  video_player: ^2.8.1
+  io: ^1.0.4
+
+  uuid: ^4.2.1
+  provider: ^6.0.5
+  intl : ^0.18.1
+
+  basic_utils: ^5.7.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
   curved_navigation_bar: ^1.0.3
   get_storage:
   get:
+
   firebase_core: ^2.21.0
+  firebase_auth: ^4.12.1
+  firebase_storage: ^11.4.1
+  cloud_firestore: ^4.12.2
+  flutter_svg: ^2.0.9
+  emoji_picker_flutter: ^1.6.3
+
 
 
 dev_dependencies:
@@ -58,7 +77,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,6 +104,9 @@ flutter:
     - assets/icons/flutter.jpg
     - assets/icons/react.jpg
     - assets/icons/node.png
+    - assets/logo/exampalLogo.png
+    - assets/icons/groups.svg
+    - assets/icons/person.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

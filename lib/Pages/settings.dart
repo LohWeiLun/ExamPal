@@ -1,17 +1,57 @@
+import 'dart:core';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampal/Pages/profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  bool scheduleN = false;
+  bool communityN = false;
+  bool motivationN = false;
+  bool theme = false;
+
+  String themeName = "Light";
+  String email = "";
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          scheduleN = snapshot.data()!["scheduleN"];
+          communityN = snapshot.data()!["communityN"];
+          motivationN = snapshot.data()!["motivationN"];
+          theme = snapshot.data()!["theme"];
+          email = snapshot.data()!["email"];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: const Text("Settings"),
+        backgroundColor: Colors.grey,
         elevation: 1,
         leading: IconButton(
           onPressed: () {
@@ -19,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Colors.green,
+            color: Colors.white,
           ),
         ),
       ),
@@ -27,18 +67,11 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            const Text(
-              "Settings",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
             const Row(
               children: [
                 Icon(
                   Icons.person,
-                  color: Colors.green,
+                  color: Colors.blueGrey,
                 ),
                 SizedBox(
                   width: 8,
@@ -56,11 +89,38 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Content settings"),
-            buildAccountOptionRow(context, "Social"),
-            buildAccountOptionRow(context, "Language"),
-            buildAccountOptionRow(context, "Privacy and security"),
+            buildAccountOptionRow(context, "Reset password"),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return const ProfilePage();
+                    },
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Update Profile",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               height: 40,
             ),
@@ -68,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Icon(
                   Icons.volume_up_outlined,
-                  color: Colors.green,
+                  color: Colors.blueGrey,
                 ),
                 SizedBox(
                   width: 8,
@@ -86,15 +146,131 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 10,
             ),
-            buildNotificationOptionRow("New for you", true),
-            buildNotificationOptionRow("Account activity", true),
-            buildNotificationOptionRow("Opportunity", false),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Schedule Notifications",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                    scale: 0.7,
+                    child: CupertinoSwitch(
+                      value: scheduleN,
+                      activeColor: Colors.grey,
+                      onChanged: (bool newBool) {
+                        setState(() {
+                          scheduleN = newBool;
+                        });
+                      },
+                    ))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Community Notifications",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                    scale: 0.7,
+                    child: CupertinoSwitch(
+                      value: communityN,
+                      activeColor: Colors.grey,
+                      onChanged: (bool newBool) {
+                        setState(() {
+                          communityN = newBool;
+                        });
+                      },
+                    ))
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Motivation Notifications",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                    scale: 0.7,
+                    child: CupertinoSwitch(
+                      value: motivationN,
+                      activeColor: Colors.grey,
+                      onChanged: (bool newBool) {
+                        setState(() {
+                          motivationN = newBool;
+                        });
+                      },
+                    ))
+              ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.blueGrey,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  "Theme",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const Divider(
+              height: 15,
+              thickness: 2,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  themeName,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                    scale: 0.7,
+                    child: CupertinoSwitch(
+                      value: theme,
+                      activeColor: Colors.grey,
+                      onChanged: (bool newBool) {
+                        setState(() {
+                          theme = newBool;
+                        });
+                      },
+                    ))
+              ],
+            ),
             const SizedBox(
               height: 50,
             ),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
                 child: const Text("SIGN OUT",
                     style: TextStyle(
                         fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
@@ -121,7 +297,12 @@ class _SettingsPageState extends State<SettingsPage> {
             scale: 0.7,
             child: CupertinoSwitch(
               value: isActive,
-              onChanged: (bool val) {},
+              activeColor: Colors.grey,
+              onChanged: (bool newBool) {
+                setState(() {
+                  isActive = newBool;
+                });
+              },
             ))
       ],
     );
@@ -135,12 +316,10 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(title),
-                content: const Column(
+                content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Option 1"),
-                    Text("Option 2"),
-                    Text("Option 3"),
+                    Text("Send an email to ($email) to reset password?"),
                   ],
                 ),
                 actions: [
@@ -148,7 +327,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Text("Close")),
+                      child: const Text("CANCEL")),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        resetPassword();
+                      },
+                      child: const Text("OK")),
                 ],
               );
             });
@@ -174,5 +359,25 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  Future resetPassword() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
+
+      const snackBar = SnackBar(
+        content: Text('Password Reset Email Sent'),
+      );
+
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
+    }
   }
 }

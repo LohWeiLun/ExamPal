@@ -17,4 +17,13 @@ class LightColors  {
   static const kPrimaryColor = Color(0xff6849ef);
   static const kPrimaryLight = Color(0xff8a72f1);
 
+
+  static const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+  static const mobileSearchColor = Color.fromRGBO(38, 38, 38, 1);
+
+  static const Color lightBlue1 = Color(0xffecf1f2);
+  static const Color lightBlue2 = Color(0xffc1e1e9);
+
+  static const Color secondaryColor = Colors.grey;
+  static const primaryColor = Colors.white;
 }

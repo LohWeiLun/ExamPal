@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class VoiceToTextPage extends StatefulWidget {
+  const VoiceToTextPage({super.key});
+
   @override
   _VoiceToTextPageState createState() => _VoiceToTextPageState();
 }
@@ -48,7 +50,7 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text(
+        title: const Text(
           'Speech Demo',
           style: TextStyle(
             color: Colors.white,
@@ -59,19 +61,19 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Text(
                 _speechToText.isListening
                     ? "listening..."
                     : _speechEnabled
                     ? "Tap the microphone to start listening..."
                     : "Speech not available",
-                style: TextStyle(fontSize: 20.0),
+                style: const TextStyle(fontSize: 20.0),
               ),
             ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Text(
                   _wordsSpoken,
                   style: const TextStyle(
@@ -88,7 +90,7 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
                 ),
                 child: Text(
                   "Confidence: ${(_confidenceLevel * 100).toStringAsFixed(1)}%",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w200,
                   ),
@@ -100,11 +102,11 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _speechToText.isListening ? _stopListening : _startListening,
         tooltip: 'Listen',
+        backgroundColor: Colors.red,
         child: Icon(
           _speechToText.isNotListening ? Icons.mic_off : Icons.mic,
           color: Colors.white,
         ),
-        backgroundColor: Colors.red,
       ),
     );
   }

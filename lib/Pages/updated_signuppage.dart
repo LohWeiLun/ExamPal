@@ -1,9 +1,69 @@
+import 'dart:typed_data';
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/updated_loginpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:get/get.dart';
 
 class UpdatedSignUpPage extends StatelessWidget {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmpasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmpasswordController.dispose();
+  }
+
+  Future signUp() async{
+    if (passwordConfirmed()){
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      addUserDetails(
+          _nameController.text,
+          _emailController.text
+      );
+    }
+  }
+
+  Future<String> addUserDetails(String name, String email) async {
+    try {
+      DocumentReference docRef = await FirebaseFirestore.instance.collection('user').add({
+        'name': name,
+        'email address': email,
+      });
+
+      // Get the user ID from the document reference after adding the document
+      String userId = docRef.id;
+
+      // Update the document with the 'uid' field
+      await docRef.update({'uid': userId});
+
+      return userId;
+    } catch (error) {
+      print("Error adding user details: $error");
+      return "Error";
+    }
+  }
+
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() == _confirmpasswordController.text.trim()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +166,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _nameController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Name",
@@ -127,6 +188,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Email Address",
@@ -148,6 +210,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -170,6 +233,7 @@ class UpdatedSignUpPage extends StatelessWidget {
                           ),
                         ),
                         child: TextField(
+                          controller: _confirmpasswordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -180,9 +244,28 @@ class UpdatedSignUpPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 30),
-                    // Replace the "Login" button with a "Sign Up" button
-                    FadeInUp(
-                      duration: Duration(milliseconds: 1900),
+                    GestureDetector(
+                      onTap: (
+                          )async {
+                        await signUp();
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>SignInPage()));
+                        /*
+                        FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,)
+                            .then((value){
+                              print("Account Created");
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => SignInPage(),
+                            ),
+                          );
+                        }).onError((error, stackTrace) {
+                          print("Error during registration: ${error.toString()}, Please Try Again");
+                        });
+                        // Navigate to the sign-in page
+                        */
+                      },
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -206,7 +289,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10),
-                    // Add a "Already have an account? Login" option
                     GestureDetector(
                       onTap: () {
                         // Navigate to the sign-in page
@@ -222,7 +304,6 @@ class UpdatedSignUpPage extends StatelessWidget {
                           "Already have an account? Login",
                           style: TextStyle(
                             color: Color.fromRGBO(143, 148, 251, 1),
-                            decoration: TextDecoration.underline, // Add underline
                           ),
                         ),
                       ),

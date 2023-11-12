@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: FriendsListPage(),
-  ));
-}
 
 class Friend {
   final String name;

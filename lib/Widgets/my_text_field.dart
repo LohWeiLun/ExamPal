@@ -5,7 +5,7 @@ class MyTextField extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final Icon icon;
-  MyTextField({required this.label, this.maxLines = 1, this.minLines = 1, required this.icon});
+  const MyTextField({super.key, required this.label, this.maxLines = 1, this.minLines = 1, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class MyTextField extends StatelessWidget {
       minLines: minLines,
       maxLines: maxLines,
       decoration: InputDecoration(
-        suffixIcon: icon == null ? null: icon,
+        suffixIcon: icon,
           labelText: label,
           labelStyle: const TextStyle(color: Colors.black45),
           

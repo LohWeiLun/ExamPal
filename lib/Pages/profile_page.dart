@@ -1,35 +1,99 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:exampal/Pages/settings.dart';
 import 'package:flutter/material.dart';
+import '../Constants/theme.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool showPassword = false;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  String? name = '';
+  String? email = '';
+  String? avatar = '';
+
+  bool _nameValid = true;
+  bool _emailValid = true;
+
+  TextEditingController editNameController = TextEditingController();
+  TextEditingController editEmailController = TextEditingController();
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          name = snapshot.data()!["name"];
+          email = snapshot.data()!["email"];
+          avatar = snapshot.data()!["avatar"];
+        });
+      }
+    });
+  }
+
+  int maxName = 40;
+
+  updateProfileData() {
+    setState(() {
+      editNameController.text
+          .trim()
+          .length > maxName || editNameController.text
+          .trim()
+          .isEmpty
+          ? _nameValid = false
+          : _nameValid = true;
+      editEmailController.text
+          .trim()
+          .isNotEmpty ||
+          EmailValidator.validate(editEmailController.text.trim())
+          ? _emailValid = true
+          : _emailValid = false;
+    });
+
+    if (_nameValid && _emailValid) {
+      FirebaseFirestore.instance
+          .collection("user")
+          .doc(FirebaseAuth.instance.currentUser!.uid).update(
+          {"name": editNameController.text,
+            "email": editEmailController.text,});
+
+      SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: const Text("Edit Profile"),
+        backgroundColor: lightBlue2,
         elevation: 1,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.green,
-          ),
-          onPressed: () {},
-        ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.settings,
-              color: Colors.green,
+              color: Colors.grey,
             ),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => SettingsPage()));
+                  builder: (BuildContext context) => const SettingsPage()));
             },
           ),
         ],
@@ -42,13 +106,6 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           child: ListView(
             children: [
-              const Text(
-                "Edit Profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
               Center(
                 child: Stack(
                   children: [
@@ -58,7 +115,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
+                              color: Theme
+                                  .of(context)
+                                  .scaffoldBackgroundColor),
                           boxShadow: [
                             BoxShadow(
                                 spreadRadius: 2,
@@ -83,9 +142,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             shape: BoxShape.circle,
                             border: Border.all(
                               width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor,
+                              color: Theme
+                                  .of(context)
+                                  .scaffoldBackgroundColor,
                             ),
-                            color: Colors.green,
+                            color: Colors.grey,
                           ),
                           child: const Icon(
                             Icons.edit,
@@ -98,21 +159,54 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: 35,
               ),
-              buildTextField("Full Name", "Dor Alex", false),
-              buildTextField("E-mail", "alexd@gmail.com", false),
-              buildTextField("Password", "********", true),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 35.0),
+                child: TextField(
+                  controller: editNameController,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(bottom: 3),
+                      labelText: "Full Name",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      errorText: _nameValid
+                          ? null
+                          : "Name exceeded max limit ($maxName characters)",
+                      hintText: name!,
+                      hintStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      )),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 35.0),
+                child: TextField(
+                  controller: editEmailController,
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(bottom: 3),
+                      labelText: "Email",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      errorText: _emailValid
+                          ? null
+                          : "Email is invalid",
+                      hintText: email!,
+                      hintStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      )),
+                ),
+              ),
               const SizedBox(
                 height: 35,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('CANCEL'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
+                    onPressed: (){
+                      updateProfileData();
+                    },
                     child: const Text(
                       "SAVE",
                       style: TextStyle(
@@ -126,39 +220,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? showPassword : false,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-              onPressed: () {
-                setState(() {
-                  showPassword = !showPassword;
-                });
-              },
-              icon: const Icon(
-                Icons.remove_red_eye,
-                color: Colors.grey,
-              ),
-            )
-                : null,
-            contentPadding: const EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
       ),
     );
   }

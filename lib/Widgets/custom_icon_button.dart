@@ -15,11 +15,6 @@ class CustomIconButton extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Ink(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        child: Center(child: child),
-        onTap: onTap,
-      ),
       height: height,
       width: width,
       decoration: BoxDecoration(
@@ -32,6 +27,11 @@ class CustomIconButton extends StatelessWidget{
               spreadRadius: .05,
             )
           ]
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Center(child: child),
       ),
     );
   }

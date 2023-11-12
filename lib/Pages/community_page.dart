@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CommunityPage extends StatefulWidget {
+  const CommunityPage({super.key});
+
   @override
   _CommunityPageState createState() => _CommunityPageState();
 }
@@ -10,10 +12,10 @@ class _CommunityPageState extends State<CommunityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Community Page'),
+        title: const Text('Community Page'),
       ),
       body: ListView(
-        children: [
+        children: const [
           PostCard(
             username: 'user1',
             image: 'assets/post1.jpg',
@@ -39,25 +41,25 @@ class PostCard extends StatelessWidget {
   final int likes;
   final int comments;
 
-  PostCard({required this.username, required this.image, required this.likes, required this.comments});
+  const PostCard({super.key, required this.username, required this.image, required this.likes, required this.comments});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           ListTile(
-            leading: Icon(Icons.account_circle),
+            leading: const Icon(Icons.account_circle),
             title: Text(username),
           ),
           Image.asset(image),
           ListTile(
-            leading: Icon(Icons.favorite),
+            leading: const Icon(Icons.favorite),
             title: Text('$likes likes'),
           ),
           ListTile(
-            leading: Icon(Icons.comment),
+            leading: const Icon(Icons.comment),
             title: Text('$comments comments'),
           ),
           // Add more features like 'Like' and 'Comment' buttons

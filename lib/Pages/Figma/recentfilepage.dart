@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class RecentFilesPage extends StatelessWidget {
+  const RecentFilesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recent Files'),
+        title: const Text('Recent Files'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Recent Files',
               style: TextStyle(
                 color: Color(0xFF1F1F39),
@@ -22,13 +24,13 @@ class RecentFilesPage extends StatelessWidget {
             ),
             // Part 1: Display recent files accessed by users (you can use a ListView or other widget)
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Function to add a new file
                 // You can open a file picker or implement file upload functionality
               },
-              child: Text('Add File'),
+              child: const Text('Add File'),
             ),
           ],
         ),

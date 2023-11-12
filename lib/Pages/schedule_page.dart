@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Pages/calendar_page.dart';
 import 'package:exampal/Constants/colors.dart';
@@ -6,18 +8,20 @@ import 'package:exampal/Widgets/task_column.dart';
 import 'package:exampal/Widgets/active_project_card.dart';
 import 'package:exampal/Widgets/top_container.dart';
 
+import '../Widgets/back_button.dart';
+
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
 
   @override
   State<SchedulePage> createState() => _SchedulePageState();
 
-  static CircleAvatar calendarIcon() {
+  static CircleAvatar circleAddIcon() {
     return const CircleAvatar(
       radius: 25.0,
       backgroundColor: LightColors.kGreen,
       child: Icon(
-        Icons.calendar_today,
+        Icons.add,
         size: 20.0,
         color: Colors.white,
       ),
@@ -26,6 +30,31 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
+  double completedPercentage = 0.75;
+  String? name = 'User Name';
+  String? email = 'useremail@email.com';
+
+  Future _getDataFromDatabase() async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        setState(() {
+          name = snapshot.data()!["name"];
+          email = snapshot.data()!["email"];
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+  }
+
   Text subheading(String title) {
     return Text(
       title,
@@ -49,19 +78,11 @@ class _SchedulePageState extends State<SchedulePage> {
               TopContainer(
                 height: 230,
                 width: width,
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.menu,
-                            color: LightColors.kDarkBlue, size: 30.0),
-                        Icon(Icons.search,
-                            color: LightColors.kDarkBlue, size: 25.0),
-                      ],
-                    ),
+                    MyBackButton(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 0.0),
@@ -70,37 +91,37 @@ class _SchedulePageState extends State<SchedulePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           CircularPercentIndicator(
-                            radius: 90.0,
+                            radius: 50.0,
                             lineWidth: 5.0,
                             animation: true,
-                            percent: 0.75,
+                            percent: completedPercentage,
                             circularStrokeCap: CircularStrokeCap.round,
                             progressColor: LightColors.kRed,
                             backgroundColor: LightColors.kDarkYellow,
                             center: const CircleAvatar(
                               backgroundColor: LightColors.kBlue,
-                              radius: 35.0,
+                              radius: 40.0,
                               backgroundImage: AssetImage(
                                 "assets/icons/profile.png",
                               ),
                             ),
                           ),
-                          const Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                'Sourav Suman',
+                                name!,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 22.0,
                                   color: LightColors.kDarkBlue,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
                               Text(
-                                'App Developer',
+                                email!,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.black45,
                                   fontWeight: FontWeight.w400,
@@ -130,31 +151,22 @@ class _SchedulePageState extends State<SchedulePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CalendarPage()),
+                                  builder: (context) => const CalendarPage()),
                             );
                           },
-                          child: SchedulePage.calendarIcon(),
+                          child: SchedulePage.circleAddIcon(),
                         ),
                       ],
                     ),
                     const SizedBox(height: 15.0),
-                    TaskColumn(
+                    const TaskColumn(
                       icon: Icons.alarm,
                       iconBackgroundColor: LightColors.kRed,
                       title: 'To Do',
                       subtitle: '5 tasks now. 1 started',
                     ),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    TaskColumn(
-                      icon: Icons.blur_circular,
-                      iconBackgroundColor: LightColors.kDarkYellow,
-                      title: 'In Progress',
-                      subtitle: '1 tasks now. 1 started',
-                    ),
                     const SizedBox(height: 15.0),
-                    TaskColumn(
+                    const TaskColumn(
                       icon: Icons.check_circle_outline,
                       iconBackgroundColor: LightColors.kBlue,
                       title: 'Done',
@@ -172,7 +184,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   children: <Widget>[
                     subheading('Active Projects'),
                     const SizedBox(height: 5.0),
-                    Row(
+                    const Row(
                       children: <Widget>[
                         ActiveProjectsCard(
                           cardColor: LightColors.kGreen,
@@ -180,7 +192,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           title: 'Medical App',
                           subtitle: '9 hours progress',
                         ),
-                        const SizedBox(width: 20.0),
+                        SizedBox(width: 20.0),
                         ActiveProjectsCard(
                           cardColor: LightColors.kRed,
                           loadingPercent: 0.6,
@@ -189,7 +201,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         ),
                       ],
                     ),
-                    Row(
+                    const Row(
                       children: <Widget>[
                         ActiveProjectsCard(
                           cardColor: LightColors.kDarkYellow,
@@ -197,7 +209,7 @@ class _SchedulePageState extends State<SchedulePage> {
                           title: 'Sports App',
                           subtitle: '5 hours progress',
                         ),
-                        const SizedBox(width: 20.0),
+                        SizedBox(width: 20.0),
                         ActiveProjectsCard(
                           cardColor: LightColors.kBlue,
                           loadingPercent: 0.9,
