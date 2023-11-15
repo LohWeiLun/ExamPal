@@ -271,7 +271,6 @@ class _TestSignUpPageState extends State<TestSignUpPage> {
                           file: _image!,
                         );
                         print(res);
-
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -331,4 +330,5 @@ class _TestSignUpPageState extends State<TestSignUpPage> {
     );
   }
 }
+
  */

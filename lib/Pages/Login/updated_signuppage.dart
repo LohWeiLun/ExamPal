@@ -1,3 +1,4 @@
+
 import 'dart:typed_data';
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -261,6 +262,7 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                     ),
                     SizedBox(height: 30),
                     GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () async {
                         String res = await AuthMethods().signUpUser(
                           email: _emailController.text,

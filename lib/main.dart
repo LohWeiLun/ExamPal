@@ -15,6 +15,7 @@ import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/Responsive/mobile_screen_layout.dart';
 import 'package:exampal/Screens/feed_screen.dart';
 import 'package:exampal/firebase_options.dart';
@@ -53,57 +54,62 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ExamPal',
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          elevation: 1,
-          color: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
         ),
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      /*Themes.light,
-      darkTheme: Themes.dark,
-      themeMode: ThemeService().theme,
-       */
-      //home: Homepage(),
-      //home: RecentFilesPage(),
-      //home: TimerPage(),
-      //home: ImageToPdf(),
-      //home: SchedulePage(),
-      //home: ProfilePage(),
-      //home: const RootPage(),
-      //home: FileConversionPage(),
-      //home: ActivityPage(),
-      //home: CommunityPage(),
-      //home: FriendsListPage(),
-      //home: FastNotePage(),
-      //home: VoiceToTextPage(),
-      /*
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Homepage();
-          } else {
+      ],
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'ExamPal',
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            elevation: 1,
+            color: Colors.blue,
+          ),
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        /*Themes.light,
+        darkTheme: Themes.dark,
+        themeMode: ThemeService().theme,
+         */
+        //home: UpdatedHomePage(),
+        //home: ForgotPasswordPage(),
+        //home: RootPage(),
+        //home: AddPostScreen(),
+        //home: FriendsHomescreen(),
+        //home: FeedScreen(),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              // Checking if the snapshot has any data or not
+              if (snapshot.hasData) {
+                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
+                return UpdatedHomePage();
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              );
+            }
             return SignInPage();
-          }
-        },
+          },
+        ),
+        //home: NoteSummarizationPage(),
+        //home: VoiceToText(),
+        //home: SettingsPage(),
+        //home: FastNoteFunctionPage(),
       ),
-      */
-      home: UpdatedSignUpPage(),
-      //home: UpdatedHomePage(),
-      //home: ForgotPasswordPage(),
-      //home: RootPage(),
-      //home: AddPostScreen(),
-      //home: FriendsHomescreen(),
-      //home: FeedScreen(),
-      //home: NoteSummarizationPage(),
-      //home: VoiceToText(),
-      //home: SettingsPage(),
-      //home: FastNoteFunctionPage(),
     );
   }
 }

@@ -1,4 +1,6 @@
-
+import 'package:exampal/Constants/utils.dart';
+import 'package:exampal/Firebase/auth_methods.dart';
+import 'package:exampal/Pages/Figma/course_screen.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,14 +9,39 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'forgotpassword_page.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
+  @override
+  _SignInPageState createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    super.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    if(res=="success"){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> const Homepage()));
+
+  }else {
+      showSnackBar(context, res);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+
   }
 
   @override
@@ -172,18 +199,7 @@ class SignInPage extends StatelessWidget {
                     FadeInUp(
                       duration: Duration(milliseconds: 1900),
                       child: GestureDetector(
-                        onTap: () {
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Homepage()));
-                          });
-                        },
+                        onTap: loginUser,
                         child: Container(
                           height: 50,
                           decoration: BoxDecoration(
@@ -242,7 +258,7 @@ class SignInPage extends StatelessWidget {
                       },
                       child: FadeInUp(
                         duration: Duration(milliseconds: 2000),
-                        child: Text(
+                        child: _isLoading ? const Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
                           "Sign Up Now",
                           style: TextStyle(
                             color: Color.fromRGBO(143, 148, 251, 1),
