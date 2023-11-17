@@ -3,7 +3,7 @@ import 'package:exampal/Constants/colors.dart';
 import 'package:exampal/widgets/top_container.dart';
 import 'package:exampal/widgets/back_button.dart';
 import 'package:exampal/widgets/my_text_field.dart';
-import 'package:exampal/Pages/schedule_page.dart';
+import 'package:exampal/Pages/Timetable/schedule_page.dart';
 
 class CreateNewTaskPage extends StatefulWidget {
   const CreateNewTaskPage({Key? key}) : super(key: key);

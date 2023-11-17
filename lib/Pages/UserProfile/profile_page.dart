@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:exampal/Pages/settings.dart';
+import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:flutter/material.dart';
-import '../Constants/theme.dart';
+import 'package:exampal/Constants/theme.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -42,7 +42,7 @@ class _IndividualPageState extends State<IndividualPage> {
           fit: BoxFit.cover,
         ),
         Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Colors.transparent,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(60),
             child: AppBar(
@@ -143,6 +143,12 @@ class _IndividualPageState extends State<IndividualPage> {
                     child: ListView(
                       shrinkWrap: true,
                       children: [
+                        OwnMessageCard(),
+                        ReplyMessageCard(),
+                        OwnMessageCard(),
+                        ReplyMessageCard(),
+                        OwnMessageCard(),
+                        ReplyMessageCard(),
                         OwnMessageCard(),
                         ReplyMessageCard(),
                       ],

@@ -3,7 +3,7 @@ import 'package:exampal/dates_list.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'package:exampal/Widgets/calendar_dates.dart';
 import 'package:exampal/Widgets/task_container.dart';
-import 'package:exampal/Pages/create_new_task_page.dart';
+import 'package:exampal/Pages/Timetable/create_new_task_page.dart';
 import 'package:exampal/widgets/back_button.dart';
 
 class CalendarPage extends StatelessWidget {

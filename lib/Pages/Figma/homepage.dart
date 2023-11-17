@@ -1,13 +1,12 @@
-import 'package:exampal/Pages/settings.dart';
+import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
-import 'package:exampal/Pages/schedule_page.dart';
+import 'package:exampal/Pages/Timetable/schedule_page.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
-
-import '../FileConversion_page.dart';
-import '../voicetotext.dart';
+import 'package:exampal/Pages/Notes/fileconversion_page.dart';
+import '../Voice-ToText/voicetotext.dart';
 import '../Figma/course_screen.dart';
 
 class Homepage extends StatefulWidget {

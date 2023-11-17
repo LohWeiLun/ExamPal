@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:exampal/Pages/calendar_page.dart';
+import 'package:exampal/Pages/Timetable/calendar_page.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:exampal/Widgets/task_column.dart';
 import 'package:exampal/Widgets/active_project_card.dart';
 import 'package:exampal/Widgets/top_container.dart';
 
-import '../Widgets/back_button.dart';
+import '../../Widgets/back_button.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
