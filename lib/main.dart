@@ -3,6 +3,7 @@ import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/backupSignUp.dart';
 import 'package:exampal/Pages/Notes/FileConversion_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voicehomepage.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
@@ -55,13 +56,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => UserProvider(),
-        ),
-      ],
-      child: GetMaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ExamPal',
         theme: ThemeData(
@@ -89,8 +84,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.active) {
               // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
-                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return UpdatedHomePage();
+                //
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
@@ -108,13 +102,14 @@ class MyApp extends StatelessWidget {
           },
         ),
          */
-        home: AddPostScreen(),
+        home: VoiceHomePage(),
+        //home: AddPostScreen(),
+        //home: MobileScreenLayout(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
         //home: SettingsPage(),
         //home: FastNoteFunctionPage(),
-      ),
-    );
+      );
   }
 }
 
