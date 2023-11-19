@@ -17,6 +17,7 @@ import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/Responsive/mobile_screen_layout.dart';
+import 'package:exampal/Screens/add_post_screen.dart';
 import 'package:exampal/Screens/feed_screen.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
+        /*
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -105,6 +107,8 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
+         */
+        home: AddPostScreen(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
         //home: SettingsPage(),
