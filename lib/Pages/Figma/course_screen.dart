@@ -1,8 +1,16 @@
 import 'package:exampal/Models/course.dart';
+import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Pages/Timetable/schedule_page.dart';
+import 'package:exampal/Pages/Timetable/timer_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voicehomepage.dart';
+import 'package:exampal/Pages/community_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Widgets/custom_icon_button.dart';
 import '../Login/updated_loginpage.dart';
+import '../Notes/FileConversion_page.dart';
+import '../Notes/recentnotes.dart';
+import '../Voice-ToText/voicetotext.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -31,12 +39,16 @@ class _CourseScreenState extends State<CourseScreen> {
                         padding: const EdgeInsets.only(top: 12),
                         child: Align(
                           child: Text(
-                            'Development',
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              fontSize: 22, // Adjust the font size as needed
-                              fontWeight: FontWeight.bold, // Make the text bold
-                              color: Colors.black
-                            ),
+                            'Categories',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(
+                                    fontSize: 22,
+                                    // Adjust the font size as needed
+                                    fontWeight: FontWeight.bold,
+                                    // Make the text bold
+                                    color: Colors.black),
                           ),
                         ),
                       ),
@@ -83,19 +95,40 @@ class _CourseScreenState extends State<CourseScreen> {
 
 class CourseContainer extends StatelessWidget {
   final Course course;
+
   const CourseContainer({
     Key? key,
     required this.course,
   }) : super(key: key);
 
+  void navigateToCategoryPage(BuildContext context) {
+    if (course.name == 'Schedule') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SchedulePage()),
+      );
+    } else if (course.name == 'Fast Note') {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FastNoteFunctionPage()));
+    } else if (course.name == 'Voice-To-Text') {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => VoiceHomePage()));
+    } else if (course.name == 'File Conversion') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => FileConversionPage()));
+    } else if (course.name == 'Community') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CommunityPage()));
+    } else if (course.name == 'Timer') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => TimerPage()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SignInPage(
-              ))),
+      onTap: () => navigateToCategoryPage(context),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -113,12 +146,13 @@ class CourseContainer extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              width: 10,
+              width: 20,
             ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 23,),
                   Text(course.name),
                 ],
               ),

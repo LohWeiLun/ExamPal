@@ -1,11 +1,14 @@
+import 'package:exampal/Pages/Timetable/timer_page.dart';
 import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
 import 'package:exampal/Pages/Timetable/schedule_page.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
 import 'package:exampal/Pages/Notes/fileconversion_page.dart';
+import '../Voice-ToText/voicehomepage.dart';
 import '../Voice-ToText/voicetotext.dart';
 import '../Figma/course_screen.dart';
 
@@ -54,14 +57,15 @@ class Body extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     // Navigate to the FeaturedScreen page when "See All" is tapped
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CourseScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CourseScreen()));
                   },
                   child: Text(
                     "See All",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.blue), // Change color as desired
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.blue), // Change color as desired
                   ),
                 )
               ],
@@ -94,6 +98,7 @@ class Body extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final Category category;
+
   const CategoryCard({
     Key? key,
     required this.category,
@@ -101,13 +106,19 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SchedulePage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const FastNoteFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const FastNoteFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const VoiceHomePage()));
     } else if (category.name == 'File Conversion') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FileConversionPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const FileConversionPage()));
     }
   }
 
@@ -193,11 +204,13 @@ class AppBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()),
                   );
                 },
                 child: CircleButton(
-                  icon: Icons.settings, onPressed: () {  },
+                  icon: Icons.settings,
+                  onPressed: () {},
                 ),
               ),
             ],
