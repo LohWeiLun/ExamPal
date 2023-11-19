@@ -2,7 +2,6 @@ import 'package:exampal/Pages/Friends/CustomUI/buttonCard.dart';
 import 'package:exampal/Pages/Friends/Screen/createGroup.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Models/chatModel.dart';
-import '';
 import '../CustomUI/contactCard.dart';
 
 class SelectContact extends StatefulWidget {

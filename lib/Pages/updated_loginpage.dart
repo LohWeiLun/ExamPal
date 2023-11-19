@@ -176,8 +176,8 @@ class SignInPage extends StatelessWidget {
                         onTap: () {
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text)
+                              email: _emailController.text,
+                              password: _passwordController.text)
                               .then((value) {
                             Navigator.push(
                                 context,

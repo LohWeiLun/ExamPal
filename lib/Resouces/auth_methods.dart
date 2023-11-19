@@ -16,12 +16,12 @@ class AuthMethods{
     required String password,
     required String username,
     required Uint8List file,
-})async{
+  })async{
     String res = "Some error occured";
     try{
       if(email.isNotEmpty && password.isNotEmpty && username.isNotEmpty && file != null){
         UserCredential cred = await _auth.createUserWithEmailAndPassword(email: email, password: password,);
-        
+
         print(cred.user!.uid);
 
         String photoUrl = await StorageMethods().uploadImageToStorage('profilePics', file, false);

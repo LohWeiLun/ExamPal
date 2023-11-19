@@ -29,6 +29,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     namespace "tarumt.fyp.exampal"
     compileSdkVersion flutter.compileSdkVersion
+    buildToolsVersion "30.0.3"
     ndkVersion flutter.ndkVersion
 
     compileOptions {
