@@ -102,7 +102,8 @@ class MyApp extends StatelessWidget {
           },
         ),
          */
-        home: VoiceHomePage(),
+        home: Homepage(),
+        //home: VoiceHomePage(),
         //home: AddPostScreen(),
         //home: MobileScreenLayout(),
         //home: NoteSummarizationPage(),

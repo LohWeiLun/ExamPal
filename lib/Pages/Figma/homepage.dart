@@ -8,6 +8,7 @@ import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
 import 'package:exampal/Pages/Notes/fileconversion_page.dart';
+import '../Voice-ToText/voicehomepage.dart';
 import '../Voice-ToText/voicetotext.dart';
 import '../Figma/course_screen.dart';
 
@@ -114,7 +115,7 @@ class CategoryCard extends StatelessWidget {
               builder: (context) => const FastNoteFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const VoiceToTextPage()));
+          MaterialPageRoute(builder: (context) => const VoiceHomePage()));
     } else if (category.name == 'File Conversion') {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const FileConversionPage()));

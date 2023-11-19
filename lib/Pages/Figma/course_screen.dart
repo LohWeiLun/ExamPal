@@ -2,6 +2,7 @@ import 'package:exampal/Models/course.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Timetable/schedule_page.dart';
 import 'package:exampal/Pages/Timetable/timer_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voicehomepage.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,7 +112,7 @@ class CourseContainer extends StatelessWidget {
           context, MaterialPageRoute(builder: (context) => FastNoteFunctionPage()));
     } else if (course.name == 'Voice-To-Text') {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => VoiceToTextPage()));
+          context, MaterialPageRoute(builder: (context) => VoiceHomePage()));
     } else if (course.name == 'File Conversion') {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => FileConversionPage()));
