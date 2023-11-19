@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FirebaseApi {
@@ -7,6 +9,7 @@ class FirebaseApi {
 
   //function to initialize notifications
   Future<void> initNotifications() async {
+
     //request permission from user (will prompt user)
     await _firebaseMessaging.requestPermission();
 
@@ -15,6 +18,12 @@ class FirebaseApi {
 
     //print the token (normally you would send this to your server)
     print('Token: $fCMToken');
+
+    //store token
+    FirebaseFirestore.instance.collection('user').doc(FirebaseAuth.instance.currentUser!.uid).set(
+    {
+    'token':fCMToken,
+    },SetOptions(merge:true));
 
     //initialize further settings for push notifications
     initPushNotifications();
@@ -26,7 +35,7 @@ class FirebaseApi {
     if (message == null) return;
 
     //navigate to new screen when message is received and user taps notification
-    navigatorKey.currentState?.pushNamed(
+    navigatorKey?.currentState?.pushNamed(
       '/notification_screen',
       arguments: message,
     );
