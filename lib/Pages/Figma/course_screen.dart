@@ -1,9 +1,8 @@
 import 'package:exampal/Models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../Widgets/custom_icon_button.dart';
-import '../updated_loginpage.dart';
+import '../Login/updated_loginpage.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);

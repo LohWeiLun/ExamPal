@@ -14,7 +14,7 @@ class ReplyMessageCard extends StatelessWidget {
         child: Card(
           elevation: 1,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: Color(0xffdcf8c6),
+          //color: Color(0xffdcf8c6),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Stack(
             children: [
@@ -26,7 +26,7 @@ class ReplyMessageCard extends StatelessWidget {
                   bottom: 20,
                 ),
                 child: Text(
-                  "Hi",
+                  "Hi what is up nice too meet you",
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -35,14 +35,13 @@ class ReplyMessageCard extends StatelessWidget {
               Positioned(
                 bottom: 4,
                 right: 10,
-                child:
-                    Text(
-                      "11.59pm",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                      ),
-                    ),
+                child: Text(
+                  "11.59pm",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey[600],
+                  ),
+                ),
               ),
             ],
           ),

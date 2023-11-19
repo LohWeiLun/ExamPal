@@ -26,7 +26,7 @@ class OwnMessageCard extends StatelessWidget {
                   bottom: 20,
                 ),
                 child: Text(
-                  "Hi",
+                  "Hi what is up nice too meet you",
                   style: TextStyle(
                     fontSize: 16,
                   ),
