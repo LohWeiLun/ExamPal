@@ -1,10 +1,14 @@
 import 'dart:core';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
+import 'package:exampal/api/firebase_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+DateTime scheduleTime = DateTime.now();
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -165,8 +169,20 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           scheduleN = newBool;
                         });
+                        if (newBool) {
+                          FirebaseApi().scheduleNotification(
+                              title: 'Scheduled Notification',
+                              body: '$scheduleTime',
+                              scheduledNotificationDateTime: scheduleTime);
+                        }
                       },
                     ))
+              ],
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                DatePickerTxt(),
               ],
             ),
             Row(
@@ -211,6 +227,14 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           motivationN = newBool;
                         });
+                        //subscribe or unsubscribe topic
+                        if (newBool) {
+                          FirebaseMessaging.instance
+                              .subscribeToTopic('motivation');
+                        } else {
+                          FirebaseMessaging.instance
+                              .unsubscribeFromTopic('motivation');
+                        }
                       },
                     ))
               ],
@@ -303,6 +327,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   isActive = newBool;
                 });
                 //subscribe or unsubscribe topic
+                FirebaseMessaging.instance.subscribeToTopic('topic');
               },
             ))
       ],
@@ -380,5 +405,34 @@ class _SettingsPageState extends State<SettingsPage> {
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
     }
+  }
+}
+
+class DatePickerTxt extends StatefulWidget {
+  const DatePickerTxt({
+    super.key,
+  });
+
+  @override
+  State<DatePickerTxt> createState() => _DatePickerTxtState();
+}
+
+class _DatePickerTxtState extends State<DatePickerTxt> {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        DatePicker.showDateTimePicker(
+          context,
+          showTitleActions: true,
+          onChanged: (date) => scheduleTime = date,
+          onConfirm: (date) {},
+        );
+      },
+      child: const Text(
+        'Select Date Time',
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
   }
 }

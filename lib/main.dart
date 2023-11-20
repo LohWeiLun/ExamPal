@@ -1,4 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/backupSignUp.dart';
@@ -51,6 +53,7 @@ Future<void> main() async {
   cameras = await availableCameras();
   await GetStorage.init();
   await FirebaseApi().initNotifications();
+  tz.initializeTimeZones();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }

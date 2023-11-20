@@ -29,7 +29,6 @@ apply plugin: 'com.google.gms.google-services'
 android {
     namespace "tarumt.fyp.exampal"
     compileSdkVersion flutter.compileSdkVersion
-    buildToolsVersion "30.0.3"
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -60,7 +59,7 @@ android {
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Signing with the debug keys for now, so flutter run --release works.
             signingConfig signingConfigs.debug
         }
     }
