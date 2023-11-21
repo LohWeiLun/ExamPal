@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
+import 'Pages/Figma/fastnotebackup.dart';
 import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/Timetable/schedule_page.dart';
@@ -108,7 +109,7 @@ class MyApp extends StatelessWidget {
           },
         ),
          */
-        home: AddPostScreen(),
+        home: PdfTextEditorPage(title: 'Extracing Text'),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
         //home: SettingsPage(),

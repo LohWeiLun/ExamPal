@@ -1,7 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
-class FastNoteFunctionPage extends StatelessWidget {
-  const FastNoteFunctionPage({super.key});
+class FastNoteFunctionPage extends StatefulWidget {
+  const FastNoteFunctionPage({Key? key});
+
+  @override
+  _FastNoteFunctionPageState createState() => _FastNoteFunctionPageState();
+}
+
+class _FastNoteFunctionPageState extends State<FastNoteFunctionPage> {
+  String? _selectedFileName;
+
+  Future<void> _addMedia() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'], // Allow PDF and Google Docs (doc/docx)
+      );
+
+      if (result != null) {
+        final filePath = result.files.single.name;
+        final fileType = result.files.single.extension;
+
+        if (fileType == 'pdf' || fileType == 'doc' || fileType == 'docx') {
+          setState(() {
+            _selectedFileName = filePath;
+          });
+          print('Selected file: $filePath');
+        } else {
+          // Handle unsupported file type selected
+          print('Unsupported file type selected');
+        }
+      } else {
+        print('User canceled the file picker');
+      }
+    } catch (e) {
+      print('Error selecting file: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -9,86 +46,133 @@ class FastNoteFunctionPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('FastNotePage'),
       ),
-      body: Center(
+      body: Container(
+        padding: EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const Text(
-              'Recent Notes',
-              style: TextStyle(
-                color: Color(0xFF1F1F39),
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w500,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4), // Added padding
+                    child: Container(
+                      width: 100, // Adjust container width
+                      height: 200, // Adjust container height
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Recent Notes',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Image.asset(
+                            'assets/icons/pdf.png', // Replace with your image path
+                            width: 100, // Adjust width as needed
+                            height: 100, // Adjust height as needed
+                          ),
+                          ElevatedButton(
+                            onPressed: _addMedia,
+                            child: const Text('Add Media'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4), // Added padding
+                    child: Container(
+                      width: 100, // Adjust container width
+                      height: 200, // Adjust container height
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Create PDF',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Image.asset(
+                            'assets/icons/pdf.png', // Replace with your image path
+                            width: 100, // Adjust width as needed
+                            height: 100, // Adjust height as needed
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Generate PDF'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            // Part 1: Display recent notes accessed by users
-            // You can use a ListView or other widget to display the notes
-            // Replace with your actual note list widget
-            // Example: RecentNotesListWidget(),
 
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Function to add media
-                // You can open the camera or gallery for media selection
-                // Add your media selection functionality here
-              },
-              child: const Text('Add Media'),
-            ),
-
-            const SizedBox(height: 20),
-            Container(
-              width: 200,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+            if (_selectedFileName != null) // Display the selected filename
+              Padding(
+                padding: EdgeInsets.only(top: 10), // Add padding only at the top
+                child: Center(
+                  child: Text(
+                    'Selected File: $_selectedFileName',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center, // Align the text center
+                  ),
+                ),
               ),
-              child: const Center(
-                child: Text(
-                  'Create PDF',
-                  style: TextStyle(
-                    color: Color(0xFF1F1F39),
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
+            const SizedBox(height: 10), // Spacer between rows
+
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: Text(
+                    'Summarize Notes',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
             ),
-            // Part 2: Function to create PDF documents
-            // You can implement this functionality
-            // Add your PDF creation functionality here
-            // Example: ElevatedButton(onPressed: createPDF, child: Text('Create PDF')),
-
-            const SizedBox(height: 20),
-            Container(
-              width: 200,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Center(
-                child: Text(
-                  'Summarize Notes',
-                  style: TextStyle(
-                    color: Color(0xFF1F1F39),
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-            // Part 2: Function to summarize notes
-            // You can implement this functionality
-            // Add your note summarization functionality here
-            // Example: ElevatedButton(onPressed: summarizeNotes, child: Text('Summarize Notes')),
           ],
         ),
       ),
     );
   }
+
 }
