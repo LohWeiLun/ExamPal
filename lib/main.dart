@@ -41,12 +41,18 @@ import 'Pages/Friends/Screen/friends_homepage.dart';
 import 'Pages/Friends/Screen/friends_homepagescreen.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'Notifications/notification_services.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   await GetStorage.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
@@ -82,7 +88,7 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
-        /*
+
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -107,8 +113,8 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
-         */
-        home: AddPostScreen(),
+
+        //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
         //home: SettingsPage(),

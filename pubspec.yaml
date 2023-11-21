@@ -65,7 +65,8 @@ dependencies:
   flutter_svg: ^2.0.9
   emoji_picker_flutter: ^1.6.3
   firebase_messaging: ^14.7.4
-
+  flutter_local_notifications: ^16.1.0
+  flutter_datetime_picker_plus: ^2.1.0
 
 
 dev_dependencies:
@@ -105,7 +106,7 @@ flutter:
     - assets/icons/flutter.jpg
     - assets/icons/react.jpg
     - assets/icons/node.png
-    - assets/logo/exampalLogo.png
+    - assets/logo/exampal_logo.png
     - assets/icons/groups.svg
     - assets/icons/person.svg
     - assets/images/whatsapp_Back.png
