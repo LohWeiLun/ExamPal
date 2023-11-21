@@ -33,7 +33,7 @@ class FirebaseApi {
 
     //for flutter local notification
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('exampal_logo.png');
+        const AndroidInitializationSettings('exampalLogo.png');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
