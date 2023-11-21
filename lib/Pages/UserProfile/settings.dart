@@ -1,23 +1,35 @@
+import 'dart:convert';
 import 'dart:core';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../../Notifications/notification_services.dart';
 
 DateTime scheduleTime = DateTime.now();
+TimeOfDay time = TimeOfDay.now();
+int numSchedule = 0;
+
 List<String> motivationMsg = [
-  "Hi!",
-  "Hey there!",
-  "Hello!",
-  "Hi there!",
-  "What's up?",
-  "Howdy!",
+  "Daily",
+  "Weekly",
+  "Monthly",
 ];
+
+var rng = Random();
+String randomMotivation = motivationMsg[rng.nextInt(motivationMsg.length)];
+
+String frequency = 'Daily';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -27,6 +39,11 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  TextEditingController title = TextEditingController();
+  TextEditingController body = TextEditingController();
+  late AndroidNotificationChannel channel;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
   bool scheduleN = false;
   bool communityN = false;
   bool motivationN = false;
@@ -34,6 +51,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   String themeName = "Light";
   String email = "";
+  String uid = "";
+  String? mtoken = " ";
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -48,6 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
           motivationN = snapshot.data()!["motivationN"];
           theme = snapshot.data()!["theme"];
           email = snapshot.data()!["email"];
+          uid = snapshot.data()!["uid"];
         });
       }
     });
@@ -57,6 +77,140 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     _getDataFromDatabase();
+
+    requestPermission();
+
+    loadFCM();
+
+    listenFCM();
+
+    getToken();
+  }
+  void getTokenFromFirestore() async {
+
+  }
+
+  void saveToken(String token) async {
+    await FirebaseFirestore.instance.collection("UserTokens").doc(uid).set({
+      'token' : token,
+    });
+  }
+
+  void sendPushMessage(String token, String body, String title) async {
+    try {
+      await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'key=AAAA9xPglTQ:APA91bEuI1Hg2Mw6dLpBuh2bDvJfgcYOUm_rEUhq3glaPRzICYtTUQEG6iFF1r_EeWx3B_wC9sTDVxk0x1PYgcSh-N9Di4qG-GNF3LVDjhc9F5B_cfEqvdky-Rc1ILwdAc1oqtB5Ho8v',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'notification': <String, dynamic>{
+              'body': body,
+              'title': title
+            },
+            'priority': 'high',
+            'data': <String, dynamic>{
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'id': '1',
+              'status': 'done'
+            },
+            "to": token,
+          },
+        ),
+      );
+    } catch (e) {
+      print("error push notification");
+    }
+  }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then(
+            (token) {
+          setState(() {
+            mtoken = token;
+          });
+
+          saveToken(token!);
+        }
+    );
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  void listenFCM() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void loadFCM() async {
+    if (!kIsWeb) {
+      channel = const AndroidNotificationChannel(
+        'high_importance_channel', // id
+        'High Importance Notifications', // title
+        importance: Importance.high,
+        enableVibration: true,
+      );
+
+      flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+      /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      /// Update the iOS foreground notification presentation options to allow
+      /// heads up notifications.
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
   }
 
   @override
@@ -201,7 +355,12 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           communityN = newBool;
                         });
-                        // set notification if true
+                        if(communityN){
+                          FirebaseMessaging.instance.subscribeToTopic("Community");
+                        }
+                        else{
+                          FirebaseMessaging.instance.unsubscribeFromTopic("Community");
+                        }
                       },
                     ))
               ],
@@ -225,18 +384,43 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           motivationN = newBool;
                         });
+                        if(motivationN){
+                          FirebaseMessaging.instance.subscribeToTopic("Motivation");
+                        }
+                        else{
+                          FirebaseMessaging.instance.unsubscribeFromTopic("Schedule");
+                        }
                       },
                     ))
               ],
             ),
             Visibility(
               visible: (motivationN), // condition here
-              child: const Column(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   DatePickerTxt(),
-                  ScheduleBtn(),
                 ],
+              ),
+            ),
+            Visibility(
+              visible: (motivationN), // condition here
+              child: ElevatedButton(
+                child: const Text('Schedule notifications'),
+                onPressed: () async {
+                  String titleText = "title.text";
+                  String bodyText = "body.text";
+
+                  if(uid != "") {
+                    DocumentSnapshot snap =
+                    await FirebaseFirestore.instance.collection("UserTokens").doc(uid).get();
+
+                    String token = snap['token'];
+                    print(token);
+
+                    sendPushMessage(token, titleText, bodyText);
+                  }
+                },
               ),
             ),
             const SizedBox(
@@ -420,15 +604,14 @@ class _DatePickerTxtState extends State<DatePickerTxt> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        DatePicker.showDateTimePicker(
-          context,
-          showTitleActions: true,
-          onChanged: (date) => scheduleTime = date,
-          onConfirm: (date) {},
-        );
+        TimeOfDay selectedTime = showTimePicker(
+          initialTime: TimeOfDay.now(),
+          context: context,
+        ) as TimeOfDay;
+        time = selectedTime;
       },
       child: const Text(
-        'Select Date Time',
+        'Select Time',
         style: TextStyle(color: Colors.blue),
       ),
     );
@@ -437,8 +620,8 @@ class _DatePickerTxtState extends State<DatePickerTxt> {
 
 class ScheduleBtn extends StatelessWidget {
   const ScheduleBtn({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -446,10 +629,7 @@ class ScheduleBtn extends StatelessWidget {
       child: const Text('Schedule notifications'),
       onPressed: () {
         debugPrint('Notification Scheduled for $scheduleTime');
-        NotificationService().scheduleNotification(
-            title: 'Scheduled Notification',
-            body: '$scheduleTime',
-            scheduledNotificationDateTime: scheduleTime);
+
       },
     );
   }
