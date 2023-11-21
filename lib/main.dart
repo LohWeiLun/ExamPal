@@ -16,12 +16,10 @@ import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:exampal/Pages/Figma/fastnotepage.dart';
-import 'package:exampal/Pages/notification_page.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/Responsive/mobile_screen_layout.dart';
 import 'package:exampal/Screens/add_post_screen.dart';
 import 'package:exampal/Screens/feed_screen.dart';
-import 'package:exampal/api/firebase_api.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -45,12 +43,10 @@ import 'Pages/Friends/Screen/friends_homepagescreen.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'package:camera/camera.dart';
 
-late final GlobalKey<NavigatorState>? navigatorKey;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   await GetStorage.init();
-  await FirebaseApi().initNotifications();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -63,10 +59,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ExamPal',
-        navigatorKey: navigatorKey,
-        routes: {
-          '/notification_screen': (context) => const NotificationPage(),
-        },
         theme: ThemeData(
           appBarTheme: AppBarTheme(
             elevation: 1,

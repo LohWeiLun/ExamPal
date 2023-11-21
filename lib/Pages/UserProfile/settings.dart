@@ -302,7 +302,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   isActive = newBool;
                 });
-                //subscribe or unsubscribe topic
               },
             ))
       ],
