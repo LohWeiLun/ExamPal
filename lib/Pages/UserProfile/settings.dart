@@ -6,8 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-as picker;
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 DateTime scheduleTime = DateTime.now();
 
@@ -423,7 +422,7 @@ class _DatePickerTxtState extends State<DatePickerTxt> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        picker.DatePicker.showDateTimePicker(
+        DatePicker.showDateTimePicker(
           context,
           showTitleActions: true,
           onChanged: (date) => scheduleTime = date,
