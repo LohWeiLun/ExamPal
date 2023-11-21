@@ -10,27 +10,27 @@ class Course {
 
 List<Course> courses = [
   Course(
-    name: "Schedule",
+    name: "Flutter Novice to Ninja",
     thumbnail: "assets/icons/flutter.jpg",
   ),
   Course(
-    name: "Fast Note",
+    name: "React Novice to Ninja",
     thumbnail: "assets/icons/react.jpg",
   ),
   Course(
-    name: "Voice-To-Text",
+    name: "Node - The complete guide",
     thumbnail: "assets/icons/node.png",
   ),
   Course(
-    name: "File Conversion",
+    name: "Flutter Novice to Ninja",
     thumbnail: "assets/icons/flutter.jpg",
   ),
   Course(
-    name: "Community",
+    name: "React Novice to Ninja",
     thumbnail: "assets/icons/react.jpg",
   ),
   Course(
-    name: "Timer",
+    name: "Node - The complete guide",
     thumbnail: "assets/icons/node.png",
   ),
 ];

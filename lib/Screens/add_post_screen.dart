@@ -1,12 +1,12 @@
-
-/*
 import 'dart:typed_data';
+
 import 'package:exampal/Constants/utils.dart';
 import 'package:exampal/Firebase/firestore_methods.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 import '../Models/user.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -94,7 +94,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         });
   }
 
-  void clearImage() {
+  void clearImage(){
     setState(() {
       _file = null;
     });
@@ -188,4 +188,3 @@ class _AddPostScreenState extends State<AddPostScreen> {
           );
   }
 }
-*/
