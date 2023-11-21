@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
-        /*
+
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -112,8 +112,7 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
-         */
-        home: Homepage(),
+        //home: Homepage(),
         //home: VoiceHomePage(),
         //home: AddPostScreen(),
         //home: MobileScreenLayout(),
