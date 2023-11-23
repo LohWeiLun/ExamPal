@@ -14,7 +14,6 @@ import 'package:exampal/Pages/Login/updated_homepage.dart';
 import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
-import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/Responsive/mobile_screen_layout.dart';
 import 'package:exampal/Screens/add_post_screen.dart';
@@ -33,8 +32,8 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
-import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
+import 'Pages/Figma/testFastNote.dart';
 import 'Pages/Timetable/schedule_page.dart';
 import 'Pages/Timetable/timer_page.dart';
 import 'Pages/Login/forgotpassword_page.dart';
@@ -48,6 +47,7 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'Notifications/notification_services.dart';
+import 'Pages/Voice-ToText/voiceToTextFunction.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -98,7 +98,7 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
-
+        /*
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -123,7 +123,11 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
-
+         */
+        home: FastNoteBackupFunctionPage(),
+        //home: FastNoteFunctionPage(),
+        //home: VoiceToTextFunctionPage(),
+        //home: StudySchedulePage(),
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),

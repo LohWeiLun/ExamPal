@@ -15,7 +15,11 @@ class _FastNoteFunctionPageState extends State<FastNoteFunctionPage> {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx'], // Allow PDF and Google Docs (doc/docx)
+        allowedExtensions: [
+          'pdf',
+          'doc',
+          'docx'
+        ], // Allow PDF and Google Docs (doc/docx)
       );
 
       if (result != null) {
@@ -39,7 +43,6 @@ class _FastNoteFunctionPageState extends State<FastNoteFunctionPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,87 +54,87 @@ class _FastNoteFunctionPageState extends State<FastNoteFunctionPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4), // Added padding
-                    child: Container(
-                      width: 100, // Adjust container width
-                      height: 200, // Adjust container height
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Recent Notes',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      // Added padding
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.lightBlue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Recent Notes',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          Image.asset(
-                            'assets/icons/pdf.png', // Replace with your image path
-                            width: 100, // Adjust width as needed
-                            height: 100, // Adjust height as needed
-                          ),
-                          ElevatedButton(
-                            onPressed: _addMedia,
-                            child: const Text('Add Media'),
-                          ),
-                        ],
+                            Image.asset(
+                              'assets/icons/pdf.png',
+                              // Replace with your image path
+                              width: 100, // Adjust width as needed
+                              height: 100, // Adjust height as needed
+                            ),
+                            ElevatedButton(
+                              onPressed: _addMedia,
+                              child: const Text('Add Media'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10), // Spacer between rows
+
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4), // Added padding
-                    child: Container(
-                      width: 100, // Adjust container width
-                      height: 200, // Adjust container height
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Create PDF',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/icons/pdf.png', // Replace with your image path
-                            width: 100, // Adjust width as needed
-                            height: 100, // Adjust height as needed
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Generate PDF'),
-                          ),
-                        ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Create PDF',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                    Image.asset(
+                      'assets/icons/pdf.png', // Replace with your image path
+                      width: 100, // Adjust width as needed
+                      height: 100, // Adjust height as needed
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Generate PDF'),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
 
             if (_selectedFileName != null) // Display the selected filename
               Padding(
-                padding: EdgeInsets.only(top: 10), // Add padding only at the top
+                padding: EdgeInsets.only(top: 10),
+                // Add padding only at the top
                 child: Center(
                   child: Text(
                     'Selected File: $_selectedFileName',
@@ -174,5 +177,4 @@ class _FastNoteFunctionPageState extends State<FastNoteFunctionPage> {
       ),
     );
   }
-
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class VoiceToTextPage extends StatefulWidget {
-  const VoiceToTextPage({super.key});
+  const VoiceToTextPage({Key? key});
 
   @override
   _VoiceToTextPageState createState() => _VoiceToTextPageState();
@@ -49,9 +49,9 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.cyan, // Changing app bar color to cyan
         title: const Text(
-          'Speech Demo',
+          'Real-Time Voice Transcription', // Updating app bar title text
           style: TextStyle(
             color: Colors.white,
           ),
@@ -91,21 +91,30 @@ class _VoiceToTextPageState extends State<VoiceToTextPage> {
                 child: Text(
                   "Confidence: ${(_confidenceLevel * 100).toStringAsFixed(1)}%",
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w200,
                   ),
                 ),
-              )
+              ),
+            SizedBox(height: 16), // Add spacing between content and mic icon
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0), // Adjust the top padding as needed
+                  child: FloatingActionButton(
+                    onPressed: _speechToText.isListening ? _stopListening : _startListening,
+                    tooltip: 'Listen',
+                    backgroundColor: Colors.cyan,
+                    child: Icon(
+                      _speechToText.isNotListening ? Icons.mic_off : Icons.mic,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _speechToText.isListening ? _stopListening : _startListening,
-        tooltip: 'Listen',
-        backgroundColor: Colors.red,
-        child: Icon(
-          _speechToText.isNotListening ? Icons.mic_off : Icons.mic,
-          color: Colors.white,
         ),
       ),
     );

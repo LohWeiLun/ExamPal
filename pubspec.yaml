@@ -121,6 +121,12 @@ flutter:
     - assets/icons/person.svg
     - assets/images/whatsapp_Back.png
     - assets/icons/pdf.png
+    - assets/icons/voiceLoading.png
+    - assets/images/voiceToText.png
+    - assets/icons/hyperlink.png
+    - assets/icons/createPDF.png
+    - assets/images/fastnoteback.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
