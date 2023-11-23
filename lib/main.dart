@@ -3,6 +3,7 @@ import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/backupSignUp.dart';
 import 'package:exampal/Pages/Notes/FileConversion_page.dart';
+import 'package:exampal/Pages/Timetable/new_ui_schedule.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
@@ -36,6 +37,7 @@ import 'Constants/theme_services.dart';
 import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/Timetable/schedule_page.dart';
+import 'Pages/Timetable/new_schedule.dart';
 import 'Pages/Timetable/timer_page.dart';
 import 'Pages/Login/forgotpassword_page.dart';
 import 'Pages/Notes/imagetopdf_page.dart';
@@ -98,7 +100,6 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
-
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -124,6 +125,7 @@ class MyApp extends StatelessWidget {
           },
         ),
 
+      //home: StudySchedulePage(),
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),

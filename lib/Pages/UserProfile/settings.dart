@@ -18,7 +18,7 @@ import '../../Notifications/notification_services.dart';
 
 DateTime scheduleTime = DateTime.now();
 TimeOfDay time = TimeOfDay.now();
-int numSchedule = 0;
+int tasks = 0;
 
 List<String> motivationMsg = [
   "Daily",
@@ -53,6 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String email = "";
   String uid = "";
   String? mtoken = " ";
+  int tasks = 0;
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -68,6 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
           theme = snapshot.data()!["theme"];
           email = snapshot.data()!["email"];
           uid = snapshot.data()!["uid"];
+          tasks = snapshot.data()!["tasks"];
         });
       }
     });
@@ -85,14 +87,31 @@ class _SettingsPageState extends State<SettingsPage> {
     listenFCM();
 
     getToken();
-  }
-  void getTokenFromFirestore() async {
 
+    if (motivationN) {
+      FirebaseMessaging.instance.subscribeToTopic("Motivation");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Motivation");
+    }
+
+    if (scheduleN) {
+      FirebaseMessaging.instance.subscribeToTopic("Schedule");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Schedule");
+    }
+
+    if (communityN) {
+      FirebaseMessaging.instance.subscribeToTopic("Community");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Community");
+    }
   }
+
+  void getTokenFromFirestore() async {}
 
   void saveToken(String token) async {
     await FirebaseFirestore.instance.collection("UserTokens").doc(uid).set({
-      'token' : token,
+      'token': token,
     });
   }
 
@@ -102,14 +121,12 @@ class _SettingsPageState extends State<SettingsPage> {
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key=AAAA9xPglTQ:APA91bEuI1Hg2Mw6dLpBuh2bDvJfgcYOUm_rEUhq3glaPRzICYtTUQEG6iFF1r_EeWx3B_wC9sTDVxk0x1PYgcSh-N9Di4qG-GNF3LVDjhc9F5B_cfEqvdky-Rc1ILwdAc1oqtB5Ho8v',
+          'Authorization':
+              'key=AAAA9xPglTQ:APA91bEuI1Hg2Mw6dLpBuh2bDvJfgcYOUm_rEUhq3glaPRzICYtTUQEG6iFF1r_EeWx3B_wC9sTDVxk0x1PYgcSh-N9Di4qG-GNF3LVDjhc9F5B_cfEqvdky-Rc1ILwdAc1oqtB5Ho8v',
         },
         body: jsonEncode(
           <String, dynamic>{
-            'notification': <String, dynamic>{
-              'body': body,
-              'title': title
-            },
+            'notification': <String, dynamic>{'body': body, 'title': title},
             'priority': 'high',
             'data': <String, dynamic>{
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
@@ -126,15 +143,13 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void getToken() async {
-    await FirebaseMessaging.instance.getToken().then(
-            (token) {
-          setState(() {
-            mtoken = token;
-          });
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+      });
 
-          saveToken(token!);
-        }
-    );
+      saveToken(token!);
+    });
   }
 
   void requestPermission() async {
@@ -152,7 +167,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
@@ -199,7 +215,7 @@ class _SettingsPageState extends State<SettingsPage> {
       /// default FCM channel to enable heads up notifications.
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
 
       /// Update the iOS foreground notification presentation options to allow
@@ -336,6 +352,29 @@ class _SettingsPageState extends State<SettingsPage> {
                     ))
               ],
             ),
+            Visibility(
+              visible: (scheduleN), // condition here
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  DatePickerTxt(),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: (scheduleN), // condition here
+              child: ElevatedButton(
+                child: const Text('Schedule notifications'),
+                onPressed: () {
+                  debugPrint('Notification Scheduled for $scheduleTime');
+                  NotificationService().scheduleNotification(
+                    title: 'Schedule',
+                    body: 'You Have $tasks Tasks in your To-Do List!',
+                    scheduledNotificationDateTime: scheduleTime,
+                  );
+                },
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -355,12 +394,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           communityN = newBool;
                         });
-                        if(communityN){
-                          FirebaseMessaging.instance.subscribeToTopic("Community");
-                        }
-                        else{
-                          FirebaseMessaging.instance.unsubscribeFromTopic("Community");
-                        }
                       },
                     ))
               ],
@@ -384,44 +417,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         setState(() {
                           motivationN = newBool;
                         });
-                        if(motivationN){
-                          FirebaseMessaging.instance.subscribeToTopic("Motivation");
-                        }
-                        else{
-                          FirebaseMessaging.instance.unsubscribeFromTopic("Schedule");
+                        if (motivationN) {
+                          FirebaseMessaging.instance
+                              .subscribeToTopic("Motivation");
+                        } else {
+                          FirebaseMessaging.instance
+                              .unsubscribeFromTopic("Schedule");
                         }
                       },
                     ))
               ],
-            ),
-            Visibility(
-              visible: (motivationN), // condition here
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  DatePickerTxt(),
-                ],
-              ),
-            ),
-            Visibility(
-              visible: (motivationN), // condition here
-              child: ElevatedButton(
-                child: const Text('Schedule notifications'),
-                onPressed: () async {
-                  String titleText = "title.text";
-                  String bodyText = "body.text";
-
-                  if(uid != "") {
-                    DocumentSnapshot snap =
-                    await FirebaseFirestore.instance.collection("UserTokens").doc(uid).get();
-
-                    String token = snap['token'];
-                    print(token);
-
-                    sendPushMessage(token, titleText, bodyText);
-                  }
-                },
-              ),
             ),
             const SizedBox(
               height: 40,
@@ -604,6 +609,35 @@ class _DatePickerTxtState extends State<DatePickerTxt> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
+        DatePicker.showDateTimePicker(
+          context,
+          showTitleActions: true,
+          onChanged: (date) => scheduleTime = date,
+          onConfirm: (date) {},
+        );
+      },
+      child: const Text(
+        'Select Date Time',
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
+  }
+}
+
+class TimePickerTxt extends StatefulWidget {
+  const TimePickerTxt({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<TimePickerTxt> createState() => _TimePickerTxtState();
+}
+
+class _TimePickerTxtState extends State<TimePickerTxt> {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
         TimeOfDay selectedTime = showTimePicker(
           initialTime: TimeOfDay.now(),
           context: context,
@@ -629,7 +663,11 @@ class ScheduleBtn extends StatelessWidget {
       child: const Text('Schedule notifications'),
       onPressed: () {
         debugPrint('Notification Scheduled for $scheduleTime');
-
+        NotificationService().scheduleNotification(
+          title: 'Scheduled Notification',
+          body: '$scheduleTime',
+          scheduledNotificationDateTime: scheduleTime,
+        );
       },
     );
   }
