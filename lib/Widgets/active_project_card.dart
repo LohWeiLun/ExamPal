@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class ActiveProjectsCard extends StatelessWidget {
-  final Color cardColor;
   final double loadingPercent;
   final String title;
   final String subtitle;
+  final String id;
 
-  const ActiveProjectsCard({super.key, 
-    required this.cardColor,
+  const ActiveProjectsCard({
+    super.key,
     required this.loadingPercent,
     required this.title,
     required this.subtitle,
+    required this.id,
   });
 
   @override
@@ -22,7 +23,7 @@ class ActiveProjectsCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
-          color: cardColor,
+          color: Colors.blueAccent,
           borderRadius: BorderRadius.circular(40.0),
         ),
         child: Column(
@@ -31,19 +32,22 @@ class ActiveProjectsCard extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: CircularPercentIndicator(
-                animation: true,
-                radius: 75.0,
-                percent: loadingPercent,
-                lineWidth: 5.0,
-                circularStrokeCap: CircularStrokeCap.round,
-                backgroundColor: Colors.white10,
-                progressColor: Colors.white,
-                center: Text(
-                  '${(loadingPercent * 100).round()}%',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+              child: Container(
+                alignment: Alignment.center,
+                child: CircularPercentIndicator(
+                  animation: true,
+                  radius: 35.0,
+                  percent: loadingPercent,
+                  lineWidth: 5.0,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  backgroundColor: Colors.white10,
+                  progressColor: Colors.white,
+                  center: Text(
+                    '${(loadingPercent * 100).round()}%',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -69,6 +73,7 @@ class ActiveProjectsCard extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 10.0),
           ],
         ),
       ),

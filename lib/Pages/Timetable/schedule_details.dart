@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:exampal/Pages/Timetable/calendar_page.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:exampal/Widgets/task_column.dart';
@@ -9,41 +8,37 @@ import 'package:exampal/Widgets/active_project_card.dart';
 import 'package:exampal/Widgets/top_container.dart';
 
 import '../../Widgets/back_button.dart';
+import 'add_schedule_ui.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
-
   @override
   State<SchedulePage> createState() => _SchedulePageState();
-
-  static CircleAvatar circleAddIcon() {
-    return const CircleAvatar(
-      radius: 25.0,
-      backgroundColor: LightColors.kGreen,
-      child: Icon(
-        Icons.add,
-        size: 20.0,
-        color: Colors.white,
-      ),
-    );
-  }
 }
 
 class _SchedulePageState extends State<SchedulePage> {
   double completedPercentage = 0.75;
-  String? name = 'User Name';
-  String? email = 'useremail@email.com';
+  String? title = 'Schedule Title';
+  List<Map<String, dynamic>> generatedSchedule = [];
 
-  Future _getDataFromDatabase() async {
+  Future _getDataFromDatabase(String docId) async {
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("schedule");
+
+
     await FirebaseFirestore.instance
         .collection("user")
         .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("schedule")
+        .doc(docId)
         .get()
         .then((snapshot) async {
       if (snapshot.exists) {
         setState(() {
-          name = snapshot.data()!["name"];
-          email = snapshot.data()!["email"];
+          title = snapshot.data()!["title"];
+          generatedSchedule = snapshot.data()!["schedule"];
         });
       }
     });
@@ -52,7 +47,6 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    _getDataFromDatabase();
   }
 
   Text subheading(String title) {
@@ -110,21 +104,12 @@ class _SchedulePageState extends State<SchedulePage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                name!,
+                                title!,
                                 textAlign: TextAlign.start,
                                 style: const TextStyle(
                                   fontSize: 22.0,
                                   color: LightColors.kDarkBlue,
                                   fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              Text(
-                                email!,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.black45,
-                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],
@@ -146,16 +131,6 @@ class _SchedulePageState extends State<SchedulePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         subheading('My Tasks'),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const CalendarPage()),
-                            );
-                          },
-                          child: SchedulePage.circleAddIcon(),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 15.0),
@@ -187,34 +162,31 @@ class _SchedulePageState extends State<SchedulePage> {
                     const Row(
                       children: <Widget>[
                         ActiveProjectsCard(
-                          cardColor: LightColors.kGreen,
                           loadingPercent: 0.25,
                           title: 'Medical App',
                           subtitle: '9 hours progress',
+                          id: 'aaa',
                         ),
                         SizedBox(width: 20.0),
                         ActiveProjectsCard(
-                          cardColor: LightColors.kRed,
                           loadingPercent: 0.6,
                           title: 'Making History Notes',
-                          subtitle: '20 hours progress',
+                          subtitle: '20 hours progress',id: 'aaa',
                         ),
                       ],
                     ),
                     const Row(
                       children: <Widget>[
                         ActiveProjectsCard(
-                          cardColor: LightColors.kDarkYellow,
                           loadingPercent: 0.45,
                           title: 'Sports App',
-                          subtitle: '5 hours progress',
+                          subtitle: '5 hours progress',id: 'aaa',
                         ),
                         SizedBox(width: 20.0),
                         ActiveProjectsCard(
-                          cardColor: LightColors.kBlue,
                           loadingPercent: 0.9,
                           title: 'Online Flutter Course',
-                          subtitle: '23 hours progress',
+                          subtitle: '23 hours progress',id: 'aaa',
                         ),
                       ],
                     ),

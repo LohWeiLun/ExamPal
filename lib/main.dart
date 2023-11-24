@@ -3,7 +3,6 @@ import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/backupSignUp.dart';
 import 'package:exampal/Pages/Notes/FileConversion_page.dart';
-import 'package:exampal/Pages/Timetable/new_ui_schedule.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
@@ -34,10 +33,10 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
+import 'Pages/Timetable/add_schedule_ui.dart';
 import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
-import 'Pages/Timetable/schedule_page.dart';
-import 'Pages/Timetable/new_schedule.dart';
+import 'Pages/Timetable/schedule_mainpage.dart';
 import 'Pages/Timetable/timer_page.dart';
 import 'Pages/Login/forgotpassword_page.dart';
 import 'Pages/Notes/imagetopdf_page.dart';
@@ -50,6 +49,7 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'Notifications/notification_services.dart';
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -65,6 +65,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   tz.initializeTimeZones();
+
+  //final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation('Asia/Singapore'));
   runApp(const MyApp());
 }
 
@@ -100,6 +103,9 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
+        //home: SchedulePage(),
+        //home: StudyScheduleForm(),
+
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -125,7 +131,8 @@ class MyApp extends StatelessWidget {
           },
         ),
 
-      //home: StudySchedulePage(),
+
+
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
@@ -144,7 +151,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  final List<Widget> _tabItems = [TimerPage(), Homepage(), ProfilePage()];
+  final List<Widget> _tabItems = [TimerPage(), UpdatedHomePage(), ProfilePage()];
   int _activePage = 0;
 
   @override

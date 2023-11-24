@@ -1,5 +1,5 @@
 /*
-import 'package:exampal/Pages/schedule_page.dart';
+import 'package:exampal/Pages/schedule_mainpage.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/size.dart';
