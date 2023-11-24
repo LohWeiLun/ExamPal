@@ -34,7 +34,6 @@ import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
 import 'Pages/Timetable/add_schedule_ui.dart';
-import 'Pages/Voice-ToText/voicetotextpage.dart';
 import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/Timetable/schedule_mainpage.dart';
 import 'Pages/Timetable/timer_page.dart';

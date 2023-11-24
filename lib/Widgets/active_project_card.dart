@@ -20,6 +20,7 @@ class ActiveProjectsCard extends StatelessWidget {
     return Flexible(
       flex: 1,
       child: Container(
+        alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
@@ -32,8 +33,8 @@ class ActiveProjectsCard extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Container(
-                alignment: Alignment.center,
+              child:
+              Container(
                 child: CircularPercentIndicator(
                   animation: true,
                   radius: 35.0,
@@ -51,6 +52,7 @@ class ActiveProjectsCard extends StatelessWidget {
                   ),
                 ),
               ),
+
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,8 +74,9 @@ class ActiveProjectsCard extends StatelessWidget {
                   ),
                 ),
               ],
+
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
           ],
         ),
       ),

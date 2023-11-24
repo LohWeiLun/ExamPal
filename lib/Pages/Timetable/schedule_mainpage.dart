@@ -106,7 +106,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     List<ActiveProjectsCard> activeProjectCards =
-        buildActiveProjectCards(scheduleList);
+    buildActiveProjectCards(scheduleList);
 
     List<Widget> rows = [];
     if (scheduleList.isEmpty) {
@@ -125,24 +125,13 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
       );
     } else {
-      for (int i = 0; i < activeProjectCards.length; i += 2) {
-        List<Widget> rowChildren = [
-          activeProjectCards[i],
-        ];
-
-        if (i + 1 < activeProjectCards.length) {
-          rowChildren.add(activeProjectCards[i + 1]);
-        }
-
+      for (int i = 0; i < activeProjectCards.length; i++) {
         rows.add(
-          Row(
-            children: rowChildren,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: activeProjectCards[i],
           ),
         );
-
-        if (i + 2 < activeProjectCards.length) {
-          rows.add(const SizedBox(height: 5.0));
-        }
       }
     }
 
