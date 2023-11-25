@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
@@ -11,25 +10,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../Notifications/notification_services.dart';
 
 DateTime scheduleTime = DateTime.now();
 TimeOfDay time = TimeOfDay.now();
-int tasks = 0;
-
-List<String> motivationMsg = [
-  "Daily",
-  "Weekly",
-  "Monthly",
-];
-
-var rng = Random();
-String randomMotivation = motivationMsg[rng.nextInt(motivationMsg.length)];
-
-String frequency = 'Daily';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -53,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String email = "";
   String uid = "";
   String? mtoken = " ";
-  int tasks = 0;
+  late List<Map<String, dynamic>> todaysTasks = [];
 
   Future _getDataFromDatabase() async {
     await FirebaseFirestore.instance
@@ -69,24 +55,9 @@ class _SettingsPageState extends State<SettingsPage> {
           theme = snapshot.data()!["theme"];
           email = snapshot.data()!["email"];
           uid = snapshot.data()!["uid"];
-          tasks = snapshot.data()!["tasks"];
         });
       }
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getDataFromDatabase();
-
-    requestPermission();
-
-    loadFCM();
-
-    listenFCM();
-
-    getToken();
 
     if (motivationN) {
       FirebaseMessaging.instance.subscribeToTopic("Motivation");
@@ -106,6 +77,54 @@ class _SettingsPageState extends State<SettingsPage> {
       FirebaseMessaging.instance.unsubscribeFromTopic("Community");
     }
   }
+
+  Future<void> _updateUserSettings() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("user")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        'scheduleN': scheduleN,
+        'communityN': communityN,
+        'motivationN': motivationN,
+        'theme': theme,
+      });
+
+      // Fetch updated data if needed
+      await _getDataFromDatabase();
+    } catch (error) {
+      // Handle errors
+      print('Error updating user settings: $error');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDatabase();
+    requestPermission();
+    loadFCM();
+    listenFCM();
+    getToken();
+    fetchTodayTasks();
+  }
+
+
+  Future<void> fetchTodayTasks() async {
+    try {
+      // Fetch today's tasks
+      todaysTasks = await getTodaysTasks();
+
+      // Trigger a rebuild of the widget
+      setState(() {});
+    } catch (error) {
+      // Handle errors
+      print('Error fetching data: $error');
+      // Initialize scheduleList to an empty list in case of an error
+      todaysTasks = [];
+    }
+  }
+
 
   void getTokenFromFirestore() async {}
 
@@ -209,17 +228,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
       flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-      /// Create an Android Notification Channel.
-      ///
-      /// We use this channel in the `AndroidManifest.xml` file to override the
-      /// default FCM channel to enable heads up notifications.
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
 
-      /// Update the iOS foreground notification presentation options to allow
-      /// heads up notifications.
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
         alert: true,
@@ -333,6 +346,40 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  "Motivation Notifications",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                    scale: 0.7,
+                    child: CupertinoSwitch(
+                      value: motivationN,
+                      activeColor: Colors.grey,
+                      onChanged: (bool newBool) {
+                        setState(() {
+                          motivationN = newBool;
+                        });
+                        if (motivationN) {
+                          FirebaseMessaging.instance
+                              .subscribeToTopic("Motivation");
+                        } else {
+                          FirebaseMessaging.instance
+                              .unsubscribeFromTopic("Motivation");
+                        }
+                        _updateUserSettings();
+                      },
+                    ))
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
                   "Schedule Notifications",
                   style: TextStyle(
                       fontSize: 18,
@@ -347,6 +394,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (bool newBool) {
                         setState(() {
                           scheduleN = newBool;
+                          FirebaseMessaging.instance.subscribeToTopic("Schedule");
+                          _updateUserSettings();
                         });
                       },
                     ))
@@ -366,6 +415,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ElevatedButton(
                 child: const Text('Schedule notifications'),
                 onPressed: () {
+                  int tasks = todaysTasks.length;
                   debugPrint('Notification Scheduled for $scheduleTime');
                   NotificationService().scheduleNotification(
                     title: 'Schedule',
@@ -375,6 +425,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
+            /*
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -398,36 +449,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ))
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Motivation Notifications",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600]),
-                ),
-                Transform.scale(
-                    scale: 0.7,
-                    child: CupertinoSwitch(
-                      value: motivationN,
-                      activeColor: Colors.grey,
-                      onChanged: (bool newBool) {
-                        setState(() {
-                          motivationN = newBool;
-                        });
-                        if (motivationN) {
-                          FirebaseMessaging.instance
-                              .subscribeToTopic("Motivation");
-                        } else {
-                          FirebaseMessaging.instance
-                              .unsubscribeFromTopic("Schedule");
-                        }
-                      },
-                    ))
-              ],
-            ),
+             */
             const SizedBox(
               height: 40,
             ),
@@ -471,6 +493,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (bool newBool) {
                         setState(() {
                           theme = newBool;
+                          _updateUserSettings();
                         });
                       },
                     ))
@@ -670,5 +693,48 @@ class ScheduleBtn extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+Future<List<Map<String, dynamic>>> getTodaysTasks() async {
+  try {
+    // Fetch schedules for the user from Firebase Firestore
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection("user")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("schedule")
+        .get();
+
+    List<Map<String, dynamic>> todaysTasks = [];
+
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime tomorrow = today.add(const Duration(days: 1));
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc
+    in querySnapshot.docs) {
+      List<dynamic> schedule = doc['schedule'] ?? [];
+
+      for (Map<String, dynamic> session in schedule) {
+        DateTime sessionDate = (session['date'] as Timestamp).toDate();
+
+        // Check if the session is for today
+        if (sessionDate.isAtSameMomentAs(today) || sessionDate.isAfter(today) && sessionDate.isBefore(tomorrow)) {
+          // Add the session data to todaysTasks
+          Map<String, dynamic> taskData = {
+            'scheduleId': doc.id,
+            'sessionIndex': schedule.indexOf(session),
+            ...session,
+          };
+          todaysTasks.add(taskData);
+        }
+      }
+    }
+    print(todaysTasks);
+    return todaysTasks;
+  } catch (error) {
+    print('Error fetching todaysTasks: $error');
+    return [];
   }
 }
