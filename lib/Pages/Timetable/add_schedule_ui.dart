@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Pages/Timetable/schedule_generator.dart';
+import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -56,6 +57,13 @@ class _StudyScheduleFormState extends State<StudyScheduleForm> {
 
       SnackBar snackbar = const SnackBar(content: Text("Schedule Added!"));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SchedulePage(),
+        ),
+      );
     }
   }
 

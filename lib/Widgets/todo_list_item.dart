@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 
 class TodoListItem extends StatelessWidget {
   final String text;
+  final String id;
+  final int index;
   late bool isChecked;
   final VoidCallback onPress;
 
-  TodoListItem(
-      {required this.text,
-      required this.isChecked,
-      required this.onPress,});
+  TodoListItem({
+    required this.text,
+    required this.isChecked,
+    required this.onPress,
+    required this.id,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class TodoListItem extends StatelessWidget {
                           padding: const EdgeInsets.all(4.5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100.0),
-                            color: Colors.white,
+                            color: const Color(0xFF8E13BA),
                           ),
                           child: const Icon(
                             Icons.check,
@@ -47,7 +52,7 @@ class TodoListItem extends StatelessWidget {
                         onTap: onPress,
                         child: const Icon(
                           Icons.circle_outlined,
-                          color:  Colors.white,
+                          color: Color(0xFF8E13BA),
                         ),
                       ),
                 const SizedBox(

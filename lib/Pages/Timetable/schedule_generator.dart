@@ -11,7 +11,9 @@ class ScheduleGenerator {
   }) {
     List<Map<String, dynamic>> schedule = [];
 
-    int totalDays = examDate.difference(startDate).inDays;
+    int totalDays = examDate
+        .difference(startDate)
+        .inDays;
     int totalStudyTime = totalDays * 3; // Assuming 3 hours of study per day
 
     // Remove importance factor
@@ -19,11 +21,11 @@ class ScheduleGenerator {
 
     // Calculate study time based on difficulty
     List<Map<String, dynamic>> studyTimePerTopic =
-        calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
+    calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
 
     // Apply study mode preference
     List<Map<String, dynamic>> distributedTopics =
-        applyStudyModePreference(studyMode, studyTimePerTopic);
+    applyStudyModePreference(studyMode, studyTimePerTopic);
 
     DateTime currentDate = startDate;
     bool taskCompletion = false;
@@ -31,11 +33,11 @@ class ScheduleGenerator {
     for (int i = 0; i < totalDays; i++) {
       if (currentDate.isBefore(examDate)) {
         Map<String, dynamic> sessionTopic =
-            distributedTopics[i % distributedTopics.length];
+        distributedTopics[i % distributedTopics.length];
 
         // Calculate session duration based on difficulty
         double sessionDuration =
-            calculateSessionDuration(sessionTopic['difficulty']);
+        calculateSessionDuration(sessionTopic['difficulty']);
 
         schedule.add({
           'date': currentDate,
@@ -54,7 +56,7 @@ class ScheduleGenerator {
   static List<Map<String, dynamic>> calculateStudyTimePerTopic(
       List<Map<String, dynamic>> topics, int totalStudyTime) {
     double totalDifficulty =
-        topics.fold(0, (sum, topic) => sum + topic['difficulty']);
+    topics.fold(0, (sum, topic) => sum + topic['difficulty']);
 
     return topics.map((topic) {
       double studyTime =
@@ -68,8 +70,8 @@ class ScheduleGenerator {
     }).toList();
   }
 
-  static List<Map<String, dynamic>> applyStudyModePreference(
-      String studyMode, List<Map<String, dynamic>> studyTimePerTopic) {
+  static List<Map<String, dynamic>> applyStudyModePreference(String studyMode,
+      List<Map<String, dynamic>> studyTimePerTopic) {
     if (studyMode == 'focus') {
       // Sort topics based on difficulty for focus mode
       studyTimePerTopic
@@ -168,4 +170,40 @@ class ScheduleGenerator {
         .doc(docId)
         .delete();
   }
+
+  static void updateTaskStatus(String id, int index, bool isDone) async {
+    try {
+      // Fetch the document
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+      await FirebaseFirestore.instance
+          .collection("user")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("schedule")
+          .doc(id)
+          .get();
+
+      // Get the current schedule array
+      List<dynamic> schedule = documentSnapshot.data()?['schedule'] ?? [];
+
+      // Update the 'complete' field for the specified index
+      if (index >= 0 && index < schedule.length) {
+        schedule[index]['complete'] = isDone;
+      }
+
+      // Update the document with the modified schedule array
+      await FirebaseFirestore.instance
+          .collection("user")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("schedule")
+          .doc(id)
+          .update({
+        'schedule': schedule,
+      });
+
+      print('Task status updated successfully');
+    } catch (error) {
+      print('Error updating task status: $error');
+    }
+  }
+
 }

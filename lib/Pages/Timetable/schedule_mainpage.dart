@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampal/Pages/Timetable/schedule_generator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Constants/colors.dart';
-import 'package:exampal/Widgets/task_column.dart';
 import 'package:exampal/Widgets/active_project_card.dart';
 import '../../Widgets/todo_list_item.dart';
 import 'add_schedule_ui.dart';
-import 'package:exampal/Pages/Timetable/schedule_generator.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
@@ -21,7 +20,8 @@ class _SchedulePageState extends State<SchedulePage> {
   late List<Map<String, dynamic>> todaysTasks = [];
   late List<Map<String, dynamic>> scheduleList = [];
 
-  @override void initState() {
+  @override
+  void initState() {
     super.initState();
     fetchData();
   }
@@ -91,13 +91,22 @@ class _SchedulePageState extends State<SchedulePage> {
     return todaysTasks.map((task) {
       String text = '${task['topic']} - ${task['duration']} hours';
       bool isChecked = task['complete'] == true;
+      int sIndex = task['sessionIndex'];
+      String sId = task['scheduleId'];
 
       return TodoListItem(
         text: text,
         isChecked: isChecked,
-        onPress: () {
-          // Handle the checkbox press
-          // You can update the task completion status here
+        id: sId,
+        index: sIndex,
+        onPress: () async {
+          isChecked = !isChecked;
+          ScheduleGenerator.updateTaskStatus(
+            sId,
+            sIndex,
+            isChecked,
+          );
+          await fetchData();
         },
       );
     }).toList();
@@ -106,7 +115,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     List<ActiveProjectsCard> activeProjectCards =
-    buildActiveProjectCards(scheduleList);
+        buildActiveProjectCards(scheduleList);
 
     List<Widget> rows = [];
     if (scheduleList.isEmpty) {
@@ -137,7 +146,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('  Schedules'),
+        title: const Text(' Schedules'),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -236,6 +245,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 }
 
+
 Future<List<Map<String, dynamic>>> getTodaysTasks() async {
   try {
     // Fetch schedules for the user from Firebase Firestore
@@ -248,18 +258,19 @@ Future<List<Map<String, dynamic>>> getTodaysTasks() async {
 
     List<Map<String, dynamic>> todaysTasks = [];
 
-    DateTime today = DateTime.now();
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
     DateTime tomorrow = today.add(const Duration(days: 1));
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-        in querySnapshot.docs) {
+    in querySnapshot.docs) {
       List<dynamic> schedule = doc['schedule'] ?? [];
 
       for (Map<String, dynamic> session in schedule) {
         DateTime sessionDate = (session['date'] as Timestamp).toDate();
 
         // Check if the session is for today
-        if (sessionDate.isAfter(today) && sessionDate.isBefore(tomorrow)) {
+        if (sessionDate.isAtSameMomentAs(today) || sessionDate.isAfter(today) && sessionDate.isBefore(tomorrow)) {
           // Add the session data to todaysTasks
           Map<String, dynamic> taskData = {
             'scheduleId': doc.id,
@@ -278,7 +289,7 @@ Future<List<Map<String, dynamic>>> getTodaysTasks() async {
   }
 }
 
-Future<List<Map<String, dynamic>>> getScheduleList() async {
+  Future<List<Map<String, dynamic>>> getScheduleList() async {
   try {
     // Fetch schedules for the user from Firebase Firestore
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
@@ -290,8 +301,7 @@ Future<List<Map<String, dynamic>>> getScheduleList() async {
 
     List<Map<String, dynamic>> scheduleList = [];
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-        in querySnapshot.docs) {
+    for (QueryDocumentSnapshot<Map<String, dynamic>> doc in querySnapshot.docs) {
       List<dynamic> schedule = doc['schedule'] ?? [];
 
       int totalSessions = schedule.length;
@@ -300,7 +310,7 @@ Future<List<Map<String, dynamic>>> getScheduleList() async {
 
       // Calculate the percentage of completion
       double completionPercentage =
-          totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0.0;
+      totalSessions > 0 ? (completedSessions / totalSessions) : 0.0;
 
       // Add schedule information to scheduleList
       Map<String, dynamic> scheduleData = {
@@ -318,9 +328,4 @@ Future<List<Map<String, dynamic>>> getScheduleList() async {
     print('Error fetching scheduleList: $error');
     return [];
   }
-}
-
-void updateTaskStatus(int index) {
-  //_tasks[index].isDone = !_tasks[index].isDone;
-  //notifyListeners();
 }
