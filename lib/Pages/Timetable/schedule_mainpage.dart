@@ -23,6 +23,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
+    ScheduleGenerator.updatePastSchedules();
     fetchData();
   }
 
@@ -90,7 +91,7 @@ class _SchedulePageState extends State<SchedulePage> {
   List<Widget> buildTodoListItems(List<Map<String, dynamic>> todaysTasks) {
     return todaysTasks.map((task) {
       String text = '${task['topic']} - ${task['duration']} hours';
-      bool isChecked = task['complete'] == true;
+      bool isChecked = task['complete'];
       int sIndex = task['sessionIndex'];
       String sId = task['scheduleId'];
 

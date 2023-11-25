@@ -11,9 +11,7 @@ class ScheduleGenerator {
   }) {
     List<Map<String, dynamic>> schedule = [];
 
-    int totalDays = examDate
-        .difference(startDate)
-        .inDays;
+    int totalDays = examDate.difference(startDate).inDays;
     int totalStudyTime = totalDays * 3; // Assuming 3 hours of study per day
 
     // Remove importance factor
@@ -21,11 +19,11 @@ class ScheduleGenerator {
 
     // Calculate study time based on difficulty
     List<Map<String, dynamic>> studyTimePerTopic =
-    calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
+        calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
 
     // Apply study mode preference
     List<Map<String, dynamic>> distributedTopics =
-    applyStudyModePreference(studyMode, studyTimePerTopic);
+        applyStudyModePreference(studyMode, studyTimePerTopic);
 
     DateTime currentDate = startDate;
     bool taskCompletion = false;
@@ -33,11 +31,11 @@ class ScheduleGenerator {
     for (int i = 0; i < totalDays; i++) {
       if (currentDate.isBefore(examDate)) {
         Map<String, dynamic> sessionTopic =
-        distributedTopics[i % distributedTopics.length];
+            distributedTopics[i % distributedTopics.length];
 
         // Calculate session duration based on difficulty
         double sessionDuration =
-        calculateSessionDuration(sessionTopic['difficulty']);
+            calculateSessionDuration(sessionTopic['difficulty']);
 
         schedule.add({
           'date': currentDate,
@@ -56,7 +54,7 @@ class ScheduleGenerator {
   static List<Map<String, dynamic>> calculateStudyTimePerTopic(
       List<Map<String, dynamic>> topics, int totalStudyTime) {
     double totalDifficulty =
-    topics.fold(0, (sum, topic) => sum + topic['difficulty']);
+        topics.fold(0, (sum, topic) => sum + topic['difficulty']);
 
     return topics.map((topic) {
       double studyTime =
@@ -70,8 +68,8 @@ class ScheduleGenerator {
     }).toList();
   }
 
-  static List<Map<String, dynamic>> applyStudyModePreference(String studyMode,
-      List<Map<String, dynamic>> studyTimePerTopic) {
+  static List<Map<String, dynamic>> applyStudyModePreference(
+      String studyMode, List<Map<String, dynamic>> studyTimePerTopic) {
     if (studyMode == 'focus') {
       // Sort topics based on difficulty for focus mode
       studyTimePerTopic
@@ -175,12 +173,12 @@ class ScheduleGenerator {
     try {
       // Fetch the document
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-      await FirebaseFirestore.instance
-          .collection("user")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("schedule")
-          .doc(id)
-          .get();
+          await FirebaseFirestore.instance
+              .collection("user")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection("schedule")
+              .doc(id)
+              .get();
 
       // Get the current schedule array
       List<dynamic> schedule = documentSnapshot.data()?['schedule'] ?? [];
@@ -206,4 +204,57 @@ class ScheduleGenerator {
     }
   }
 
+  static Future<void> updatePastSchedules() async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Get the user's schedules
+      QuerySnapshot<Map<String, dynamic>> schedulesSnapshot =
+          await FirebaseFirestore.instance
+              .collection("user")
+              .doc(userId)
+              .collection("schedule")
+              .get();
+
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      DateTime now = DateTime.now();
+      DateTime currentDate = DateTime(now.year, now.month, now.day);
+
+      // Loop through each schedule
+      for (QueryDocumentSnapshot<Map<String, dynamic>> scheduleDoc
+          in schedulesSnapshot.docs) {
+        List<dynamic> schedule = scheduleDoc['schedule'] ?? [];
+
+        // Check each session's date
+        for (int i = 0; i < schedule.length; i++) {
+          Map<String, dynamic> session = schedule[i];
+          DateTime sessionDate = (session['date'] as Timestamp).toDate();
+          bool isCompleted = session['complete'] ?? false;
+
+          // Check if the session date is in the past and the task is not completed
+          if (!isCompleted && sessionDate.isBefore(currentDate)) {
+            // Update the session's date to the current date
+            schedule[i]['date'] = Timestamp.fromDate(currentDate);
+          }
+        }
+
+        // Update the schedule in the batch
+        batch.update(
+          FirebaseFirestore.instance
+              .collection("user")
+              .doc(userId)
+              .collection("schedule")
+              .doc(scheduleDoc.id),
+          {'schedule': schedule},
+        );
+      }
+
+      // Commit the batch update
+      await batch.commit();
+      print('Past schedules (not completed) updated successfully!');
+    } catch (error) {
+      print('Error updating past schedules: $error');
+    }
+  }
 }

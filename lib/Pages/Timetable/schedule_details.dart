@@ -136,7 +136,7 @@ class _ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
 
             return TodoListItem(
               text: text,
-              isChecked: tasks[index]['complete'] == true,
+              isChecked: tasks[index]['complete'],
               onPress: () async {
                 // Update task status
                 ScheduleGenerator.updateTaskStatus(

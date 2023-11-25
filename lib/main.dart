@@ -66,7 +66,7 @@ Future<void> main() async {
   tz.initializeTimeZones();
 
   //final String timeZoneName = await FlutterTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation('Asia/Singapore'));
+  tz.setLocalLocation(tz.local);
   runApp(const MyApp());
 }
 

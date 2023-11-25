@@ -58,6 +58,24 @@ class _SettingsPageState extends State<SettingsPage> {
         });
       }
     });
+
+    if (motivationN) {
+      FirebaseMessaging.instance.subscribeToTopic("Motivation");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Motivation");
+    }
+
+    if (scheduleN) {
+      FirebaseMessaging.instance.subscribeToTopic("Schedule");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Schedule");
+    }
+
+    if (communityN) {
+      FirebaseMessaging.instance.subscribeToTopic("Community");
+    } else {
+      FirebaseMessaging.instance.unsubscribeFromTopic("Community");
+    }
   }
 
   Future<void> _updateUserSettings() async {
@@ -89,24 +107,6 @@ class _SettingsPageState extends State<SettingsPage> {
     listenFCM();
     getToken();
     fetchTodayTasks();
-
-    if (motivationN) {
-      FirebaseMessaging.instance.subscribeToTopic("Motivation");
-    } else {
-      FirebaseMessaging.instance.unsubscribeFromTopic("Motivation");
-    }
-
-    if (scheduleN) {
-      FirebaseMessaging.instance.subscribeToTopic("Schedule");
-    } else {
-      FirebaseMessaging.instance.unsubscribeFromTopic("Schedule");
-    }
-
-    if (communityN) {
-      FirebaseMessaging.instance.subscribeToTopic("Community");
-    } else {
-      FirebaseMessaging.instance.unsubscribeFromTopic("Community");
-    }
   }
 
 

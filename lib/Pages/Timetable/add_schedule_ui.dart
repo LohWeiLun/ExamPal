@@ -70,70 +70,7 @@ class _StudyScheduleFormState extends State<StudyScheduleForm> {
   @override
   void initState() {
     super.initState();
-    // Call the function when the app starts
-    updateFunctionIfNeeded();
-    initializeNotifications();
   }
-
-  Future<void> updateFunctionIfNeeded() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Get the last execution date
-    String? lastExecutionDate = prefs.getString('lastExecutionDate');
-
-    // Get the current date
-    DateTime now = DateTime.now();
-    String currentDate = "${now.year}-${now.month}-${now.day}";
-
-    // Check if the dates are different
-    if (lastExecutionDate != currentDate) {
-      // Call the update function
-      await ScheduleGenerator.updateScheduleDates();
-
-      // Update the stored date
-      prefs.setString('lastExecutionDate', currentDate);
-    }
-  }
-
-  Future<void> initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('exampal_logo');
-    final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    // Schedule a daily notification at midnight
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Daily Update',
-      'Check your schedule for today!',
-      _nextInstanceOfMidnight(),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'daily_notification_channel',
-          'Daily Notification',
-          importance: Importance.max,
-        ),
-      ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
-    );
-  }
-
-  tz.TZDateTime _nextInstanceOfMidnight() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day + 1,
-      0,
-      0,
-    );
-    return scheduledDate;
-  }
-
 
   @override
   Widget build(BuildContext context) {
