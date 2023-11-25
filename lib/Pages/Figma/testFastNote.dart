@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 
-class FastNoteBackupFunctionPage extends StatelessWidget {
+class FastNoteBackupFunctionPage extends StatefulWidget {
+  @override
+  _FastNoteBackupFunctionPageState createState() =>
+      _FastNoteBackupFunctionPageState();
+}
+
+class _FastNoteBackupFunctionPageState
+    extends State<FastNoteBackupFunctionPage> {
+  bool isUrlInputVisible = false;
+  TextEditingController urlController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Fast Note Backup'),
+        elevation: 0,
+        backgroundColor: Colors.amber,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -91,28 +103,11 @@ class FastNoteBackupFunctionPage extends StatelessWidget {
                         SizedBox(height: 8),
                         Stack(
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Colors.amber,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.12,
-                                    child: Row(
-                                      children: [
-                                        LoadURL(context),
-                                        const SizedBox(width: 12),
-                                        CreatePDF(context),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                ],
-                              ),
+                            AnimatedSwitcher(
+                              duration: Duration(milliseconds: 500),
+                              child: isUrlInputVisible
+                                  ? UrlInputContainer(context)
+                                  : OriginalFunctionsContainer(context),
                             ),
                           ],
                         ),
@@ -128,28 +123,87 @@ class FastNoteBackupFunctionPage extends StatelessWidget {
     );
   }
 
+  Widget OriginalFunctionsContainer(BuildContext context) {
+    return Container(
+      key: ValueKey<bool>(isUrlInputVisible),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.12,
+            child: Row(
+              children: [
+                LoadURL(context),
+                const SizedBox(width: 12),
+                CreatePDF(context),
+              ],
+            ),
+          ),
+          const SizedBox(height: 2),
+        ],
+      ),
+    );
+  }
+
+  Widget UrlInputContainer(BuildContext context) {
+    return Container(
+      key: ValueKey<bool>(isUrlInputVisible),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.12,
+            child: TextField(
+              controller: urlController,
+              decoration: InputDecoration(
+                labelText: "Enter URL",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+        ],
+      ),
+    );
+  }
+
   Widget LoadURL(BuildContext context) {
     return Expanded(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              'assets/icons/hyperlink.png',
-              width: 350,
-              height: 60,
-            ),
-            Text(
-              'Load URL',
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            isUrlInputVisible = true;
+          });
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.yellow[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                'assets/icons/hyperlink.png',
+                width: 350,
+                height: 60,
+              ),
+              Text(
+                'Load URL',
+                style: TextStyle(color: Colors.black87),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -161,7 +215,7 @@ class FastNoteBackupFunctionPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.4,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: Colors.yellow[100],
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -174,7 +228,7 @@ class FastNoteBackupFunctionPage extends StatelessWidget {
             ),
             Text(
               'Create PDF',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black87),
             ),
           ],
         ),

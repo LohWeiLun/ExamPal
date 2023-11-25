@@ -125,7 +125,7 @@ class MyApp extends StatelessWidget {
           },
         ),
 
-      //home: StudySchedulePage(),
+        //home: StudySchedulePage(),
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),

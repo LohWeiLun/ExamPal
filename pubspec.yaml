@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   email_validator: '^2.1.16'
   image_picker: ^1.0.4
   pdf: ^3.6.0
@@ -126,6 +127,15 @@ flutter:
     - assets/icons/hyperlink.png
     - assets/icons/createPDF.png
     - assets/images/fastnoteback.png
+    - assets/images/fileConversion.jpg
+    - assets/conversionIcons/jpgToPdf.png
+    - assets/conversionIcons/pdfTojpg.png
+    - assets/conversionIcons/excel.png
+    - assets/conversionIcons/powerpoint.png
+    - assets/conversionIcons/word.png
+    - assets/conversionIcons/split.png
+    - assets/conversionIcons/merge.png
+    - assets/images/homepage.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
