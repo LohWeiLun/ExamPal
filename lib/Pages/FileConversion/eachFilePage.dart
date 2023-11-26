@@ -14,6 +14,8 @@ class eachFileConvertPage extends StatefulWidget {
 class _eachFileConvertPageState extends State<eachFileConvertPage> {
   String? _selectedFileName;
 
+
+
   Future<void> _addMedia() async {
     try {
       List<String>? allowedExtensions;
@@ -159,17 +161,6 @@ class _eachFileConvertPageState extends State<eachFileConvertPage> {
                 ),
               ),
               SizedBox(height: 10),
-              if (_selectedFileName != null)
-                ElevatedButton(
-                  onPressed: () {
-                    // Add logic for conversion when the button is pressed
-                    // You can add the logic to convert the file here
-                    // For example, you can call a function or navigate to a new page for conversion
-                    // Replace the function or navigation logic with your implementation
-                    print('Convert Now button pressed');
-                  },
-                  child: Text('Convert Now'),
-                ),
             ],
           ),
         ),

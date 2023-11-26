@@ -3,6 +3,7 @@ import 'package:exampal/Pages/Figma/fastnotepage.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/backupSignUp.dart';
 import 'package:exampal/Pages/Notes/FileConversion_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Pages/activity_page.dart';
 import 'package:exampal/Pages/community_page.dart';
 import 'package:exampal/Pages/friendlist_page.dart';
@@ -33,6 +34,9 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
+import 'Pages/Figma/testFastNote.dart';
+import 'Pages/FileConversion/FileConversionPage.dart';
+import 'Pages/Notes/loadUrl.dart';
 import 'Pages/Timetable/add_schedule_ui.dart';
 import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/Timetable/schedule_mainpage.dart';
@@ -104,7 +108,7 @@ class MyApp extends StatelessWidget {
         //home: FeedScreen(),
         //home: SchedulePage(),
         //home: StudyScheduleForm(),
-
+        /*
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -129,9 +133,14 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
+         */
+        //home: VoiceToTextFunctionPage(),
+        home: FileConversionFunctionPage(),
+        //home: FastNoteBackupFunctionPage(),
+        //home: VoiceToTextFunctionPage(),
+        //home: FileConversionFunctionPage(),
 
-
-
+        //home: PdfViewerPage(),
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+
+import '../Notes/loadUrl.dart';
 
 class FastNoteBackupFunctionPage extends StatefulWidget {
   @override
@@ -10,6 +13,9 @@ class _FastNoteBackupFunctionPageState
     extends State<FastNoteBackupFunctionPage> {
   bool isUrlInputVisible = false;
   TextEditingController urlController = TextEditingController();
+  String? pdfUrl;
+  int pageNumber = 0;
+  bool pdfReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,18 +107,30 @@ class _FastNoteBackupFunctionPageState
                           ),
                         ),
                         SizedBox(height: 8),
-                        Stack(
-                          children: [
-                            AnimatedSwitcher(
-                              duration: Duration(milliseconds: 500),
-                              child: isUrlInputVisible
-                                  ? UrlInputContainer(context)
-                                  : OriginalFunctionsContainer(context),
-                            ),
-                          ],
-                        ),
+                        isUrlInputVisible
+                            ? UrlInputContainer(context)
+                            : OriginalFunctionsContainer(context),
                       ],
                     ),
+                    if (pdfUrl != null && pdfReady)
+                      Expanded(
+                        child: PDFView(
+                          filePath: pdfUrl!,
+                          onError: (error) {
+                            print('Error occurred: $error');
+                          },
+                          onPageChanged: (int? page, int? total) {
+                            setState(() {
+                              pageNumber = page ?? 0;
+                            });
+                          },
+                          onViewCreated: (PDFViewController pdfViewController) {
+                            setState(() {
+                              pdfReady = true;
+                            });
+                          },
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -123,9 +141,18 @@ class _FastNoteBackupFunctionPageState
     );
   }
 
+  void viewPdfFromUrl(String url) async {
+    // Navigate to PDF Viewer page and pass the URL
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PdfViewerPage(pdfUrl: url),
+      ),
+    );
+  }
+
   Widget OriginalFunctionsContainer(BuildContext context) {
     return Container(
-      key: ValueKey<bool>(isUrlInputVisible),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.amber,
@@ -151,16 +178,22 @@ class _FastNoteBackupFunctionPageState
 
   Widget UrlInputContainer(BuildContext context) {
     return Container(
-      key: ValueKey<bool>(isUrlInputVisible),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.amber,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
+      child: Row(
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.12,
+          BackButton(
+            onPressed: () {
+              setState(() {
+                isUrlInputVisible = false;
+              });
+            },
+          ),
+          SizedBox(width: 8),
+          Expanded(
             child: TextField(
               controller: urlController,
               decoration: InputDecoration(
@@ -169,7 +202,13 @@ class _FastNoteBackupFunctionPageState
               ),
             ),
           ),
-          const SizedBox(height: 2),
+          IconButton(
+            onPressed: () {
+              viewPdfFromUrl(urlController.text);
+              print('Entered URL: ${urlController.text}');
+            },
+            icon: Icon(Icons.done),
+          ),
         ],
       ),
     );
@@ -222,12 +261,12 @@ class _FastNoteBackupFunctionPageState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
-              'assets/icons/createPDF.png',
+              'assets/icons/chatgpt.png',
               width: 350,
               height: 60,
             ),
             Text(
-              'Create PDF',
+              'ChatGPT',
               style: TextStyle(color: Colors.black87),
             ),
           ],
