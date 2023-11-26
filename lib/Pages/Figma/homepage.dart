@@ -1,7 +1,7 @@
 import 'package:exampal/Pages/Figma/testFastNote.dart';
+import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
 import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
-import 'package:exampal/Pages/Timetable/schedule_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +110,7 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Fast Note') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {

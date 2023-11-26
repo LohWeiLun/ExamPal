@@ -26,4 +26,5 @@ class LightColors  {
 
   static const Color secondaryColor = Colors.grey;
   static const primaryColor = Colors.white;
+
 }

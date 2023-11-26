@@ -23,7 +23,7 @@ class _FileConversionFunctionPageState extends State<FileConversionFunctionPage>
       body: Container(
         decoration: BoxDecoration(
         image: DecorationImage(
-        image: AssetImage('assets/images/fileConversion.jpg'), // Replace with your image path
+        image: AssetImage('assets/images/fileConversion.jpg'),
         fit: BoxFit.cover,
        ),
       ),
@@ -125,7 +125,7 @@ class _FileConversionFunctionPageState extends State<FileConversionFunctionPage>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => eachFileConvertPage(
+                  builder: (context) => EachFileConvertPage(
                     selectedTitle: title, // Pass the selected title
                   ),
                 ),
