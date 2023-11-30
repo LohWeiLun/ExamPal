@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Login/updated_homepage.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';

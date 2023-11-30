@@ -6,15 +6,15 @@ import 'dart:convert';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path/path.dart';
 
-class EachFileConvertPage extends StatefulWidget {
+class MergeFilePage extends StatefulWidget {
   final String? selectedTitle;
-  const EachFileConvertPage({Key? key, this.selectedTitle}) : super(key: key);
+  const MergeFilePage({Key? key, this.selectedTitle}) : super(key: key);
 
   @override
-  _EachFileConvertPageState createState() => _EachFileConvertPageState();
+  _MergeFilePageState createState() => _MergeFilePageState();
 }
 
-class _EachFileConvertPageState extends State<EachFileConvertPage> {
+class _MergeFilePageState extends State<MergeFilePage> {
   late BuildContext dialogContext;
   String? _selectedFileName;
   String _selectedFilePath = "";
@@ -202,7 +202,7 @@ class _EachFileConvertPageState extends State<EachFileConvertPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Attach Files',
+                              'Attach File 1',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,

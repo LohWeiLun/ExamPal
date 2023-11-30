@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,7 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
   late String _filePath;
 
   Future<void> _convertAudioToText(String filePath) async {
-    var url = 'http://127.0.0.1:5000/upload';
+    var url = 'http://172.22.6.216:5000/upload';
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..files.add(await http.MultipartFile.fromPath('file', filePath));
 
@@ -111,7 +112,7 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                     SizedBox(height: 0),
                     Container(
                       width: double.infinity,
-                      height: 150,
+                      height: 200,
                       decoration: BoxDecoration(
                         color: Colors.lightBlue[100],
                         borderRadius: BorderRadius.circular(20),
@@ -194,21 +195,22 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                       fontFamily: 'Poppins',
                     ),
                   ),
-                  SizedBox(
-                    height: 200,
-                    child:  Container(
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue[100],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  Container(
+                    height: 300, // Adjust the height as needed
+                    width: 250, // Adjust the width as needed
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue[100],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: SingleChildScrollView(
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             _convertedText ?? 'Converted text will appear here',
-                            textAlign: TextAlign.center,
+                            textAlign: TextAlign.justify,
                             style: TextStyle(
-                              color: Colors.black54,
+                              color: Colors.black87,
                               fontSize: 16,
                               fontFamily: 'Poppins',
                             ),
@@ -248,7 +250,10 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // Navigate to voice to text page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => VoiceToTextFunctionPage()),
+                              );
                             },
                             child: const Text('Record Now'),
                           ),
