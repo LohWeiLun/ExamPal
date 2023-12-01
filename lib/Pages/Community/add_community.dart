@@ -29,8 +29,8 @@ class _AddCommunityPageState extends State<AddCommunityPage> {
     if (value.isEmpty) {
       return 'Please enter a community name';
     }
-    if (value.length > 50) {
-      return 'Community name cannot exceed 50 characters';
+    if (value.length > 20) {
+      return 'Community name cannot exceed 20 characters';
     }
     return null;
   }
