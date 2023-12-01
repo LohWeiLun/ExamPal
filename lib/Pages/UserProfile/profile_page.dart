@@ -1,9 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Constants/theme.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../Constants/utils.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -69,6 +74,13 @@ class _ProfilePageState extends State<ProfilePage> {
       SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
+  }
+  Uint8List? _image;
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
   }
 
   @override

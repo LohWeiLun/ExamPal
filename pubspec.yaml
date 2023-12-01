@@ -36,7 +36,7 @@ dependencies:
   pdf: ^3.6.0
   path_provider: ^2.1.1
   percent_indicator: ^4.2.3
-  file_picker: ^6.0.0
+  file_picker: ^6.1.1
   speech_to_text: ^6.4.0
   animate_do: ^3.1.2
   camera: ^0.10.5+5
@@ -67,6 +67,7 @@ dependencies:
   get_storage:
   get:
 
+
   firebase_core: ^2.22.0
   firebase_auth: ^4.14.0
   firebase_storage: ^11.5.1
@@ -79,6 +80,10 @@ dependencies:
   timezone: ^0.9.2
   http: ^1.1.0
   shared_preferences: ^2.2.2
+
+
+  dio: ^5.3.4
+  firebase_database: ^10.3.5
 
 dev_dependencies:
   flutter_test:

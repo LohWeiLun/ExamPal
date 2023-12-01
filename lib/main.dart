@@ -33,6 +33,8 @@ import 'package:provider/provider.dart';
 import 'package:exampal/Constants/colors.dart';
 import 'Constants/theme.dart';
 import 'Constants/theme_services.dart';
+import 'Pages/Community/add_community.dart';
+import 'Pages/Community/community_mainpage.dart';
 import 'Pages/Timetable/add_schedule_ui.dart';
 import 'Pages/Figma/fastnotepage.dart';
 import 'Pages/Timetable/schedule_mainpage.dart';
@@ -64,7 +66,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotification();
   tz.initializeTimeZones();
-
   //final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.local);
   runApp(const MyApp());
@@ -102,9 +103,9 @@ class MyApp extends StatelessWidget {
         //home: AddPostScreen(),
         //home: FriendsHomescreen(),
         //home: FeedScreen(),
-        //home: SchedulePage(),
-        //home: StudyScheduleForm(),
-
+        //home: AddCommunityPage(),
+        home: YourCommunityPage(),
+/*
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -112,7 +113,7 @@ class MyApp extends StatelessWidget {
               // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
                 // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return UpdatedHomePage();
+                return RootPage();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text('${snapshot.error}'),
@@ -129,9 +130,7 @@ class MyApp extends StatelessWidget {
             return SignInPage();
           },
         ),
-
-
-
+ */
         //home: Homepage(),
         //home: NoteSummarizationPage(),
         //home: VoiceToText(),
@@ -150,7 +149,7 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  final List<Widget> _tabItems = [TimerPage(), UpdatedHomePage(), ProfilePage()];
+  final List<Widget> _tabItems = [YourCommunityPage(), UpdatedHomePage(), ProfilePage()];
   int _activePage = 0;
 
   @override
