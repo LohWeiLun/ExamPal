@@ -1,13 +1,14 @@
+import 'package:exampal/Pages/Figma/testFastNote.dart';
+import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
 import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
-import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
-import 'package:exampal/Pages/Figma/fastnotepage.dart';
+import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
-import 'package:exampal/Pages/Notes/fileconversion_page.dart';
-import '../Voice-ToText/voicetotext.dart';
 import '../Figma/course_screen.dart';
+import '../FileConversion/FileConversionPage.dart';
+import 'fastnotepage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -19,16 +20,24 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [
-          AppBar(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Body(),
-            ),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/homepage.jpg'),
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
+        child: Column(
+          children: [
+            const AppBar(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Body(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -61,7 +70,7 @@ class Body extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
-                        ?.copyWith(color: Colors.blue), // Change color as desired
+                        ?.copyWith(color: Colors.blue.withOpacity(0)), // Change color as desired
                   ),
                 )
               ],
@@ -101,13 +110,13 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const FastNoteFunctionPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextFunctionPage()));
     } else if (category.name == 'File Conversion') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FileConversionPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
     }
   }
 
@@ -174,8 +183,8 @@ class AppBar extends StatelessWidget {
           end: Alignment.bottomRight,
           stops: [0.1, 0.5],
           colors: [
-            Color(0xff886ff2),
-            Color(0xff6849ef),
+            Color(0x66886ff2),
+            Color(0x666849ef),
           ],
         ),
       ),

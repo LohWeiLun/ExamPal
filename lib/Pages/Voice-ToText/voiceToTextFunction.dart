@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class VoiceToTextFunctionPage extends StatefulWidget {
-  const VoiceToTextFunctionPage({Key? key});
+  const VoiceToTextFunctionPage({Key? key}) : super(key: key);
 
   @override
   _VoiceToTextFunctionPageState createState() =>
@@ -12,6 +15,29 @@ class VoiceToTextFunctionPage extends StatefulWidget {
 
 class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
   String? _selectedFileName;
+  String? _convertedText;
+  late String _filePath;
+
+  Future<void> _convertAudioToText(String filePath) async {
+    var url = 'http://172.22.6.216:5000/upload';
+    var request = http.MultipartRequest('POST', Uri.parse(url))
+      ..files.add(await http.MultipartFile.fromPath('file', filePath));
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseBody = await response.stream.bytesToString();
+        setState(() {
+          _convertedText = responseBody;
+        });
+        print('Text from server: $responseBody');
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending request: $e');
+    }
+  }
 
   Future<void> _addMedia() async {
     try {
@@ -21,24 +47,35 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
       );
 
       if (result != null) {
-        final filePath = result.files.single.name;
+        _filePath = result.files.single.path!;
+        final fileName = path.basename(_filePath);
         final fileType = result.files.single.extension;
 
         if (fileType == 'mp3') {
           setState(() {
-            _selectedFileName = filePath;
+            _selectedFileName = fileName;
           });
-          print('Selected file: $filePath');
+          print('Selected file: $fileName');
         } else {
-          // Handle unsupported file type selected
           print('Unsupported file type selected');
+          return;
         }
       } else {
         print('User canceled the file picker');
+        return;
       }
+
+      // Call conversion function after setting _filePath
+      await _convertAudioToText(_filePath);
     } catch (e) {
       print('Error selecting file: $e');
     }
+  }
+
+  void _clearSelection() {
+    setState(() {
+      _selectedFileName = null;
+    });
   }
 
   @override
@@ -47,14 +84,14 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
       appBar: AppBar(
         title: const Text('Voice-To-Text'),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/voiceToText.png'), // Replace with your image path
-            fit: BoxFit.cover,
-          ),
-        ),
+      body: SingleChildScrollView(
         child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/voiceToText.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
           padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,7 +112,7 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                     SizedBox(height: 0),
                     Container(
                       width: double.infinity,
-                      height: 120,
+                      height: 200,
                       decoration: BoxDecoration(
                         color: Colors.lightBlue[100],
                         borderRadius: BorderRadius.circular(20),
@@ -84,44 +121,59 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'Attach Files',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: InkWell(
-                                  onTap: _addMedia,
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 50,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
                             if (_selectedFileName != null)
-                              Padding(
-                                padding: EdgeInsets.only(top: 10),
-                                child: Center(
-                                  child: Text(
-                                    'Selected File: $_selectedFileName',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/mp3.png',
+                                    width: 50,
+                                    height: 50,
                                   ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Selected File: $_selectedFileName',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.cancel),
+                                          onPressed: _clearSelection,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            if (_selectedFileName != null)
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_selectedFileName != null) {
+                                    await _convertAudioToText(_filePath);
+                                  }
+                                },
+                                child: Text('Convert Now'),
+                              ),
+                            if (_selectedFileName == null)
+                              InkWell(
+                                onTap: _addMedia,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 50,
+                                  color: Colors.white,
                                 ),
                               ),
                           ],
@@ -131,7 +183,45 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              // SizedBox(height: 05),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '  Converted Text',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  Container(
+                    height: 300, // Adjust the height as needed
+                    width: 250, // Adjust the width as needed
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue[100],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            _convertedText ?? 'Converted text will appear here',
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -162,15 +252,60 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      VoiceToTextPage(), // Replace VoiceToTextPage with your actual page
-                                ),
+                                MaterialPageRoute(builder: (context) => VoiceToTextFunctionPage()),
                               );
                             },
                             child: const Text('Record Now'),
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+
+                ],
+              ),
+              SizedBox(height: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '  Text To Speech',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Existing content...
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: TextField(
+                                  maxLines: 5,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Enter text here...',
+                                  ),
+                                  onChanged: (value) {
+                                    // Do something with the entered text
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
