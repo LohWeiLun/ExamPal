@@ -1,8 +1,16 @@
 import 'package:exampal/Models/course.dart';
+import 'package:exampal/Pages/Figma/testFastNote.dart';
+import 'package:exampal/Pages/FileConversion/FileConversionPage.dart';
+import 'package:exampal/Pages/OCR/imageToText.dart';
+import 'package:exampal/Pages/UserProfile/profile_page.dart';
+import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
+import 'package:exampal/Pages/community_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Widgets/custom_icon_button.dart';
+import '../Community/community_mainpage.dart';
 import '../Login/updated_loginpage.dart';
+import '../Timetable/schedule_mainpage.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -31,7 +39,7 @@ class _CourseScreenState extends State<CourseScreen> {
                         padding: const EdgeInsets.only(top: 12),
                         child: Align(
                           child: Text(
-                            'Development',
+                            'Services',
                             style: Theme.of(context).textTheme.displayMedium?.copyWith(
                               fontSize: 22, // Adjust the font size as needed
                               fontWeight: FontWeight.bold, // Make the text bold
@@ -88,42 +96,110 @@ class CourseContainer extends StatelessWidget {
     required this.course,
   }) : super(key: key);
 
+  void navigateToPage(BuildContext context) {
+    switch (course.name) {
+      case "Schedule":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SchedulePage(), // Navigate to SchedulePage
+          ),
+        );
+        break;
+      case "Notes Summarization":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FastNoteBackupFunctionPage(), // Navigate to FastNotePage
+          ),
+        );
+        break;
+      case "Voice To Text":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VoiceToTextFunctionPage(), // Navigate to VoiceToTextPage
+          ),
+        );
+        break;
+      case "File Conversion":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FileConversionFunctionPage(), // Navigate to VoiceToTextPage
+          ),
+        );
+        break;
+      case "Image To Text Recognition":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ImageToTextPage(), // Navigate to VoiceToTextPage
+          ),
+        );
+        break;
+      case "Community":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => YourCommunityPage(), // Navigate to VoiceToTextPage
+          ),
+        );
+        break;
+      case "Profile":
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(), // Navigate to VoiceToTextPage
+          ),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SignInPage(
-              ))),
+      onTap: () => navigateToPage(context), // Navigate based on the course selected
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
+          color: Colors.amber,
         ),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                course.thumbnail,
-                height: 60,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  course.thumbnail,
+                  height: 60,
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(course.name),
-                ],
+              const SizedBox(
+                width: 10,
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        course.name,
+                        style: TextStyle(
+                          // You can customize the text style here if needed
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
