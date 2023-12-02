@@ -1,7 +1,7 @@
 class Category {
   String thumbnail;
   String name;
-  int noOfCourses;
+  String noOfCourses;
 
   Category({
     required this.name,
@@ -13,22 +13,32 @@ class Category {
 List<Category> categoryList = [
   Category(
     name: 'Schedule',
-    noOfCourses: 55,
+    noOfCourses: 'Empowers users to meticulously plan their study sessions.',
     thumbnail: 'assets/icons/laptop.jpg',
   ),
   Category(
     name: 'Fast Note',
-    noOfCourses: 20,
+    noOfCourses: 'Quickly capture essential exam notes anytime, anywhere.',
     thumbnail: 'assets/icons/accounting.jpg',
   ),
   Category(
     name: 'Voice-To-Text',
-    noOfCourses: 16,
+    noOfCourses: 'Transform spoken thoughts into written notes effortlessly',
     thumbnail: 'assets/icons/photography.jpg',
   ),
   Category(
     name: 'File Conversion',
-    noOfCourses: 25,
+    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
+    thumbnail: 'assets/icons/design.jpg',
+  ),
+  Category(
+    name: 'File Conversion',
+    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
+    thumbnail: 'assets/icons/design.jpg',
+  ),
+  Category(
+    name: 'File Conversion',
+    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
     thumbnail: 'assets/icons/design.jpg',
   ),
 ];

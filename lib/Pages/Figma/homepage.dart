@@ -30,7 +30,7 @@ class _HomepageState extends State<Homepage> {
         ),
         child: Column(
           children: [
-            const AppBar(),
+            AppBarWidget(),
             Expanded(
               child: SingleChildScrollView(
                 child: Body(),
@@ -63,14 +63,15 @@ class Body extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     // Navigate to the FeaturedScreen page when "See All" is tapped
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CourseScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CourseScreen()));
                   },
                   child: Text(
                     "See All",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.blue.withOpacity(0)), // Change color as desired
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.black), // Change color as desired
                   ),
                 )
               ],
@@ -103,6 +104,7 @@ class Body extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final Category category;
+
   const CategoryCard({
     Key? key,
     required this.category,
@@ -110,13 +112,23 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SchedulePage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const VoiceToTextFunctionPage()));
     } else if (category.name == 'File Conversion') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const FileConversionFunctionPage()));
     }
   }
 
@@ -162,15 +174,15 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({
+class AppBarWidget extends StatelessWidget {
+  const AppBarWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 10),
       height: 200,
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -188,34 +200,40 @@ class AppBar extends StatelessWidget {
           ],
         ),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hello,\nGood Morning",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SettingsPage()),
-                  );
-                },
-                child: CircleButton(
-                  icon: Icons.settings, onPressed: () {  },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Hello,\nGood Morning",
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const SearchTextField()
-        ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SettingsPage()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const SearchTextField(),
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:exampal/Pages/Figma/chatPDF.dart';
+import 'package:exampal/Pages/Figma/homepage.dart';
+import 'package:exampal/Pages/FileConversion/FileConversionPage.dart';
 import 'package:exampal/Pages/Login/updated_homepage.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
@@ -93,7 +96,7 @@ class MyApp extends StatelessWidget {
         //     return SignInPage();
         //   },
         // ),
-        home: FastNoteBackupFunctionPage(),
+        home: Homepage(),
       ),
     );
   }
