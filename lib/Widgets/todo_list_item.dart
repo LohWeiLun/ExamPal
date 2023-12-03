@@ -6,6 +6,7 @@ class TodoListItem extends StatelessWidget {
   final int index;
   late bool isChecked;
   final VoidCallback onPress;
+  final VoidCallback? onDelete; // Add this line to make onDelete optional
 
   TodoListItem({
     required this.text,
@@ -13,6 +14,7 @@ class TodoListItem extends StatelessWidget {
     required this.onPress,
     required this.id,
     required this.index,
+    this.onDelete, // Add this line to make onDelete optional
   });
 
   @override
@@ -34,27 +36,27 @@ class TodoListItem extends StatelessWidget {
               children: [
                 isChecked
                     ? GestureDetector(
-                        onTap: onPress,
-                        child: Container(
-                          padding: const EdgeInsets.all(4.5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100.0),
-                            color: const Color(0xFF8E13BA),
-                          ),
-                          child: const Icon(
-                            Icons.check,
-                            size: 15.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
+                  onTap: onPress,
+                  child: Container(
+                    padding: const EdgeInsets.all(4.5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      color: const Color(0xFF8E13BA),
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      size: 15.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
                     : GestureDetector(
-                        onTap: onPress,
-                        child: const Icon(
-                          Icons.circle_outlined,
-                          color: Color(0xFF8E13BA),
-                        ),
-                      ),
+                  onTap: onPress,
+                  child: const Icon(
+                    Icons.circle_outlined,
+                    color: Color(0xFF8E13BA),
+                  ),
+                ),
                 const SizedBox(
                   width: 15.0,
                 ),
@@ -67,6 +69,14 @@ class TodoListItem extends StatelessWidget {
                 ),
               ],
             ),
+            if (onDelete != null) // Display delete icon only if onDelete is provided
+              GestureDetector(
+                onTap: onDelete!,
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white, // You can customize the delete icon color
+                ),
+              ),
           ],
         ),
       ),

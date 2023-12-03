@@ -12,18 +12,19 @@ class ScheduleGenerator {
     List<Map<String, dynamic>> schedule = [];
 
     int totalDays = examDate.difference(startDate).inDays;
-    int totalStudyTime = totalDays * 3; // Assuming 3 hours of study per day
+    int maxStudyHoursPerDay = 4;
+    int totalStudyTime = totalDays * maxStudyHoursPerDay;
 
     // Remove importance factor
     List<Map<String, dynamic>> weightedTopics = topics;
 
     // Calculate study time based on difficulty
     List<Map<String, dynamic>> studyTimePerTopic =
-        calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
+    calculateStudyTimePerTopic(weightedTopics, totalStudyTime);
 
     // Apply study mode preference
     List<Map<String, dynamic>> distributedTopics =
-        applyStudyModePreference(studyMode, studyTimePerTopic);
+    applyStudyModePreference(studyMode, studyTimePerTopic);
 
     DateTime currentDate = startDate;
     bool taskCompletion = false;
@@ -31,11 +32,16 @@ class ScheduleGenerator {
     for (int i = 0; i < totalDays; i++) {
       if (currentDate.isBefore(examDate)) {
         Map<String, dynamic> sessionTopic =
-            distributedTopics[i % distributedTopics.length];
+        distributedTopics[i % distributedTopics.length];
 
         // Calculate session duration based on difficulty
         double sessionDuration =
-            calculateSessionDuration(sessionTopic['difficulty']);
+        calculateSessionDuration(sessionTopic['difficulty']);
+
+        // Check if the session duration exceeds the maximum limit
+        if (sessionDuration > maxStudyHoursPerDay) {
+          sessionDuration = maxStudyHoursPerDay.toDouble();
+        }
 
         schedule.add({
           'date': currentDate,
@@ -51,6 +57,23 @@ class ScheduleGenerator {
     return schedule;
   }
 
+  static int calculateDailyStudyTime(String studyMode) {
+    // Adjust the daily study time based on study mode
+    return studyMode == 'focus' ? 3 : 2;
+  }
+
+  static List<Map<String, dynamic>> calculateWeightedTopics(
+      List<Map<String, dynamic>> topics) {
+    // Add an importance factor to each topic
+    return topics.map((topic) {
+      return {
+        'topic': topic['topic'],
+        'difficulty': topic['difficulty'],
+        'importance': topic['importance'] ?? 1, // Default importance is 1
+      };
+    }).toList();
+  }
+
   static List<Map<String, dynamic>> calculateStudyTimePerTopic(
       List<Map<String, dynamic>> topics, int totalStudyTime) {
     double totalDifficulty =
@@ -64,6 +87,7 @@ class ScheduleGenerator {
         'topic': topic['topic'],
         'studyTime': studyTime,
         'difficulty': topic['difficulty'],
+        'importance': topic['importance'],
       };
     }).toList();
   }
