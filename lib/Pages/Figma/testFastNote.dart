@@ -1,7 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:exampal/Pages/Figma/chatPDF.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart' as http;
 
 import '../ChatGPT/chat_screen.dart';
 import '../Notes/loadUrl.dart';
@@ -20,7 +27,14 @@ class _FastNoteBackupFunctionPageState
   int pageNumber = 0;
   bool pdfReady = false;
 
+  String? _selectedFileName;
+  String _selectedFilePath = "";
+  late String _iconPath = 'assets/icons/pdf.png';
+
   List<String> userFiles = [];
+  String? additionalText = " ";
+
+  final url = 'http://192.168.68.104:5000/upload_pdf';
 
   @override
   void initState() {
@@ -74,14 +88,14 @@ class _FastNoteBackupFunctionPageState
                   children: [
                     Text(
                       "Recent Files",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontFamily: 'Poppins',
-                        ),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: 'Poppins',
+                      ),
                     ),
                     SizedBox(
-                      height: 12,
+                      height: 5,
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.3,
@@ -100,14 +114,16 @@ class _FastNoteBackupFunctionPageState
                           return ListTile(
                             leading: Image.asset('assets/icons/pdf.png'),
                             title: Text(
-                              userFiles.length > index ? userFiles[index] : "", // Display file numbers or custom names
+                              userFiles.length > index
+                                  ? userFiles[index]
+                                  : "", // Display file numbers or custom names
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
                             subtitle: Text(
-                              "File ${index + 1}",// Show filenames
+                              "File ${index + 1}", // Show filenames
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
@@ -126,16 +142,16 @@ class _FastNoteBackupFunctionPageState
                           );
                         },
                         separatorBuilder: ((context, index) => Divider(
-                          color: Colors.white,
-                        )),
+                              color: Colors.white,
+                            )),
                         itemCount: userFiles.length,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 5),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 8),
+                        SizedBox(height: 5),
                         Text(
                           "Functions",
                           style: TextStyle(
@@ -144,7 +160,7 @@ class _FastNoteBackupFunctionPageState
                             fontFamily: 'Poppins',
                           ),
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(height: 5),
                         isUrlInputVisible
                             ? UrlInputContainer(context)
                             : OriginalFunctionsContainer(context),
@@ -169,25 +185,150 @@ class _FastNoteBackupFunctionPageState
                           },
                         ),
                       ),
-                    SizedBox(height: 20,),
-                    Text(
-                      '  Notes Summarization',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                    SizedBox(
-                      height: 200,
-                      child:  Container(
-                        decoration: BoxDecoration(
-                          color: Colors.amber,
-                          borderRadius: BorderRadius.circular(20),
+                    SizedBox(height: 8),
+                    Column(
+                      children: [
+                        Text(
+                          "Notes Summarization",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Poppins',
+                          ),
                         ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '  Attach Files',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: _selectedFileName != null
+                                    ? Column(
+                                        children: [
+                                          SizedBox(height: 16),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    _iconPath,
+                                                    width: 100,
+                                                    height: 100,
+                                                  ),
+                                                ],
+                                              ),
+                                              if (_selectedFileName != null)
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      'Selected File: $_selectedFileName',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    IconButton(
+                                                      icon: Icon(Icons.cancel),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _selectedFileName =
+                                                              null;
+                                                          _selectedFilePath =
+                                                              "";
+                                                          _iconPath =
+                                                              'assets/icons/pdf.png';
+                                                        });
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 25),
+                                          // Display Summarize Notes button when a file is uploaded
+                                          ElevatedButton(
+                                            onPressed: summarizeNotes,
+                                            child: Text('Summarize Notes'),
+                                          ),
+                                          SizedBox(height: 10),
+                                          // Adjust spacing here
+                                          // Additional text field with copy icon
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Source_id: ${additionalText ?? "N/A"}',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.copy,
+                                                  size: 16,
+                                                ),
+                                                onPressed: () {
+                                                  Clipboard.setData(
+                                                    ClipboardData(
+                                                      text:
+                                                          additionalText ?? "",
+                                                    ),
+                                                  );
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Source ID copied to clipboard'),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : InkWell(
+                                        onTap: addMedia,
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 50,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -227,7 +368,7 @@ class _FastNoteBackupFunctionPageState
               children: [
                 LoadURL(context),
                 const SizedBox(width: 12),
-                CreatePDF(context),
+                ChatGPT(context),
               ],
             ),
           ),
@@ -309,38 +450,109 @@ class _FastNoteBackupFunctionPageState
     );
   }
 
-  Widget CreatePDF(BuildContext context) {
+  Widget ChatGPT(BuildContext context) {
     return Expanded(
-      child: GestureDetector(onTap: () {
-        // Navigate to ChatScreen when the container is tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ChatScreen()),
-        );
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.yellow[100],
-          borderRadius: BorderRadius.circular(12),
+      child: GestureDetector(
+        onTap: () {
+          // Navigate to ChatScreen when the container is tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatScreen()),
+          );
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.yellow[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                'assets/icons/chatgpt.png',
+                width: 350,
+                height: 60,
+              ),
+              Text(
+                'ChatGPT',
+                style: TextStyle(color: Colors.black87),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              'assets/icons/chatgpt.png',
-              width: 350,
-              height: 60,
-            ),
-            Text(
-              'ChatGPT',
-              style: TextStyle(color: Colors.black87),
-            ),
-          ],
-        ),
-      ),
       ),
     );
+  }
+
+  Future<void> summarizeNotes() async {
+    if (_selectedFilePath.isNotEmpty) {
+      var request = http.MultipartRequest('POST', Uri.parse('http://192.168.68.104:5000/upload_pdf'));
+      request.files.add(await http.MultipartFile.fromPath('pdf_file', _selectedFilePath));
+
+      try {
+        var response = await request.send();
+
+        if (response.statusCode == 200) {
+          var responseData = await response.stream.bytesToString();
+          var parsedData = json.decode(responseData);
+
+          var sourceId = parsedData['Source ID'];
+          setState(() {
+            additionalText = sourceId.toString();
+          });
+
+          // Navigate to ChatPDF page after sourceId is generated
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatPDFPage(sourceId: sourceId.toString())),
+          );
+        } else {
+          // Handle other status codes if needed
+        }
+      } catch (error) {
+        print('Error: $error');
+        // Handle errors here
+      }
+    } else {
+      // Handle case when no file is selected
+    }
+  }
+
+  Future<void> addMedia() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+
+      // Use the file for your desired functionality
+      // For example, you can upload it to Firebase Storage
+      await uploadFileToStorage(file);
+
+      setState(() {
+        _selectedFileName = file.path.split('/').last;
+        _selectedFilePath = file.path;
+        // You may want to update _iconPath based on the file type
+        // For simplicity, assuming it's a PDF file for now
+        _iconPath = 'assets/icons/pdf.png';
+      });
+    }
+  }
+
+  Future<void> uploadFileToStorage(File file) async {
+    try {
+      // Replace 'post' with the childName where you want to store the file
+      String childName = '/post/${file.path.split('/').last}';
+      Reference ref = FirebaseStorage.instance.ref().child(childName);
+
+      await ref.putFile(file);
+
+      // Refresh the list of user files after uploading
+      await displayUserFiles();
+    } catch (e) {
+      print('Error uploading file: $e');
+      // Handle errors here
+    }
   }
 }

@@ -30,19 +30,19 @@ class _FileConversionFunctionPageState extends State<FileConversionFunctionPage>
       child: ListView(
         children: [
           // Merge PDF
-          _buildListTile(
-            title: 'Merge PDF',
-            subtitle: 'Combine multiple PDF files into a single PDF file.',
-            iconPath: 'assets/conversionIcons/merge.png',
-            onTap: () {},
-          ),
+          // _buildListTile(
+          //   title: 'Merge PDF',
+          //   subtitle: 'Combine multiple PDF files into a single PDF file.',
+          //   iconPath: 'assets/conversionIcons/merge.png',
+          //   onTap: () {},
+          // ),
           // Split PDF
-          _buildListTile(
-            title: 'Split PDF',
-            subtitle: 'Split a single PDF file into multiple PDF files.',
-            iconPath: 'assets/conversionIcons/split.png',
-            onTap: () {},
-          ),
+          // _buildListTile(
+          //   title: 'Split PDF',
+          //   subtitle: 'Split a single PDF file into multiple PDF files.',
+          //   iconPath: 'assets/conversionIcons/split.png',
+          //   onTap: () {},
+          // ),
           // Word to PDF
           _buildListTile(
             title: 'Word to PDF',
@@ -65,12 +65,12 @@ class _FileConversionFunctionPageState extends State<FileConversionFunctionPage>
             onTap: () {},
           ),
           // PDF to JPG
-          _buildListTile(
-            title: 'PDF to JPG',
-            subtitle: 'Convert a PDF file to a JPG image.',
-            iconPath: 'assets/conversionIcons/pdfTojpg.png',
-            onTap: () {},
-          ),
+          // _buildListTile(
+          //   title: 'PDF to JPG',
+          //   subtitle: 'Convert a PDF file to a JPG image.',
+          //   iconPath: 'assets/conversionIcons/pdfTojpg.png',
+          //   onTap: () {},
+          // ),
           // JPG to PDF
           _buildListTile(
             title: 'JPG to PDF',
