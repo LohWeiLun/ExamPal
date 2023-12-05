@@ -31,14 +31,4 @@ List<Category> categoryList = [
     noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
     thumbnail: 'assets/icons/design.jpg',
   ),
-  Category(
-    name: 'File Conversion',
-    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
-    thumbnail: 'assets/icons/design.jpg',
-  ),
-  Category(
-    name: 'File Conversion',
-    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
-    thumbnail: 'assets/icons/design.jpg',
-  ),
 ];
