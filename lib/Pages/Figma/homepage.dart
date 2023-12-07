@@ -30,7 +30,7 @@ class _HomepageState extends State<Homepage> {
         ),
         child: Column(
           children: [
-            const AppBar(),
+            AppBar(),
             Expanded(
               child: SingleChildScrollView(
                 child: Body(),
@@ -70,7 +70,7 @@ class Body extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
-                        ?.copyWith(color: Colors.black), // Change color as desired
+                        ?.copyWith(color: Colors.blue.withOpacity(0)), // Change color as desired
                   ),
                 )
               ],
@@ -110,7 +110,7 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));//const SchedulePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Fast Note') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {

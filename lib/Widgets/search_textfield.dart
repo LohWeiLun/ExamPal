@@ -22,7 +22,7 @@ class SearchTextField extends StatelessWidget {
         ),
         // helperText: "Search your topic",
         floatingLabelBehavior: FloatingLabelBehavior.never,
-        labelText: "Search your topic",
+        labelText: "Search your functions",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,

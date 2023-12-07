@@ -2,6 +2,7 @@ import 'package:exampal/Pages/Voice-ToText/voicetotext.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
+import '../OCR/imageToText.dart';
 import 'eachFilePage.dart';
 
 class FileConversionFunctionPage extends StatefulWidget {
@@ -81,6 +82,20 @@ class _FileConversionFunctionPageState extends State<FileConversionFunctionPage>
         ],
       ),
     ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to ImageToTextPage when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ImageToTextPage(), // Replace with your ImageToTextPage
+            ),
+          );
+        },
+        child: Icon(Icons.camera_alt), // Use any camera icon you prefer
+        backgroundColor: Colors.blue, // Customize the button color
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
