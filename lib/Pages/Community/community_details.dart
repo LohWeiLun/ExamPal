@@ -295,10 +295,37 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.download),
-                        onPressed: () {
-                          // Handle file download
-                          downloadFile(
-                              'community/${widget.communityName}/$fileName');
+                        onPressed: () async {
+                          // Implement the download functionality here
+                          try {
+                            // Get the reference to the file in Firebase Storage
+                            final ref = FirebaseStorage.instance
+                                .ref()
+                                .child('community/${widget.communityName}/$fileName');
+
+                            // Get the download URL for the file
+                            final String downloadURL = await ref.getDownloadURL();
+
+                            // Use Dio package to download the file
+                            Dio dio = Dio();
+                            final savePath = '/storage/emulated/0/Download/$fileName'; // Set your desired download path
+                            await dio.download(downloadURL, savePath);
+
+                            // Show a message or perform actions upon successful download
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('File downloaded successfully'),
+                              ),
+                            );
+                          } catch (error) {
+                            print('Error downloading file: $error');
+                            // Handle download errors here
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error downloading file'),
+                              ),
+                            );
+                          }
                         },
                       ),
                       IconButton(
@@ -471,24 +498,25 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
     }
   }
 
-  Future<void> downloadFile(String filePath) async {
-    try {
-      final ref = FirebaseStorage.instance.ref().child(filePath);
-      final url = await ref.getDownloadURL();
-      print(url);
-
-      final tempDir = await getExternalStorageDirectory();
-      final path = '${tempDir?.path}/$filePath';
-
-      await Dio().download(url, path);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Downloaded $filePath')),
-      );
-    } catch (error) {
-      print('Error downloading file: $error');
-    }
-  }
+  //
+  // Future<void> downloadFile(String filePath) async {
+  //   try {
+  //     final ref = FirebaseStorage.instance.ref().child(filePath);
+  //     final url = await ref.getDownloadURL();
+  //     print(url);
+  //
+  //     final tempDir = await getExternalStorageDirectory();
+  //     final path = '${tempDir?.path}/$filePath';
+  //
+  //     await Dio().download(url, path);
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Downloaded $filePath')),
+  //     );
+  //   } catch (error) {
+  //     print('Error downloading file: $error');
+  //   }
+  // }
 
   Future<void> _uploadFilesToStorage() async {
     for (int i = 0; i < _fileUploads.length; i++) {

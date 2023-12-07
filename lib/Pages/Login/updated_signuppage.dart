@@ -267,7 +267,7 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                         String res = await AuthMethods().signUpUser(
                           email: _emailController.text,
                           password: _passwordController.text,
-                          username: _nameController.text,
+                          name: _nameController.text,
                           file: _image!,
                         );
                         print(res);

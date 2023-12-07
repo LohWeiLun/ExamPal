@@ -7,9 +7,12 @@ import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Constants/theme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import '../../Constants/utils.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -19,10 +22,13 @@ class _ProfilePageState extends State<ProfilePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String? name = '';
   String? email = '';
-  String avatar = 'assets/icons/profile.png';
+  String? avatar = '';
 
   bool _nameValid = true;
   bool _emailValid = true;
+  String? photoUrl;
+
+  Uint8List? _image;
 
   TextEditingController editNameController = TextEditingController();
   TextEditingController editEmailController = TextEditingController();
@@ -37,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           name = snapshot.data()!["name"];
           email = snapshot.data()!["email"];
-          avatar = snapshot.data()!["photoUrl"];
+          photoUrl = snapshot.data()!["photoUrl"];
         });
       }
     });
@@ -64,42 +70,74 @@ class _ProfilePageState extends State<ProfilePage> {
           .update({
         "name": editNameController.text,
         "email": editEmailController.text,
-        "photoUrl": avatar,
       });
 
       SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+      if (_image != null) {
+        // If an image is selected, update the image
+        uploadImageAndUpdateFirebase();
+      }
     }
   }
 
-  Uint8List? _image;
-  final ImagePicker _picker = ImagePicker();
 
-  void selectImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      Uint8List im = await pickedFile.readAsBytes();
+  void uploadImageAndUpdateFirebase() async {
+    final pickedImage =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
       setState(() {
-        _image = im;
+        _image = imageBytes;
       });
+
+      try {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          final storageRef = FirebaseStorage.instance
+              .ref()
+              .child('user_profile_images')
+              .child('${currentUser.uid}.jpg');
+
+          final metadata = SettableMetadata(contentType: 'image/jpeg');
+          final uploadTask = storageRef.putData(_image!, metadata);
+
+          final TaskSnapshot downloadUrl = await uploadTask;
+
+          if (downloadUrl.state == TaskState.success) {
+            final imageUrl = await downloadUrl.ref.getDownloadURL();
+            setState(() {
+              photoUrl = imageUrl;
+            });
+
+            await FirebaseFirestore.instance
+                .collection("user")
+                .doc(currentUser.uid)
+                .update({"photoUrl": imageUrl});
+
+            final snackbar =
+            const SnackBar(content: Text("Image Updated!"));
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          } else {
+            final snackbar =
+            const SnackBar(content: Text("Image upload failed"));
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          }
+        }
+      } catch (e) {
+        final snackbar = const SnackBar(content: Text("Error uploading image"));
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _initializeData();
+    _getDataFromDatabase();
   }
-
-  Future<void> _initializeData() async {
-    await _getDataFromDatabase();
-    setState(() {
-      editNameController.text = name!;
-      editEmailController.text = email!;
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -147,37 +185,40 @@ class _ProfilePageState extends State<ProfilePage> {
                             blurRadius: 10,
                             color: Colors.black.withOpacity(0.1),
                             offset: const Offset(0, 10),
-                          )
+                          ),
                         ],
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: _image != null
-                              ? MemoryImage(Uint8List.fromList(_image!)) as ImageProvider<Object>
-                              : AssetImage(avatar),
+                          image: photoUrl != null && photoUrl!.isNotEmpty
+                              ? NetworkImage(photoUrl!) as ImageProvider<Object>
+                              : AssetImage("assets/icons/profile.png"),
                         ),
                       ),
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor,
+                      child: GestureDetector(
+                        onTap: () {
+                          uploadImageAndUpdateFirebase();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 4,
+                              color: Theme.of(context)
+                                  .scaffoldBackgroundColor,
+                            ),
+                            color: Colors.grey,
                           ),
-                          color: Colors.grey,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(
+                          child: const Icon(
                             Icons.edit,
                             color: Colors.white,
                           ),
-                          onPressed: selectImage,
                         ),
                       ),
                     ),
@@ -215,7 +256,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     contentPadding: const EdgeInsets.only(bottom: 3),
                     labelText: "Email",
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    errorText: _emailValid ? null : "Email is invalid",
+                    errorText:
+                    _emailValid ? null : "Email is invalid",
                     hintText: email!,
                     hintStyle: const TextStyle(
                       fontSize: 16,
@@ -243,9 +285,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.white,
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

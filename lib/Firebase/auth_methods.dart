@@ -22,12 +22,12 @@ class AuthMethods {
   Future<String> signUpUser({
     required String email,
     required String password,
-    required String username,
+    required String name,
     required Uint8List file,
   }) async {
     String res = "Some error occured";
     try {
-      if (email.isNotEmpty && password.isNotEmpty && username.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty && name.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
@@ -39,7 +39,7 @@ class AuthMethods {
             await StorageMethods().uploadImageToStorage('avatar', file, false);
 
         model.User user = model.User(
-          username: username,
+          name: name,
           uid: cred.user!.uid,
           email: email,
           photoUrl: photoUrl,

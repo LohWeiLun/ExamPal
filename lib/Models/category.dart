@@ -31,4 +31,14 @@ List<Category> categoryList = [
     noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
     thumbnail: 'assets/icons/design.jpg',
   ),
+  Category(
+    name: 'Image-To-Text',
+    noOfCourses: 'Convert images into editable and searchable text effortlessly.',
+    thumbnail: 'assets/icons/laptop.jpg',
+  ),
+  Category(
+    name: 'Dictonary',
+    noOfCourses: 'Unlock the meaning of any word at your fingertips.',
+    thumbnail: 'assets/icons/laptop.jpg',
+  ),
 ];

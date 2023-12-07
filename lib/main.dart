@@ -131,7 +131,7 @@ class _RootPageState extends State<RootPage> {
     return Scaffold(
       body: _tabItems[_activePage],
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: const Color(0xffecf1f2),
+        backgroundColor: Colors.transparent,
         color: const Color(0xffc1e1e9),
         animationDuration: const Duration(milliseconds: 300),
         index: 1,
