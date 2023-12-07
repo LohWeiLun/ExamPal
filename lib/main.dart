@@ -114,7 +114,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   final List<Widget> _tabItems = [
-    YourCommunityPage(),
+    CommunityPage(),
     Homepage(),
     ProfilePage()
   ];
