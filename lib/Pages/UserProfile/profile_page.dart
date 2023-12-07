@@ -7,6 +7,7 @@ import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Constants/theme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../Constants/utils.dart';
 
@@ -25,6 +26,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool _nameValid = true;
   bool _emailValid = true;
+  String? photoUrl;
+
+  Uint8List? _image;
 
   TextEditingController editNameController = TextEditingController();
   TextEditingController editEmailController = TextEditingController();
@@ -39,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           name = snapshot.data()!["name"];
           email = snapshot.data()!["email"];
-          avatar = snapshot.data()!["avatar"];
+          photoUrl = snapshot.data()!["photoUrl"];
         });
       }
     });
@@ -49,16 +53,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   updateProfileData() {
     setState(() {
-      editNameController.text
-          .trim()
-          .length > maxName || editNameController.text
-          .trim()
-          .isEmpty
+      editNameController.text.trim().length > maxName ||
+          editNameController.text.trim().isEmpty
           ? _nameValid = false
           : _nameValid = true;
-      editEmailController.text
-          .trim()
-          .isNotEmpty ||
+      editEmailController.text.trim().isNotEmpty ||
           EmailValidator.validate(editEmailController.text.trim())
           ? _emailValid = true
           : _emailValid = false;
@@ -67,20 +66,71 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_nameValid && _emailValid) {
       FirebaseFirestore.instance
           .collection("user")
-          .doc(FirebaseAuth.instance.currentUser!.uid).update(
-          {"name": editNameController.text,
-            "email": editEmailController.text,});
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "name": editNameController.text,
+        "email": editEmailController.text,
+      });
 
       SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+      if (_image != null) {
+        // If an image is selected, update the image
+        uploadImageAndUpdateFirebase();
+      }
     }
   }
-  Uint8List? _image;
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
+
+
+
+  void uploadImageAndUpdateFirebase() async {
+    final pickedImage =
+    await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
+      setState(() {
+        _image = imageBytes;
+      });
+
+      try {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          final storageRef = FirebaseStorage.instance
+              .ref()
+              .child('user_profile_images')
+              .child('${currentUser.uid}.jpg');
+
+          final metadata = SettableMetadata(contentType: 'image/jpeg');
+          final uploadTask = storageRef.putData(_image!, metadata);
+
+          final TaskSnapshot downloadUrl = await uploadTask;
+
+          if (downloadUrl.state == TaskState.success) {
+            final imageUrl = await downloadUrl.ref.getDownloadURL();
+            setState(() {
+              photoUrl = imageUrl;
+            });
+
+            await FirebaseFirestore.instance
+                .collection("user")
+                .doc(currentUser.uid)
+                .update({"photoUrl": imageUrl});
+
+            final snackbar =
+            const SnackBar(content: Text("Image Updated!"));
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          } else {
+            final snackbar =
+            const SnackBar(content: Text("Image upload failed"));
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          }
+        }
+      } catch (e) {
+        final snackbar = const SnackBar(content: Text("Error uploading image"));
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }
+    }
   }
 
   @override
@@ -125,28 +175,34 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 130,
                       height: 130,
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 4,
-                              color: Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: const Offset(0, 10))
-                          ],
-                          shape: BoxShape.circle,
-                          image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                "assets/icons/profile.png",
-                              ))),
+                        border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.1),
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: photoUrl != null && photoUrl!.isNotEmpty
+                              ? NetworkImage(photoUrl!) as ImageProvider<Object>
+                              : AssetImage("assets/icons/profile.png"),
+                        ),
+                      ),
                     ),
                     Positioned(
-                        bottom: 0,
-                        right: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          uploadImageAndUpdateFirebase();
+                        },
                         child: Container(
                           height: 40,
                           width: 40,
@@ -154,8 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             shape: BoxShape.circle,
                             border: Border.all(
                               width: 4,
-                              color: Theme
-                                  .of(context)
+                              color: Theme.of(context)
                                   .scaffoldBackgroundColor,
                             ),
                             color: Colors.grey,
@@ -164,7 +219,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             Icons.edit,
                             color: Colors.white,
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -176,18 +233,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TextField(
                   controller: editNameController,
                   decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 3),
-                      labelText: "Full Name",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      errorText: _nameValid
-                          ? null
-                          : "Name exceeded max limit ($maxName characters)",
-                      hintText: name!,
-                      hintStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      )),
+                    contentPadding: const EdgeInsets.only(bottom: 3),
+                    labelText: "Full Name",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    errorText: _nameValid
+                        ? null
+                        : "Name exceeded max limit ($maxName characters)",
+                    hintText: name!,
+                    hintStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -195,18 +253,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TextField(
                   controller: editEmailController,
                   decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.only(bottom: 3),
-                      labelText: "Email",
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      errorText: _emailValid
-                          ? null
-                          : "Email is invalid",
-                      hintText: email!,
-                      hintStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      )),
+                    contentPadding: const EdgeInsets.only(bottom: 3),
+                    labelText: "Email",
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    errorText:
+                    _emailValid ? null : "Email is invalid",
+                    hintText: email!,
+                    hintStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -216,19 +274,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () {
                       updateProfileData();
                     },
                     child: const Text(
                       "SAVE",
                       style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white),
+                        fontSize: 14,
+                        letterSpacing: 2.2,
+                        color: Colors.white,
+                      ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

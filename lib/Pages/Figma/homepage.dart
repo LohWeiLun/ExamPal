@@ -1,4 +1,5 @@
 import 'package:exampal/Pages/Figma/testFastNote.dart';
+import 'package:exampal/Pages/OCR/imageToText.dart';
 import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
 import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
@@ -6,7 +7,6 @@ import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Widgets/circle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
-import '../Figma/course_screen.dart';
 import '../FileConversion/FileConversionPage.dart';
 import 'fastnotepage.dart';
 
@@ -59,20 +59,6 @@ class Body extends StatelessWidget {
                     "Explore Categories",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CourseScreen()),
-                      );
-                    },
-                    child: Text(
-                      "See All",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.blue.withOpacity(0),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -119,6 +105,10 @@ class CategoryCard extends StatelessWidget {
       Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextFunctionPage()));
     } else if (category.name == 'File Conversion') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
+    }else if (category.name == 'Image-To-Text') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const ImageToTextPage()));
+    }else if (category.name == 'Dictonary') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
     }
   }
 
@@ -153,9 +143,12 @@ class CategoryCard extends StatelessWidget {
               height: 10,
             ),
             Text(category.name),
-            Text(
-              "${category.noOfCourses.toString()} courses",
-              style: Theme.of(context).textTheme.bodySmall,
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                "${category.noOfCourses.toString()} courses",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
           ],
         ),

@@ -1,6 +1,5 @@
 import 'package:exampal/Constants/utils.dart';
 import 'package:exampal/Firebase/auth_methods.dart';
-import 'package:exampal/Pages/Figma/course_screen.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
 import 'package:exampal/main.dart';
