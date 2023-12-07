@@ -15,11 +15,11 @@ class SearchTextField extends StatelessWidget {
           color: Colors.grey,
           size: 26,
         ),
-        suffixIcon: const Icon(
-          Icons.mic,
-          color: LightColors.kPrimaryColor,
-          size: 26,
-        ),
+        // suffixIcon: const Icon(
+        //   Icons.mic,
+        //   color: LightColors.kPrimaryColor,
+        //   size: 26,
+        // ),
         // helperText: "Search your topic",
         floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: "Search your functions",

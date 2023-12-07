@@ -129,6 +129,7 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: Colors.transparent,
       body: _tabItems[_activePage],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,

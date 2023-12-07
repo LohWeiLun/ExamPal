@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:exampal/Constants/theme.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 import '../../Constants/utils.dart';
 
@@ -24,11 +25,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String? email = '';
   String? avatar = '';
 
+
   bool _nameValid = true;
   bool _emailValid = true;
   String? photoUrl;
 
   Uint8List? _image;
+  DateTime? _selectedDate;
 
   TextEditingController editNameController = TextEditingController();
   TextEditingController editEmailController = TextEditingController();
@@ -44,14 +47,15 @@ class _ProfilePageState extends State<ProfilePage> {
           name = snapshot.data()!["name"];
           email = snapshot.data()!["email"];
           photoUrl = snapshot.data()!["photoUrl"];
+          _selectedDate = snapshot.data()!["dob"].toDate();
         });
       }
     });
   }
 
-  int maxName = 40;
+  int maxName = 20;
 
-  updateProfileData() {
+  updateProfileData() async {
     setState(() {
       editNameController.text.trim().length > maxName ||
           editNameController.text.trim().isEmpty
@@ -63,25 +67,59 @@ class _ProfilePageState extends State<ProfilePage> {
           : _emailValid = false;
     });
 
+
     if (_nameValid && _emailValid) {
-      FirebaseFirestore.instance
-          .collection("user")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({
-        "name": editNameController.text,
-        "email": editEmailController.text,
-      });
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        // Fetch user data from Firestore
+        DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance
+            .collection("user")
+            .doc(currentUser.uid)
+            .get();
 
-      SnackBar snackbar = const SnackBar(content: Text("Profile Updated!"));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        // Get the current user's data
+        String currentName = userSnapshot.data()!["name"] as String;
+        String currentEmail = userSnapshot.data()!["email"] as String;
+        DateTime currentDob = (userSnapshot.data()!["dob"] as Timestamp).toDate();
 
-      if (_image != null) {
-        // If an image is selected, update the image
-        uploadImageAndUpdateFirebase();
+        // Track changes made by the user
+        bool nameChanged = currentName != editNameController.text;
+        bool emailChanged = currentEmail != editEmailController.text;
+        bool dobChanged = _selectedDate != null && _selectedDate != currentDob;
+
+        String message = '';
+        if (nameChanged) {
+          message += 'Name updated successfully. ';
+        }
+        if (emailChanged) {
+          message += 'Email updated successfully. ';
+        }
+        if (dobChanged) {
+          message += 'Date of Birth updated successfully. ';
+        }
+
+        // Update profile data in Firestore
+        FirebaseFirestore.instance
+            .collection("user")
+            .doc(currentUser.uid)
+            .update({
+          "name": editNameController.text,
+          "email": editEmailController.text,
+          "dob": _selectedDate,
+        });
+
+        if (message.isNotEmpty) {
+          SnackBar snackbar = SnackBar(content: Text(message.trim()));
+          ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        }
+
+        if (_image != null) {
+          // If an image is selected, update the image
+          uploadImageAndUpdateFirebase();
+        }
       }
     }
   }
-
 
 
   void uploadImageAndUpdateFirebase() async {
@@ -234,7 +272,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   controller: editNameController,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(bottom: 3),
-                    labelText: "Full Name",
+                    labelText: "Username",
+                    labelStyle: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     errorText: _nameValid
                         ? null
@@ -255,6 +298,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(bottom: 3),
                     labelText: "Email",
+                    labelStyle: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     errorText:
                     _emailValid ? null : "Email is invalid",
@@ -265,6 +313,60 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.grey,
                     ),
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 35.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Date of Birth",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(bottom: 3),
+                              hintText: _selectedDate != null
+                                  ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
+                                  : 'Select your date of birth',
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: _selectedDate ?? DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
+
+                            if (pickedDate != null && pickedDate != _selectedDate) {
+                              setState(() {
+                                _selectedDate = pickedDate;
+                              });
+                            }
+                          },
+                          child: Icon(Icons.calendar_today),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -278,10 +380,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       updateProfileData();
                     },
                     child: const Text(
-                      "SAVE",
+                      "Save",
                       style: TextStyle(
                         fontSize: 14,
-                        letterSpacing: 2.2,
+                        letterSpacing: 2,
                         color: Colors.white,
                       ),
                     ),

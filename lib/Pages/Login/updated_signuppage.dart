@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class UpdatedSignUpPage extends StatefulWidget {
   @override
@@ -23,6 +23,7 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
   Uint8List? _image;
+  DateTime? _selectedDate;
 
   @override
   void dispose() {
@@ -40,6 +41,22 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
     });
   }
 
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
   bool passwordConfirmed() {
     if (_passwordController.text.trim() ==
         _confirmpasswordController.text.trim()) {
@@ -47,6 +64,11 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
     } else {
       return false;
     }
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
   }
 
   @override
@@ -152,16 +174,16 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                           children: [
                             _image != null
                                 ? CircleAvatar(
-                              radius: 64,
-                              backgroundImage: MemoryImage(_image!),
-                              backgroundColor: Colors.grey,
-                            )
+                                    radius: 64,
+                                    backgroundImage: MemoryImage(_image!),
+                                    backgroundColor: Colors.grey,
+                                  )
                                 : const CircleAvatar(
-                              radius: 64,
-                              backgroundImage: NetworkImage(
-                                  'https://i.stack.imgur.com/l60Hf.png'),
-                              backgroundColor: Colors.grey,
-                            ),
+                                    radius: 64,
+                                    backgroundImage: NetworkImage(
+                                        'https://i.stack.imgur.com/l60Hf.png'),
+                                    backgroundColor: Colors.grey,
+                                  ),
                             Positioned(
                               bottom: -10,
                               left: 80,
@@ -208,6 +230,7 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                         ),
                         child: TextField(
                           controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Email Address",
@@ -260,24 +283,77 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                         ),
                       ),
                     ),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 1800),
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(143, 148, 251, 1),
+                            ),
+                          ),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            _selectedDate != null
+                                ? '${DateFormat('dd/MM/yyyy').format(_selectedDate!)}'
+                                : 'Select Date of Birth',
+                            style: TextStyle(color: Colors.grey[700]),
+                          ),
+                          onTap: () => _selectDate(context),
+                          trailing: Icon(Icons.calendar_today),
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 30),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
-                        String res = await AuthMethods().signUpUser(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          name: _nameController.text,
-                          file: _image!,
-                        );
-                        print(res);
+                        if (_image == null) {
+                          // Show a Snackbar if no profile image is uploaded
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Please upload a profile image'),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else if (!isValidEmail(_emailController.text)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Please enter a valid email'),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else if (!passwordConfirmed()) {
+                          // Show a message or perform action for mismatched passwords
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Passwords do not match'),
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else {
+                          // Proceed with sign-up if passwords match
+                          String res = await AuthMethods().signUpUser(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            name: _nameController.text,
+                            file: _image!,
+                            dateOfBirth: _selectedDate ?? DateTime.now(),
+                          );
+                          print(res);
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignInPage(),
-                          ),
-                        );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignInPage(),
+                            ),
+                          );
+                        }
                       },
                       child: Container(
                         height: 50,
@@ -321,47 +397,6 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                         ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: Divider(
-                    //           thickness: 0.5,
-                    //           color: Colors.grey[400],
-                    //         ),
-                    //       ),
-                    //       const SizedBox(height: 40,),
-                    //       Padding(
-                    //         padding:
-                    //         const EdgeInsets.symmetric(horizontal: 10.0),
-                    //         child: Text(
-                    //           'Or Continue with',
-                    //           style: TextStyle(color:Colors.grey[400],),
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Divider(
-                    //           thickness: 0.5,
-                    //           color: Colors.grey[400],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 10,),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white, // Change the color to your preference
-                    //     borderRadius: BorderRadius.circular(10), // Adjust border radius if needed
-                    //   ),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       Image.asset('assets/images/google.png',height: 40, width: 40,),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ),
