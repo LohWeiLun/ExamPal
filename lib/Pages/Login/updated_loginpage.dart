@@ -3,10 +3,12 @@ import 'package:exampal/Firebase/auth_methods.dart';
 import 'package:exampal/Pages/Figma/course_screen.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/Login/updated_signuppage.dart';
+import 'package:exampal/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'forgotpassword_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -18,6 +20,8 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+
+
 
   @override
   void dispose() {
@@ -32,16 +36,15 @@ class _SignInPageState extends State<SignInPage> {
     });
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
-    if(res=="success"){
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> const Homepage()));
-
-  }else {
+    if (res == "success") {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const RootPage()));
+    } else {
       showSnackBar(context, res);
     }
     setState(() {
       _isLoading = false;
     });
-
   }
 
   @override
@@ -130,7 +133,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(30.0),
+                padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
                 child: Column(
                   children: <Widget>[
                     FadeInUp(
@@ -195,7 +198,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     FadeInUp(
                       duration: Duration(milliseconds: 1900),
                       child: GestureDetector(
@@ -258,14 +261,76 @@ class _SignInPageState extends State<SignInPage> {
                       },
                       child: FadeInUp(
                         duration: Duration(milliseconds: 2000),
-                        child: _isLoading ? const Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
-                          "Sign Up Now",
-                          style: TextStyle(
-                            color: Color.fromRGBO(143, 148, 251, 1),
-                          ),
-                        ),
+                        child: _isLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : const Text(
+                                "Sign Up Now",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                ),
+                              ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Divider(
+                    //           thickness: 0.5,
+                    //           color: Colors.grey[400],
+                    //         ),
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 40,
+                    //       ),
+                    //       Padding(
+                    //         padding:
+                    //             const EdgeInsets.symmetric(horizontal: 10.0),
+                    //         child: Text(
+                    //           'Or Continue with',
+                    //           style: TextStyle(
+                    //             color: Colors.grey[400],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Expanded(
+                    //         child: Divider(
+                    //           thickness: 0.5,
+                    //           color: Colors.grey[400],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     // Change the color to your preference
+                    //     borderRadius: BorderRadius.circular(
+                    //         10), // Adjust border radius if needed
+                    //   ),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       GestureDetector(
+                    //         onTap: _handleGoogleSignIn,
+                    //         child: FadeInUp(
+                    //           duration: Duration(milliseconds: 2200),
+                    //           child: SquareTile(
+                    //               imagePath: 'assets/images/google.png'),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),

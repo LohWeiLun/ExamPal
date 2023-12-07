@@ -154,13 +154,13 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                                 ? CircleAvatar(
                               radius: 64,
                               backgroundImage: MemoryImage(_image!),
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.grey,
                             )
                                 : const CircleAvatar(
                               radius: 64,
                               backgroundImage: NetworkImage(
                                   'https://i.stack.imgur.com/l60Hf.png'),
-                              backgroundColor: Colors.red,
+                              backgroundColor: Colors.grey,
                             ),
                             Positioned(
                               bottom: -10,
@@ -321,6 +321,47 @@ class _UpdatedSignUpPageState extends State<UpdatedSignUpPage> {
                         ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Divider(
+                    //           thickness: 0.5,
+                    //           color: Colors.grey[400],
+                    //         ),
+                    //       ),
+                    //       const SizedBox(height: 40,),
+                    //       Padding(
+                    //         padding:
+                    //         const EdgeInsets.symmetric(horizontal: 10.0),
+                    //         child: Text(
+                    //           'Or Continue with',
+                    //           style: TextStyle(color:Colors.grey[400],),
+                    //         ),
+                    //       ),
+                    //       Expanded(
+                    //         child: Divider(
+                    //           thickness: 0.5,
+                    //           color: Colors.grey[400],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 10,),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white, // Change the color to your preference
+                    //     borderRadius: BorderRadius.circular(10), // Adjust border radius if needed
+                    //   ),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       Image.asset('assets/images/google.png',height: 40, width: 40,),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Constants/utils.dart';
-import 'package:exampal/Firebase/auth_methods.dart';
+import 'package:exampal/Firebase/auth_service.dart';
 import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
