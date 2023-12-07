@@ -69,6 +69,9 @@ dependencies:
   google_mlkit_text_recognition: ^0.11.0
   permission_handler: ^10.2.0
 
+  #googleSignIn
+  google_sign_in: ^6.1.6
+
   uuid: ^4.2.1
   provider: ^6.0.5
   intl : ^0.18.1
@@ -162,6 +165,7 @@ flutter:
     - assets/office/word.png
     - assets/office/excel.png
     - assets/chatGPT/
+    - assets/images/google.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

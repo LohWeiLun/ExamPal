@@ -4,6 +4,7 @@ import 'package:exampal/Pages/Figma/chatPDF.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/FileConversion/FileConversionPage.dart';
 import 'package:exampal/Pages/Login/updated_homepage.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Providers/user_provider.dart';
@@ -19,9 +20,11 @@ import 'package:timezone/timezone.dart' as tz;
 import 'Notifications/notification_services.dart';
 import 'Pages/ChatGPT/providers/chats_providers.dart';
 import 'Pages/ChatGPT/providers/models_provider.dart';
+import 'Pages/Community/community_mainpage.dart';
 import 'Pages/Figma/testFastNote.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'Pages/Timetable/timer_page.dart';
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -96,7 +99,7 @@ class MyApp extends StatelessWidget {
         //     return SignInPage();
         //   },
         // ),
-        home: Homepage(),
+        home: SignInPage(),
       ),
     );
   }
@@ -111,11 +114,17 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   final List<Widget> _tabItems = [
-    TimerPage(),
-    UpdatedHomePage(),
+    YourCommunityPage(),
+    Homepage(),
     ProfilePage()
   ];
-  int _activePage = 0;
+  int _activePage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _activePage = 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +134,7 @@ class _RootPageState extends State<RootPage> {
         backgroundColor: const Color(0xffecf1f2),
         color: const Color(0xffc1e1e9),
         animationDuration: const Duration(milliseconds: 300),
+        index: 1,
         onTap: (index) {
           setState(() {
             _activePage = index;
@@ -149,8 +159,7 @@ class _RootPageState extends State<RootPage> {
   }
 }
 
-//
-//
+
 // import 'package:exampal/Pages/ChatGPT/providers/chats_providers.dart';
 // import 'package:exampal/Pages/ChatGPT/providers/models_provider.dart';
 // import 'package:flutter/material.dart';

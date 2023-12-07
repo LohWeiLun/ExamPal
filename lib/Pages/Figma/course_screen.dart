@@ -4,7 +4,6 @@ import 'package:exampal/Pages/FileConversion/FileConversionPage.dart';
 import 'package:exampal/Pages/OCR/imageToText.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
-import 'package:exampal/Pages/community_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../Widgets/custom_icon_button.dart';
