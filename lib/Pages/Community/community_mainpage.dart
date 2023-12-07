@@ -246,174 +246,165 @@ class _CommunityPageState extends State<CommunityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Community'),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+        appBar: AppBar(
+          title: Text('Community'),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-            vertical: 15.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 15.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Your Community',
+                          style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddCommunityPage()),
+                          );
+                        },
+                        child: const CircleAvatar(
+                          radius: 25.0,
+                          backgroundColor: Color(0xffc1e1e9),
+                          child: Icon(
+                            Icons.add,
+                            size: 20.0,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  // User Communities Section
+                  if (userCommunityNames.isEmpty)
+                    const Center(
+                        child: Text(
+                          'No Communities Yet!',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ))
+                  else
+                    Column(
+                      children: List.generate(userCommunityNames.length, (index) {
+                        if (userCommunityDetails.length > index) {
+                          return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  // Check if the community is private
+                                  if (userCommunityDetails[index]['isPrivate']) {
+                                    // If private, show password dialog
+                                    _showPasswordDialog(userCommunityNames[index]);
+                                  } else {
+                                    // If not private, directly navigate to community detail page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CommunityDetailPage(
+                                          communityName: userCommunityNames[index],
+                                          isPrivate: userCommunityDetails[index]['isPrivate'],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: CommunityList(
+                                  title: userCommunityNames[index],
+                                  desc: 'You Are the Owner',
+                                  colorl: Colors.blue,
+                                  isPrivate: userCommunityDetails[index]['isPrivate'],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          );
+                        } else {
+                          return Container(); // Return an empty container if details are not available yet
+                        }
+                      }),
+                    ),
+                  const SizedBox(height: 10),
+                  // Other Communities Section
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'Your Community',
-                      style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      'Other Communities',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddCommunityPage()),
-                      );
-                    },
-                    child: const CircleAvatar(
-                      radius: 25.0,
-                      backgroundColor: Color(0xffc1e1e9),
-                      child: Icon(
-                        Icons.add,
-                        size: 20.0,
-                        color: Colors.black87,
-                      ),
+                  if (otherCommunityNames.isEmpty)
+                    const Center(
+                        child: Text(
+                          'No Communities Yet!',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ))
+                  else
+                    Column(
+                      children: List.generate(otherCommunityNames.length, (index) {
+                        if (otherCommunityDetails.length > index) {
+                          return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  // Check if the community is private
+                                  if (otherCommunityDetails[index]['isPrivate']) {
+                                    // If private, show password dialog
+                                    _showPasswordDialog(otherCommunityNames[index]);
+                                  } else {
+                                    // If not private, directly navigate to community detail page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CommunityDetailPage(
+                                          communityName: otherCommunityNames[index],
+                                          isPrivate: otherCommunityDetails[index]['isPrivate'],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: CommunityList(
+                                  title: otherCommunityNames[index],
+                                  desc: 'Other Community',
+                                  colorl: Colors.green,
+                                  isPrivate: otherCommunityDetails[index]['isPrivate'],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          );
+                        } else {
+                          return Container(); // Return an empty container if details are not available yet
+                        }
+                      }),
                     ),
-                  ),
                 ],
               ),
-              const SizedBox(height: 10),
-              // User Communities Section
-              if (userCommunityNames.isEmpty)
-                const Center(
-                    child: Text(
-                      'No Communities Yet!',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ))
-              else
-                Column(
-                  children: List.generate(userCommunityNames.length, (index) {
-                    if (userCommunityDetails.length > index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              // Check if the community is private
-                              if (userCommunityDetails[index]['isPrivate']) {
-                                // If private, show password dialog
-                                _showPasswordDialog(userCommunityNames[index]);
-                              } else {
-                                // If not private, directly navigate to community detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CommunityDetailPage(
-                                      communityName: userCommunityNames[index],
-                                      isPrivate: userCommunityDetails[index]['isPrivate'],
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            child: CommunityList(
-                              title: userCommunityNames[index],
-                              desc: 'You Are the Owner',
-                              colorl: Colors.blue,
-                              isPrivate: userCommunityDetails[index]['isPrivate'],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    } else {
-                      return Container(); // Return an empty container if details are not available yet
-                    }
-                  }),
-                ),
-              const SizedBox(height: 10),
-              // Other Communities Section
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Other Communities',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-              if (otherCommunityNames.isEmpty)
-                const Center(
-                    child: Text(
-                      'No Communities Yet!',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ))
-              else
-                Column(
-                  children: List.generate(otherCommunityNames.length, (index) {
-                    if (otherCommunityDetails.length > index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              // Check if the community is private
-                              if (otherCommunityDetails[index]['isPrivate']) {
-                                // If private, show password dialog
-                                _showPasswordDialog(otherCommunityNames[index]);
-                              } else {
-                                // If not private, directly navigate to community detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CommunityDetailPage(
-                                      communityName: otherCommunityNames[index],
-                                      isPrivate: otherCommunityDetails[index]['isPrivate'],
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            child: CommunityList(
-                              title: otherCommunityNames[index],
-                              desc: 'Other Community',
-                              colorl: Colors.green,
-                              isPrivate: otherCommunityDetails[index]['isPrivate'],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    } else {
-                      return Container(); // Return an empty container if details are not available yet
-                    }
-                  }),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+            ),
+            ),
+        );
+    }
 }

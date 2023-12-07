@@ -22,19 +22,17 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/homepage.jpg'),
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
+        child: const Column(
           children: [
             AppBar(),
             Expanded(
-              child: SingleChildScrollView(
                 child: Body(),
-              ),
             ),
           ],
         ),
@@ -48,58 +46,62 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Explore Categories",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Navigate to the FeaturedScreen page when "See All" is tapped
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CourseScreen()));
-                  },
-                  child: Text(
-                    "See All",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.blue.withOpacity(0)), // Change color as desired
+    return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Explore Categories",
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                )
-              ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CourseScreen()),
+                      );
+                    },
+                    child: Text(
+                      "See All",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.blue.withOpacity(0),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          GridView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 8,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.8,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 24,
-            ),
-            itemBuilder: (context, index) {
-              return CategoryCard(
-                category: categoryList[index],
-              );
-            },
-            itemCount: categoryList.length,
-          ),
-        ],
+        ];
+      },
+      body: GridView.builder(
+        shrinkWrap: true,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 8,
+        ),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.8,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 24,
+        ),
+        itemBuilder: (context, index) {
+          return CategoryCard(
+            category: categoryList[index],
+          );
+        },
+        itemCount: categoryList.length,
       ),
     );
   }
 }
+
 
 class CategoryCard extends StatelessWidget {
   final Category category;
