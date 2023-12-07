@@ -6,12 +6,12 @@ import '../../Widgets/community_list.dart';
 import 'add_community.dart';
 import 'community_details.dart';
 
-class YourCommunityPage extends StatefulWidget {
+class CommunityPage extends StatefulWidget {
   @override
-  _YourCommunityPageState createState() => _YourCommunityPageState();
+  _CommunityPageState createState() => _CommunityPageState();
 }
 
-class _YourCommunityPageState extends State<YourCommunityPage> {
+class _CommunityPageState extends State<CommunityPage> {
   late List<String> userCommunityNames = [];
   late List<String> otherCommunityNames = [];
   late List<Map<String, dynamic>> userCommunityDetails = [];

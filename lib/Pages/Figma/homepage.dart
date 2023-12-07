@@ -110,7 +110,7 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
     } else if (category.name == 'Fast Note') {
       Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {

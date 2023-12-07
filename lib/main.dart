@@ -4,6 +4,7 @@ import 'package:exampal/Pages/Figma/chatPDF.dart';
 import 'package:exampal/Pages/Figma/homepage.dart';
 import 'package:exampal/Pages/FileConversion/FileConversionPage.dart';
 import 'package:exampal/Pages/Login/updated_homepage.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Providers/user_provider.dart';
@@ -19,6 +20,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'Notifications/notification_services.dart';
 import 'Pages/ChatGPT/providers/chats_providers.dart';
 import 'Pages/ChatGPT/providers/models_provider.dart';
+import 'Pages/Community/community_mainpage.dart';
 import 'Pages/Figma/testFastNote.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'Pages/Timetable/timer_page.dart';
@@ -96,7 +98,7 @@ class MyApp extends StatelessWidget {
         //     return SignInPage();
         //   },
         // ),
-        home: Homepage(),
+        home: SignInPage(),
       ),
     );
   }
@@ -111,7 +113,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   final List<Widget> _tabItems = [
-    TimerPage(),
+    CommunityPage(),
     UpdatedHomePage(),
     ProfilePage()
   ];

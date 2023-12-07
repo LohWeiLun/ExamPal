@@ -1,13 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exampal/Pages/community_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
-import 'community_details.dart';
 import 'community_mainpage.dart';
 
 class AddCommunityPage extends StatefulWidget {
@@ -319,7 +316,7 @@ class _AddCommunityPageState extends State<AddCommunityPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => YourCommunityPage(),
+          builder: (context) => CommunityPage(),
         ),
       );
     } catch (error) {

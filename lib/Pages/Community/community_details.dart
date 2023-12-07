@@ -148,7 +148,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => YourCommunityPage(),
+          builder: (context) => CommunityPage(),
         ),
       );
     } catch (error) {
