@@ -32,7 +32,7 @@ class _HomepageState extends State<Homepage> {
           children: [
             AppBar(),
             Expanded(
-                child: Body(),
+              child: Body(),
             ),
           ],
         ),
@@ -163,7 +163,6 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
-
 class AppBar extends StatelessWidget {
   const AppBar({
     Key? key,
@@ -216,7 +215,7 @@ class AppBar extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const SearchTextField()
+          const SearchTextField(),
         ],
       ),
     );
