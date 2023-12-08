@@ -11,7 +11,7 @@ class NotificationService {
   Future<void> initNotification() async {
     // Initialize Android settings
     AndroidInitializationSettings initializationSettingsAndroid =
-    const AndroidInitializationSettings('exampal_logo');
+    const AndroidInitializationSettings('logo');
 
     // Initialize iOS settings
     var initializationSettingsIOS = DarwinInitializationSettings(
