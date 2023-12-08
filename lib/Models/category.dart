@@ -23,12 +23,12 @@ List<Category> categoryList = [
   ),
   Category(
     name: 'Voice-To-Text',
-    noOfCourses: 'Transform spoken thoughts into written notes effortlessly',
+    noOfCourses: 'Transform spoken thoughts into written notes effortlessly.',
     thumbnail: 'assets/icons/photography.jpg',
   ),
   Category(
     name: 'File Conversion',
-    noOfCourses: 'Convert various file formats effortlessly with our File Conversion tool',
+    noOfCourses: 'Convert various file formats effortlessly.',
     thumbnail: 'assets/icons/design.jpg',
   ),
   Category(

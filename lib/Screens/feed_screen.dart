@@ -13,7 +13,7 @@ class FeedScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: false,
         title: Image.asset(
-          "assets/logo/exampal_logo.png",
+          "assets/logo/logo.png",
           height: 32,
         ),
         actions: [

@@ -55,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
           motivationN = snapshot.data()!["motivationN"];
           theme = snapshot.data()!["theme"];
           email = snapshot.data()!["email"];
-          uid = snapshot.data()!["uid"];
+          uid = snapshot.data()!["UID"];
         });
       }
     });

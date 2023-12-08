@@ -20,12 +20,6 @@ class SearchTextField extends StatelessWidget {
           color: Colors.grey,
           size: 26,
         ),
-        suffixIcon: const Icon(
-          Icons.mic,
-          color: LightColors.kPrimaryColor,
-          size: 26,
-        ),
-        labelText: "Search your functions",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,
