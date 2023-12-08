@@ -1,7 +1,5 @@
+import 'package:exampal/Constants/colors.dart';
 import 'package:flutter/material.dart';
-
-import '../Constants/colors.dart';
-import '../Pages/Login/page_search.dart';
 
 class SearchTextField extends StatelessWidget {
   const SearchTextField({
@@ -11,15 +9,14 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onTap: () {
-        showSearch(context: context, delegate: PageSearch());
-      },
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.search,
           color: Colors.grey,
           size: 26,
         ),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        labelText: "Search your functions",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,
