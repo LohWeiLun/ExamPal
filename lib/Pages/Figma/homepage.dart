@@ -266,9 +266,12 @@ class AppBar extends StatelessWidget {
                     ),
                   );
                 },
-                child: CircleButton(
-                  icon: Icons.settings,
-                  onPressed: () {},
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: CircleButton(
+                    icon: Icons.settings,
+                    onPressed: () {},
+                  ),
                 ),
               ),
             ],
