@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'forgotpassword_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -45,6 +44,7 @@ class _SignInPageState extends State<SignInPage> {
       _isLoading = false;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -274,62 +274,6 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    //   child: Row(
-                    //     children: [
-                    //       Expanded(
-                    //         child: Divider(
-                    //           thickness: 0.5,
-                    //           color: Colors.grey[400],
-                    //         ),
-                    //       ),
-                    //       const SizedBox(
-                    //         height: 40,
-                    //       ),
-                    //       Padding(
-                    //         padding:
-                    //             const EdgeInsets.symmetric(horizontal: 10.0),
-                    //         child: Text(
-                    //           'Or Continue with',
-                    //           style: TextStyle(
-                    //             color: Colors.grey[400],
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       Expanded(
-                    //         child: Divider(
-                    //           thickness: 0.5,
-                    //           color: Colors.grey[400],
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     // Change the color to your preference
-                    //     borderRadius: BorderRadius.circular(
-                    //         10), // Adjust border radius if needed
-                    //   ),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       GestureDetector(
-                    //         onTap: _handleGoogleSignIn,
-                    //         child: FadeInUp(
-                    //           duration: Duration(milliseconds: 2200),
-                    //           child: SquareTile(
-                    //               imagePath: 'assets/images/google.png'),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 ),
               ),

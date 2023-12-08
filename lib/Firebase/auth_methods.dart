@@ -24,6 +24,7 @@ class AuthMethods {
     required String password,
     required String name,
     required Uint8List file,
+    required DateTime dateOfBirth,
   }) async {
     String res = "Some error occured";
     try {
@@ -43,6 +44,7 @@ class AuthMethods {
           uid: cred.user!.uid,
           email: email,
           photoUrl: photoUrl,
+          dateOfBirth: dateOfBirth,
         );
 
         await _firestore.collection('user').doc(cred.user!.uid).set(user.toJson(),);

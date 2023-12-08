@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampal/Pages/Login/updated_loginpage.dart';
 import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -317,6 +318,116 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () async {
+                String oldPassword = '';
+                String newPassword = '';
+                String confirmPassword = '';
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Change Password'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            obscureText: true,
+                            onChanged: (value) {
+                              oldPassword = value;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Old Password',
+                            ),
+                          ),
+                          TextField(
+                            obscureText: true,
+                            onChanged: (value) {
+                              newPassword = value;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'New Password',
+                            ),
+                          ),
+                          TextField(
+                            obscureText: true,
+                            onChanged: (value) {
+                              confirmPassword = value;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Confirm New Password',
+                            ),
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close dialog
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            try {
+                              // Check if new password matches confirm password
+                              if (newPassword != confirmPassword) {
+                                throw 'New passwords do not match.';
+                              }
+
+                              // Reauthenticate the user with their current credentials
+                              AuthCredential credential = EmailAuthProvider.credential(
+                                email: FirebaseAuth.instance.currentUser!.email!,
+                                password: oldPassword,
+                              );
+
+                              await FirebaseAuth.instance.currentUser!
+                                  .reauthenticateWithCredential(credential);
+
+                              // Update the password using FirebaseAuth
+                              await FirebaseAuth.instance.currentUser!
+                                  .updatePassword(newPassword);
+
+                              Navigator.of(context).pop(); // Close dialog
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Password changed successfully')),
+                              );
+                            } catch (error) {
+                              print('Error changing password: $error');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Password change failed')),
+                              );
+                            }
+                          },
+                          child: const Text('Change'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Change Password",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               height: 40,
             ),
@@ -505,7 +616,36 @@ class _SettingsPageState extends State<SettingsPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Sign Out'),
+                        content: Text('Are you sure you want to sign out?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false); // Return false on cancel
+                            },
+                            child: Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true); // Return true on confirmation
+                            },
+                            child: Text('Confirm'),
+                          ),
+                        ],
+                      );
+                    },
+                  ).then((value) {
+                    if (value != null && value) {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => SignInPage()),
+                      );
+                    }
+                  });
                 },
                 child: const Text("SIGN OUT",
                     style: TextStyle(
@@ -555,7 +695,27 @@ class _SettingsPageState extends State<SettingsPage> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Send an email to ($email) to reset password?"),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance
+                          .collection("user")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .get(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                          String userEmail = data['email'];
+
+                          return Text("Send an email to $userEmail to reset password?");
+                        }
+
+                        return CircularProgressIndicator();
+                      },
+                    ),
                   ],
                 ),
                 actions: [

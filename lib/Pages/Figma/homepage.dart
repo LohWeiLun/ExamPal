@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exampal/Pages/Dictonary/dictonary.dart';
 import 'package:exampal/Pages/Figma/testFastNote.dart';
 import 'package:exampal/Pages/OCR/imageToText.dart';
 import 'package:exampal/Pages/Timetable/schedule_mainpage.dart';
@@ -5,6 +7,7 @@ import 'package:exampal/Pages/UserProfile/settings.dart';
 import 'package:exampal/Models/category.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Widgets/circle_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:exampal/Widgets/search_textfield.dart';
 import '../FileConversion/FileConversionPage.dart';
@@ -88,9 +91,9 @@ class Body extends StatelessWidget {
   }
 }
 
-
 class CategoryCard extends StatelessWidget {
   final Category category;
+
   const CategoryCard({
     Key? key,
     required this.category,
@@ -98,17 +101,29 @@ class CategoryCard extends StatelessWidget {
 
   void navigateToCategoryPage(BuildContext context) {
     if (category.name == 'Schedule') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const SchedulePage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SchedulePage()));
     } else if (category.name == 'Fast Note') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => FastNoteBackupFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => FastNoteBackupFunctionPage()));
     } else if (category.name == 'Voice-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const VoiceToTextFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const VoiceToTextFunctionPage()));
     } else if (category.name == 'File Conversion') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
-    }else if (category.name == 'Image-To-Text') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const ImageToTextPage()));
-    }else if (category.name == 'Dictonary') {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const FileConversionFunctionPage()));
+    } else if (category.name == 'Image-To-Text') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ImageToTextPage()));
+    } else if (category.name == 'Dictonary') {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const DictonaryPage()));
     }
   }
 
@@ -146,7 +161,7 @@ class CategoryCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
-                "${category.noOfCourses.toString()} courses",
+                "${category.noOfCourses.toString()} ",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
@@ -160,6 +175,25 @@ class AppBar extends StatelessWidget {
   const AppBar({
     Key? key,
   }) : super(key: key);
+
+  Future<String> getUsername() async {
+    // Get current user from Firebase Authentication
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // Retrieve user data from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .get();
+
+      String username = userDoc['name'];
+
+      return username;
+    }
+
+    return 'User'; // Default if username is not found
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,26 +218,40 @@ class AppBar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hello,\nGood Morning",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SettingsPage()),
-                  );
-                },
-                child: CircleButton(
-                  icon: Icons.settings, onPressed: () {  },
-                ),
-              ),
-            ],
+          FutureBuilder<String>(
+            future: getUsername(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(); // Show a loader while fetching data
+              } else if (snapshot.hasError) {
+                return Text('Error fetching data'); // Show error if any
+              } else {
+                String username = snapshot.data ?? 'User';
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hello,\n$username",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsPage()),
+                        );
+                      },
+                      child: CircleButton(
+                        icon: Icons.settings,
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
           const SizedBox(
             height: 20,
