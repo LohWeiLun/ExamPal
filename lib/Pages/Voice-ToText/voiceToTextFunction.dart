@@ -265,52 +265,52 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                 ],
               ),
               SizedBox(height: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '  Text To Speech',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
-                  SizedBox(
-                    height: 200,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlue[100],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Existing content...
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: TextField(
-                                  maxLines: 5,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Enter text here...',
-                                  ),
-                                  onChanged: (value) {
-                                    // Do something with the entered text
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.stretch,
+              //   children: [
+              //     Text(
+              //       '  Text To Speech',
+              //       style: TextStyle(
+              //         color: Colors.black,
+              //         fontSize: 18,
+              //         fontFamily: 'Poppins',
+              //       ),
+              //     ),
+              //     SizedBox(
+              //       height: 200,
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           color: Colors.lightBlue[100],
+              //           borderRadius: BorderRadius.circular(20),
+              //         ),
+              //         child: Center(
+              //           child: Padding(
+              //             padding: const EdgeInsets.all(8.0),
+              //             child: Column(
+              //               mainAxisAlignment: MainAxisAlignment.center,
+              //               children: [
+              //                 // Existing content...
+              //                 Container(
+              //                   padding: EdgeInsets.symmetric(horizontal: 20),
+              //                   child: TextField(
+              //                     maxLines: 5,
+              //                     decoration: InputDecoration(
+              //                       border: OutlineInputBorder(),
+              //                       hintText: 'Enter text here...',
+              //                     ),
+              //                     onChanged: (value) {
+              //                       // Do something with the entered text
+              //                     },
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
