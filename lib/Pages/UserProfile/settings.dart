@@ -533,6 +533,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     body: 'You Have $tasks Tasks in your To-Do List!',
                     scheduledNotificationDateTime: scheduleTime,
                   );
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Notification has been scheduled'),
+                    ),
+                  );
                 },
               ),
             ),

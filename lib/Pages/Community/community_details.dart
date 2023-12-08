@@ -29,6 +29,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
   List<PlatformFile> _fileUploads = [];
   String communityPassword = '';
   String newKey ='';
+  bool isOwner = false;
 
   @override
   void initState() {
@@ -38,6 +39,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
       // Fetch the community password for private communities
       fetchCommunityPassword();
     }
+    checkOwner(widget.communityName);
   }
 
   Future<void> fetchCommunityPassword() async {
@@ -247,6 +249,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              if (isOwner)
               const PopupMenuItem<String>(
                 value: 'delete',
                 child: ListTile(
@@ -254,6 +257,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
                   title: Text('Delete'),
                 ),
               ),
+              if (isOwner)
               const PopupMenuItem<String>(
                 value: 'add',
                 child: ListTile(
@@ -261,7 +265,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
                   title: Text('Add File'),
                 ),
               ),
-              if (widget.isPrivate) // Only show if the community is private
+              if (widget.isPrivate && isOwner) // Only show if the community is private
                 const PopupMenuItem<String>(
                   value: 'changePassword',
                   child: ListTile(
@@ -328,6 +332,7 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
                           }
                         },
                       ),
+                      if(isOwner)
                       IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
@@ -378,6 +383,23 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
         },
       ),
     );
+  }
+
+  Future<void> checkOwner(String communityName) async {
+    // Fetch user details from Firebase Firestore
+    DocumentSnapshot<Map<String, dynamic>> userDoc =
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    // Get the user's community names array from the user document
+    List<String> userCommunities =
+    List<String>.from(userDoc.get('communityNames') ?? []);
+
+    // Check if the user is the owner of the community
+    isOwner = userCommunities.contains(communityName);
+
   }
 
   Future<void> deleteFile(String filePath) async {
@@ -498,25 +520,6 @@ class _CommunityDetailPageState extends State<CommunityDetailPage> {
     }
   }
 
-  //
-  // Future<void> downloadFile(String filePath) async {
-  //   try {
-  //     final ref = FirebaseStorage.instance.ref().child(filePath);
-  //     final url = await ref.getDownloadURL();
-  //     print(url);
-  //
-  //     final tempDir = await getExternalStorageDirectory();
-  //     final path = '${tempDir?.path}/$filePath';
-  //
-  //     await Dio().download(url, path);
-  //
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Downloaded $filePath')),
-  //     );
-  //   } catch (error) {
-  //     print('Error downloading file: $error');
-  //   }
-  // }
 
   Future<void> _uploadFilesToStorage() async {
     for (int i = 0; i < _fileUploads.length; i++) {
