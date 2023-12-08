@@ -217,47 +217,62 @@ class AppBar extends StatelessWidget {
           ],
         ),
       ),
-      child: Column(
+      child: Stack(
         children: [
-          FutureBuilder<String>(
-            future: getUsername(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator(); // Show a loader while fetching data
-              } else if (snapshot.hasError) {
-                return Text('Error fetching data'); // Show error if any
-              } else {
-                String username = snapshot.data ?? 'User';
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hello,\n$username",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsPage()),
-                        );
-                      },
-                      child: CircleButton(
-                        icon: Icons.settings,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                );
-              }
-            },
+          Positioned(
+            top: -30,
+            left: -10,
+            child: Image.asset(
+              'assets/logo/wordLogo.png', // Logo Image
+              height: 100, // Adjust size as needed
+              width: 170,
+            ),
           ),
-          const SizedBox(
-            height: 20,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: FutureBuilder<String>(
+                  future: getUsername(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(); // Show a loader while fetching data
+                    } else if (snapshot.hasError) {
+                      return Text('Error fetching data'); // Show error if any
+                    } else {
+                      String username = snapshot.data ?? 'User';
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "\n\n Hello, $username",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 10),
+                          const SearchTextField(),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsPage(),
+                    ),
+                  );
+                },
+                child: CircleButton(
+                  icon: Icons.settings,
+                  onPressed: () {},
+                ),
+              ),
+            ],
           ),
-          const SearchTextField()
         ],
       ),
     );

@@ -166,6 +166,13 @@ flutter:
     - assets/office/excel.png
     - assets/chatGPT/
     - assets/images/google.png
+    - assets/icons/schedule.jpg
+    - assets/icons/fastnote.png
+    - assets/icons/voicetext.jpg
+    - assets/icons/conversion.jpg
+    - assets/icons/imageText.jpg
+    - assets/icons/dictonary.png
+    - assets/logo/wordLogo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
