@@ -1,12 +1,16 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:exampal/Pages/Login/updated_loginpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-  const ForgotPasswordPage({super.key});
+  const ForgotPasswordPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    String email = ''; // Add a variable to store the entered email
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -38,37 +42,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: 140,
-                      width: 80,
-                      height: 150,
-                      child: FadeInUp(
-                        duration: const Duration(milliseconds: 1200),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/light-2.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 40,
-                      top: 40,
-                      width: 80,
-                      height: 150,
-                      child: FadeInUp(
-                        duration: const Duration(milliseconds: 1300),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/clock.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // ... (other Positioned widgets)
                     Positioned(
                       child: FadeInUp(
                         duration: const Duration(milliseconds: 1600),
@@ -124,12 +98,16 @@ class ForgotPasswordPage extends StatelessWidget {
                                 ),
                               ),
                               child: TextField(
+                                onChanged: (value) {
+                                  // Update the email variable when the text field changes
+                                  email = value.trim();
+                                },
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Email or Phone number",
+                                  hintText: "Enter Email",
                                   hintStyle: TextStyle(color: Colors.grey[700]),
                                   prefixIcon: const Icon(
-                                    Icons.email, // Add the email icon here
+                                    Icons.email,
                                     color: Color.fromRGBO(143, 148, 251, 1),
                                   ),
                                 ),
@@ -142,15 +120,26 @@ class ForgotPasswordPage extends StatelessWidget {
                     const SizedBox(height: 30),
                     FadeInUp(
                       duration: const Duration(milliseconds: 1900),
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromRGBO(143, 148, 251, 1),
-                              Color.fromRGBO(143, 148, 251, .6),
-                            ],
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Validate the email format
+                          if (!isValidEmail(email)) {
+                            // Display an error message if the email is invalid
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Invalid email format.'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Call the function to send the reset link
+                          sendResetLink(context, email);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color.fromRGBO(143, 148, 251, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         child: const Center(
@@ -164,7 +153,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10), // Add spacing between "Send Reset Link" and the new option
+                    const SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
                         // Navigate to the login page here
@@ -172,7 +161,7 @@ class ForgotPasswordPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignInPage(), // Replace LoginPage with your actual login page
+                            builder: (context) => SignInPage(),
                           ),
                         );
                       },
@@ -194,5 +183,36 @@ class ForgotPasswordPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    return (email.trim().isNotEmpty ||
+        EmailValidator.validate(email.trim()));
+  }
+
+  Future<void> sendResetLink(BuildContext context, String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password Reset Email Sent'),
+        ),
+      );
+
+      // Navigate to the login page after email is sent
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignInPage(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to send email'),
+        ),
+      );
+    }
   }
 }

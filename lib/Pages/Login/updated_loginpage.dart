@@ -33,7 +33,7 @@ class _SignInPageState extends State<SignInPage> {
       _isLoading = true;
     });
     String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
+        email: _emailController.text.trim(), password: _passwordController.text);
     if (res == "success") {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const RootPage()));
