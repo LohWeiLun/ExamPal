@@ -84,11 +84,11 @@ class _ImageToTextPageState extends State<ImageToTextPage>
                     child: Container(),
                   ),
                   Container(
-                    padding: const EdgeInsets.only(bottom: 30.0),
+                    padding: const EdgeInsets.only(bottom: 70.0),
                     child: Center(
                       child: ElevatedButton(
                         onPressed: _scanImage,
-                        child: const Text('Scan text'),
+                        child: const Text('Scan Text'),
                       ),
                     ),
                   ),

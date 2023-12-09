@@ -14,31 +14,48 @@ class ChatPDFPage extends StatefulWidget {
 class _ChatPDFPageState extends State<ChatPDFPage> {
   TextEditingController _messageController = TextEditingController();
   List<String> messages = []; // Store chat messages here
+  bool isLoading = false; // Track loading state
 
-  void _sendMessage() async {
+  void _sendMessage() {
     String messageContent = _messageController.text;
     String sourceId = widget.sourceId ?? ''; // Get sourceId from widget
 
-    // Send message to server
+    // Update UI with user message
+    setState(() {
+      messages.add('You: $messageContent');
+    });
+    _messageController.clear(); // Clear text field after sending message
+
+    // Send message to server asynchronously
+    _fetchBotResponse(messageContent, sourceId);
+  }
+
+  Future<void> _fetchBotResponse(String messageContent, String sourceId) async {
+    setState(() {
+      isLoading = true; // Set loading state to true when sending message
+    });
+
     var response = await http.post(
-      Uri.parse('http://192.168.68.104:5000/send_message'), // Replace with your server URL
+      Uri.parse('http://192.168.68.103:5000/send_message'), // Replace with your server URL
       body: {
         'source_id': sourceId,
         'message_content': messageContent,
       },
     );
 
+    setState(() {
+      isLoading = false; // Set loading state to false when response is received
+    });
+
     if (response.statusCode == 200) {
-      // Message sent successfully, update UI
+      // Message sent successfully, update UI with bot response
       String botResponse = response.body;
       final decodedResponse = json.decode(botResponse);
       String formattedResponse = decodedResponse['Result'];
 
       setState(() {
-        messages.add('You: $messageContent'); // Adjusted line
         messages.add(formattedResponse);
       });
-      _messageController.clear(); // Clear text field after sending message
     } else {
       // Handle error if message fails to send
       // You can show an error message or perform appropriate actions
@@ -71,7 +88,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Text(
-                        isUserMessage ? message.substring(4) : message, // Adjusted line
+                        isUserMessage ? message.substring(4) : message,
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -80,7 +97,9 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
               },
             ),
           ),
-          Padding(
+          isLoading
+              ? CircularProgressIndicator() // Show loading indicator when isLoading is true
+              : Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
@@ -90,7 +109,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
                     decoration: InputDecoration(
                       hintText: 'Type a message...',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0), // Adjust the radius to your preference
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
                   ),

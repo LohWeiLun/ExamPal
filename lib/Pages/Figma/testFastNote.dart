@@ -34,7 +34,9 @@ class _FastNoteBackupFunctionPageState
   List<String> userFiles = [];
   String? additionalText = " ";
 
-  final url = 'http://192.168.68.104:5000/upload_pdf';
+  bool isSummarizing = false;
+
+  final url = 'http://192.168.68.103:5000/upload_pdf';
 
   @override
   void initState() {
@@ -67,7 +69,7 @@ class _FastNoteBackupFunctionPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fast Note Backup'),
+        title: Text('Fast Note'),
         elevation: 0,
         backgroundColor: Colors.amber,
       ),
@@ -142,8 +144,8 @@ class _FastNoteBackupFunctionPageState
                           );
                         },
                         separatorBuilder: ((context, index) => Divider(
-                              color: Colors.white,
-                            )),
+                          color: Colors.white,
+                        )),
                         itemCount: userFiles.length,
                       ),
                     ),
@@ -178,7 +180,8 @@ class _FastNoteBackupFunctionPageState
                               pageNumber = page ?? 0;
                             });
                           },
-                          onViewCreated: (PDFViewController pdfViewController) {
+                          onViewCreated:
+                              (PDFViewController pdfViewController) {
                             setState(() {
                               pdfReady = true;
                             });
@@ -224,110 +227,91 @@ class _FastNoteBackupFunctionPageState
                                 alignment: Alignment.center,
                                 child: _selectedFileName != null
                                     ? Column(
-                                        children: [
-                                          SizedBox(height: 16),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Image.asset(
-                                                    _iconPath,
-                                                    width: 100,
-                                                    height: 100,
-                                                  ),
-                                                ],
-                                              ),
-                                              if (_selectedFileName != null)
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      'Selected File: $_selectedFileName',
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 14,
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(Icons.cancel),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          _selectedFileName =
-                                                              null;
-                                                          _selectedFilePath =
-                                                              "";
-                                                          _iconPath =
-                                                              'assets/icons/pdf.png';
-                                                        });
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 25),
-                                          // Display Summarize Notes button when a file is uploaded
-                                          ElevatedButton(
-                                            onPressed: summarizeNotes,
-                                            child: Text('Summarize Notes'),
-                                          ),
-                                          SizedBox(height: 10),
-                                          // Adjust spacing here
-                                          // Additional text field with copy icon
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Source_id: ${additionalText ?? "N/A"}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.copy,
-                                                  size: 16,
-                                                ),
-                                                onPressed: () {
-                                                  Clipboard.setData(
-                                                    ClipboardData(
-                                                      text:
-                                                          additionalText ?? "",
-                                                    ),
-                                                  );
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'Source ID copied to clipboard'),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                    : InkWell(
-                                        onTap: addMedia,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 50,
-                                          color: Colors.white,
+                                  children: [
+                                    SizedBox(height: 16),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              _iconPath,
+                                              width: 100,
+                                              height: 100,
+                                            ),
+                                          ],
                                         ),
+                                        if (_selectedFileName != null)
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'Selected File: $_selectedFileName',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight:
+                                                    FontWeight.w400,
+                                                  ),
+                                                  textAlign:
+                                                  TextAlign.center,
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.cancel),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _selectedFileName =
+                                                      null;
+                                                      _selectedFilePath =
+                                                      "";
+                                                      _iconPath =
+                                                      'assets/icons/pdf.png';
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    if (!isSummarizing)
+                                      ElevatedButton(
+                                        onPressed: summarizeNotes,
+                                        child: Text('Summarize'),
                                       ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Source_id: ${additionalText ?? "N/A"}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 10,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                                    : InkWell(
+                                  onTap: addMedia,
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 50,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
+                              if (isSummarizing)
+                                Center(
+                                  child: CircularProgressIndicator(),
+                                ), // Loading indicator
                             ],
                           ),
                         ),
@@ -488,8 +472,14 @@ class _FastNoteBackupFunctionPageState
 
   Future<void> summarizeNotes() async {
     if (_selectedFilePath.isNotEmpty) {
-      var request = http.MultipartRequest('POST', Uri.parse('http://192.168.68.104:5000/upload_pdf'));
-      request.files.add(await http.MultipartFile.fromPath('pdf_file', _selectedFilePath));
+      setState(() {
+        isSummarizing = true; // Set the flag to true when summarization starts
+      });
+
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://192.168.68.103:5000/upload_pdf'));
+      request.files.add(
+          await http.MultipartFile.fromPath('pdf_file', _selectedFilePath));
 
       try {
         var response = await request.send();
@@ -501,12 +491,15 @@ class _FastNoteBackupFunctionPageState
           var sourceId = parsedData['Source ID'];
           setState(() {
             additionalText = sourceId.toString();
+            isSummarizing = false; // Set the flag to false after summarization is done
           });
 
           // Navigate to ChatPDF page after sourceId is generated
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatPDFPage(sourceId: sourceId.toString())),
+            MaterialPageRoute(
+                builder: (context) =>
+                    ChatPDFPage(sourceId: sourceId.toString())),
           );
         } else {
           // Handle other status codes if needed
@@ -514,6 +507,9 @@ class _FastNoteBackupFunctionPageState
       } catch (error) {
         print('Error: $error');
         // Handle errors here
+        setState(() {
+          isSummarizing = false; // Reset the flag in case of an error
+        });
       }
     } else {
       // Handle case when no file is selected
@@ -521,20 +517,20 @@ class _FastNoteBackupFunctionPageState
   }
 
   Future<void> addMedia() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
     if (result != null) {
       File file = File(result.files.single.path!);
 
-      // Use the file for your desired functionality
-      // For example, you can upload it to Firebase Storage
       await uploadFileToStorage(file);
 
       setState(() {
         _selectedFileName = file.path.split('/').last;
         _selectedFilePath = file.path;
         // You may want to update _iconPath based on the file type
-        // For simplicity, assuming it's a PDF file for now
         _iconPath = 'assets/icons/pdf.png';
       });
     }

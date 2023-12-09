@@ -17,9 +17,14 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
   String? _selectedFileName;
   String? _convertedText;
   late String _filePath;
+  bool _isConverting = false;
 
   Future<void> _convertAudioToText(String filePath) async {
-    var url = 'http://172.22.6.216:5000/upload';
+    setState(() {
+      _isConverting = true;
+    });
+
+    var url = 'http://192.168.68.103:5000/upload';
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..files.add(await http.MultipartFile.fromPath('file', filePath));
 
@@ -29,13 +34,20 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
         var responseBody = await response.stream.bytesToString();
         setState(() {
           _convertedText = responseBody;
+          _isConverting = false;
         });
         print('Text from server: $responseBody');
       } else {
         print('Request failed with status: ${response.statusCode}');
+        setState(() {
+          _isConverting = false;
+        });
       }
     } catch (e) {
       print('Error sending request: $e');
+      setState(() {
+        _isConverting = false;
+      });
     }
   }
 
@@ -64,9 +76,6 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
         print('User canceled the file picker');
         return;
       }
-
-      // Call conversion function after setting _filePath
-      await _convertAudioToText(_filePath);
     } catch (e) {
       print('Error selecting file: $e');
     }
@@ -125,8 +134,7 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                           children: [
                             if (_selectedFileName != null)
                               Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.asset(
                                     'assets/icons/mp3.png',
@@ -158,18 +166,23 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                                   ),
                                 ],
                               ),
-                            if (_selectedFileName != null)
+                            if (_selectedFileName != null && !_isConverting)
                               ElevatedButton(
                                 onPressed: () async {
-                                  if (_selectedFileName != null) {
-                                    await _convertAudioToText(_filePath);
-                                  }
+                                  setState(() {
+                                    _isConverting = true; // Set to true when "Convert Now" is pressed
+                                  });
+                                  await _convertAudioToText(_filePath);
                                 },
                                 child: Text('Convert Now'),
                               ),
+                            if (_isConverting)
+                              CircularProgressIndicator(), // Show only when converting
                             if (_selectedFileName == null)
                               InkWell(
-                                onTap: _addMedia,
+                                onTap: () async {
+                                  await _addMedia();
+                                },
                                 child: Icon(
                                   Icons.add,
                                   size: 50,
@@ -221,7 +234,9 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -252,7 +267,8 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => VoiceToTextFunctionPage()),
+                                MaterialPageRoute(
+                                    builder: (context) => VoiceToTextPage()),
                               );
                             },
                             child: const Text('Record Now'),
@@ -261,7 +277,6 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                       ),
                     ),
                   ),
-
                 ],
               ),
               SizedBox(height: 12),
