@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatPDFPage extends StatefulWidget {
   final String? sourceId;
@@ -68,18 +69,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0, right: 110),
-              child: Image.asset(
-                'assets/logo/wordLogo.png',
-                height: 70,
-              ),
-            ),
-          ],
-        ),
+        title: Text('Chat PDF'),
       ),
       body: Column(
         children: [
@@ -98,15 +88,18 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
                       isUserMessage ? Alignment.topRight : Alignment.topLeft,
                   margin:
                       EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                  backGroundColor: isUserMessage ? Colors.blue : Colors.green,
+                  backGroundColor: isUserMessage ? Colors.green : Colors.blue,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding values here
-                    child: Text(
-                      isUserMessage ? message.substring(4) : message,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),textAlign: TextAlign.justify,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 4.0),
+                    // Adjust the padding values here
+                    child: Text(isUserMessage ? message.substring(4) : message,
+                      style: GoogleFonts.openSans( // Use GoogleFonts to apply Poppins font
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
                     ),
                   ),
                 );

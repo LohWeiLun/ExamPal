@@ -68,6 +68,7 @@ dependencies:
 
   #chatPDF
   flutter_chat_bubble: ^2.0.2
+  google_fonts: ^6.1.0
 
   #OCR
   google_mlkit_text_recognition: ^0.11.0
