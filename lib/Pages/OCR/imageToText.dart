@@ -79,36 +79,38 @@ class _ImageToTextPageState extends State<ImageToTextPage>
               backgroundColor: _isPermissionGranted ? Colors.transparent : null,
               body: _isPermissionGranted
                   ? Column(
-                children: [
-                  Expanded(
-                    child: Container(),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 70.0),
-                    child: Center(
-                      child: TextButton(
-                        onPressed: _scanImage,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.camera_alt), // Replace 'Icons.camera_alt' with your desired camera icon
-                            const SizedBox(width: 8), // Optional spacing between icon and text
-                          ],
+                      children: [
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 70.0),
+                          child: Center(
+                            child: TextButton(
+                              onPressed: _scanImage,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.camera_alt),
+                                  // Replace 'Icons.camera_alt' with your desired camera icon
+                                  const SizedBox(width: 8),
+                                  // Optional spacing between icon and text
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                        child: const Text(
+                          'Camera permission denied',
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-                  : Center(
-                child: Container(
-                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                  child: const Text(
-                    'Camera permission denied',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
             ),
           ],
         );

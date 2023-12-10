@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
 
 class ChatPDFPage extends StatefulWidget {
   final String? sourceId;
@@ -16,7 +17,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
   List<String> messages = []; // Store chat messages here
   bool isLoading = false; // Track loading state
 
-  void _sendMessage() {
+  void _sendMessage() async {
     String messageContent = _messageController.text;
     String sourceId = widget.sourceId ?? ''; // Get sourceId from widget
 
@@ -27,7 +28,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
     _messageController.clear(); // Clear text field after sending message
 
     // Send message to server asynchronously
-    _fetchBotResponse(messageContent, sourceId);
+    await _fetchBotResponse(messageContent, sourceId);
   }
 
   Future<void> _fetchBotResponse(String messageContent, String sourceId) async {
@@ -36,7 +37,8 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
     });
 
     var response = await http.post(
-      Uri.parse('http://192.168.68.103:5000/send_message'), // Replace with your server URL
+      Uri.parse('http://192.168.68.103:5000/send_message'),
+      // Replace with your server URL
       body: {
         'source_id': sourceId,
         'message_content': messageContent,
@@ -66,7 +68,18 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat PDF'),
+        flexibleSpace: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0, right: 110),
+              child: Image.asset(
+                'assets/logo/wordLogo.png',
+                height: 70,
+              ),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -77,20 +90,23 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
                 String message = messages[index];
                 bool isUserMessage = message.startsWith('You: ');
 
-                return ListTile(
-                  title: Align(
-                    alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: isUserMessage ? Colors.blue : Colors.green,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Text(
-                        isUserMessage ? message.substring(4) : message,
-                        style: TextStyle(color: Colors.white),
-                      ),
+                return ChatBubble(
+                  clipper: isUserMessage
+                      ? ChatBubbleClipper5(type: BubbleType.sendBubble)
+                      : ChatBubbleClipper5(type: BubbleType.receiverBubble),
+                  alignment:
+                      isUserMessage ? Alignment.topRight : Alignment.topLeft,
+                  margin:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                  backGroundColor: isUserMessage ? Colors.blue : Colors.green,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0), // Adjust the padding values here
+                    child: Text(
+                      isUserMessage ? message.substring(4) : message,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),textAlign: TextAlign.justify,
                     ),
                   ),
                 );
@@ -98,29 +114,29 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
             ),
           ),
           isLoading
-              ? CircularProgressIndicator() // Show loading indicator when isLoading is true
+              ? CircularProgressIndicator()
               : Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                            hintText: 'Type a message...',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                        icon: Icon(Icons.send),
+                        onPressed: _sendMessage,
+                      ),
+                    ],
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: _sendMessage,
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
