@@ -36,7 +36,7 @@ class _FastNoteBackupFunctionPageState
 
   bool isSummarizing = false;
 
-  final url = 'http://192.168.68.103:5000/upload_pdf';
+  final url = 'http://192.168.68.104:5000/upload_pdf';
 
   @override
   void initState() {
@@ -132,15 +132,15 @@ class _FastNoteBackupFunctionPageState
                                 color: Colors.white,
                               ),
                             ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                //clickedToDownload
-                              },
-                              icon: const Icon(
-                                Icons.cancel,
-                                color: Colors.white,
-                              ),
-                            ),
+                            // trailing: IconButton(
+                            //   onPressed: () {
+                            //     //clickedToDownload
+                            //   },
+                            //   icon: const Icon(
+                            //     Icons.cancel,
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
                           );
                         },
                         separatorBuilder: ((context, index) => Divider(
@@ -477,7 +477,7 @@ class _FastNoteBackupFunctionPageState
       });
 
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://192.168.68.103:5000/upload_pdf'));
+          'POST', Uri.parse('http://192.168.68.104:5000/upload_pdf'));
       request.files.add(
           await http.MultipartFile.fromPath('pdf_file', _selectedFilePath));
 

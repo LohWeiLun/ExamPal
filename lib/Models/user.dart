@@ -6,6 +6,8 @@ class User {
   final String photoUrl;
   final String name;
   final DateTime dateOfBirth;
+  final bool schedule; // New field
+  final bool motivation; // New field
 
   const User({
     required this.name,
@@ -13,6 +15,8 @@ class User {
     required this.photoUrl,
     required this.email,
     required this.dateOfBirth,
+    required this.schedule,
+    required this.motivation,
   });
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -26,14 +30,18 @@ class User {
       email: snapshot["email"],
       photoUrl: snapshot["photoUrl"],
       dateOfBirth: dob,
+      schedule: snapshot["schedule"] ?? true, // Default value if not present
+      motivation: snapshot["motivation"] ?? true, // Default value if not present
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "UID": uid,
-        "email": email,
-        "photoUrl": photoUrl,
-        "dob": dateOfBirth,
-      };
+    "name": name,
+    "UID": uid,
+    "email": email,
+    "photoUrl": photoUrl,
+    "dob": dateOfBirth,
+    "schedule": schedule,
+    "motivation": motivation,
+  };
 }

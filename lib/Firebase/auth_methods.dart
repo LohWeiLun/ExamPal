@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exampal/Firebase/storage_method.dart';
+import 'package:exampal/Pages/Community/community_mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:exampal/Models/user.dart' as model;
 import 'package:flutter/material.dart';
@@ -37,7 +38,11 @@ class AuthMethods {
         print(cred.user!.uid);
 
         String photoUrl =
-            await StorageMethods().uploadImageToStorage('avatar', file, false);
+        await StorageMethods().uploadImageToStorage('avatar', file, false);
+
+        // Set default values for schedule and motivation
+        bool schedule = true;
+        bool motivation = true;
 
         model.User user = model.User(
           name: name,
@@ -45,9 +50,12 @@ class AuthMethods {
           email: email,
           photoUrl: photoUrl,
           dateOfBirth: dateOfBirth,
+          schedule: schedule,
+          motivation: motivation,
         );
 
-        await _firestore.collection('user').doc(cred.user!.uid).set(user.toJson(),);
+        // Save the user data to Firestore
+        await _firestore.collection('user').doc(cred.user!.uid).set(user.toJson());
 
         res = 'success';
       }

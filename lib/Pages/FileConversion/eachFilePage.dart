@@ -21,7 +21,7 @@ class _EachFileConvertPageState extends State<EachFileConvertPage> {
   late String _iconPath = 'assets/icons/pdf.png'; // Default icon path
   bool isConverting = false;
 
-  final url = 'http://192.168.68.103:5000/upload_and_convert';
+  final url = 'http://192.168.68.104:5000/upload_and_convert';
 
   Future<void> _sendToAPI() async {
     var apiUrl = Uri.parse(url);

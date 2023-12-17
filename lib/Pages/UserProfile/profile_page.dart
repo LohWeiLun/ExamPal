@@ -225,9 +225,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 35,
-              ),
+              // const SizedBox(
+              //   height: 35,
+              // ),
+              // const Row(
+              //   children: [
+              //     Icon(
+              //       Icons.person,
+              //       color: Colors.blueGrey,
+              //     ),
+              //     SizedBox(
+              //       width: 8,
+              //     ),
+              //     Text(
+              //       "Account",
+              //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              //     ),
+              //   ],
+              // ),
+              // const Divider(
+              //   height: 15,
+              //   thickness: 2,
+              // ),
+              SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.only(bottom: 35.0),
                 child: TextField(

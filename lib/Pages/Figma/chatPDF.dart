@@ -38,7 +38,7 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
     });
 
     var response = await http.post(
-      Uri.parse('http://192.168.68.103:5000/send_message'),
+      Uri.parse('http://192.168.68.104:5000/send_message'),
       // Replace with your server URL
       body: {
         'source_id': sourceId,
