@@ -18,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
-
+  bool _rememberMe = false;
 
 
   @override
@@ -197,7 +197,22 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    FadeInUp(
+                      duration: Duration(milliseconds: 1850),
+                      child: CheckboxListTile(
+                        title: Text(
+                          'Remember Me',
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: _rememberMe,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _rememberMe = newValue!;
+                          });
+                        },
+                      ),
+                    ),
                     FadeInUp(
                       duration: Duration(milliseconds: 1900),
                       child: GestureDetector(
