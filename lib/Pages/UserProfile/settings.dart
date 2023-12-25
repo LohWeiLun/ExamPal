@@ -570,54 +570,54 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(
               height: 40,
             ),
-            const Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  color: Colors.blueGrey,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Theme",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const Divider(
-              height: 15,
-              thickness: 2,
-            ),
+            // const Row(
+            //   children: [
+            //     Icon(
+            //       Icons.person,
+            //       color: Colors.blueGrey,
+            //     ),
+            //     SizedBox(
+            //       width: 8,
+            //     ),
+            // //     Text(
+            // //       "Theme",
+            // //       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // //     ),
+            // //   ],
+            // // ),
+            // // const Divider(
+            // //   height: 15,
+            // //   thickness: 2,
+            // // ),
+            // // const SizedBox(
+            // //   height: 10,
+            // // ),
+            // // Row(
+            // //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // //   children: [
+            // //     Text(
+            // //       themeName,
+            // //       style: TextStyle(
+            // //           fontSize: 18,
+            // //           fontWeight: FontWeight.w500,
+            // //           color: Colors.grey[600]),
+            // //     ),
+            // //     Transform.scale(
+            // //         scale: 0.7,
+            // //         child: CupertinoSwitch(
+            // //           value: theme,
+            // //           activeColor: Colors.grey,
+            // //           onChanged: (bool newBool) {
+            // //             setState(() {
+            // //               theme = newBool;
+            // //               _updateUserSettings();
+            // //             });
+            // //           },
+            // //         ))
+            //   ],
+            // ),
             const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  themeName,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600]),
-                ),
-                Transform.scale(
-                    scale: 0.7,
-                    child: CupertinoSwitch(
-                      value: theme,
-                      activeColor: Colors.grey,
-                      onChanged: (bool newBool) {
-                        setState(() {
-                          theme = newBool;
-                          _updateUserSettings();
-                        });
-                      },
-                    ))
-              ],
-            ),
-            const SizedBox(
-              height: 50,
+              height: 0,
             ),
             Center(
               child: ElevatedButton(

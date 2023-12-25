@@ -42,14 +42,14 @@ class _CommunityPageState extends State<CommunityPage> {
 
       // Fetch details for user communities
       List<Map<String, dynamic>> userCommunitiesDetails =
-      await _getCommunityDetails(userCommunityNames);
+          await _getCommunityDetails(userCommunityNames);
       setState(() {
         userCommunityDetails = userCommunitiesDetails;
       });
 
       // Fetch details for other communities
       List<Map<String, dynamic>> otherCommunitiesDetails =
-      await _getCommunityDetails(otherCommunityNames);
+          await _getCommunityDetails(otherCommunityNames);
       setState(() {
         otherCommunityDetails = otherCommunitiesDetails;
       });
@@ -75,7 +75,7 @@ class _CommunityPageState extends State<CommunityPage> {
 
       // Get the community names array from the user document
       List<String> userCommunities =
-      List<String>.from(userDoc.get('communityNames') ?? []);
+          List<String>.from(userDoc.get('communityNames') ?? []);
 
       return userCommunities;
     } catch (error) {
@@ -89,7 +89,7 @@ class _CommunityPageState extends State<CommunityPage> {
     try {
       // Fetch all community names from Firebase Firestore
       QuerySnapshot<Map<String, dynamic>> allCommunitiesSnapshot =
-      await FirebaseFirestore.instance.collection('community').get();
+          await FirebaseFirestore.instance.collection('community').get();
 
       // Get all community names
       List<String> allCommunities = allCommunitiesSnapshot.docs
@@ -113,13 +113,13 @@ class _CommunityPageState extends State<CommunityPage> {
       List<String> communityNames) async {
     try {
       List<Future<Map<String, dynamic>>> futures =
-      communityNames.map((name) async {
+          communityNames.map((name) async {
         // Fetch community details from Firebase Firestore
         DocumentSnapshot<Map<String, dynamic>> communityDoc =
-        await FirebaseFirestore.instance
-            .collection('community')
-            .doc(name)
-            .get();
+            await FirebaseFirestore.instance
+                .collection('community')
+                .doc(name)
+                .get();
 
         // Get the community details
         Map<String, dynamic> communityDetails = communityDoc.data() ?? {};
@@ -137,15 +137,15 @@ class _CommunityPageState extends State<CommunityPage> {
 
   Future<void> _showPasswordDialog(String communityName) async {
     // Fetch user details from Firebase Firestore
-    DocumentSnapshot<Map<String, dynamic>> userDoc =
-    await FirebaseFirestore.instance
+    DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+        .instance
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
 
     // Get the user's community names array from the user document
     List<String> userCommunities =
-    List<String>.from(userDoc.get('communityNames') ?? []);
+        List<String>.from(userDoc.get('communityNames') ?? []);
 
     // Check if the user is the owner of the community
     bool isOwner = userCommunities.contains(communityName);
@@ -189,14 +189,14 @@ class _CommunityPageState extends State<CommunityPage> {
                 onPressed: () async {
                   // Fetch community details from Firebase Firestore
                   DocumentSnapshot<Map<String, dynamic>> communityDoc =
-                  await FirebaseFirestore.instance
-                      .collection('community')
-                      .doc(communityName)
-                      .get();
+                      await FirebaseFirestore.instance
+                          .collection('community')
+                          .doc(communityName)
+                          .get();
 
                   // Validate the entered password
                   bool isPasswordValid =
-                  validatePassword(enteredPassword, communityDoc);
+                      validatePassword(enteredPassword, communityDoc);
 
                   if (isPasswordValid) {
                     // Close the dialog
@@ -242,169 +242,186 @@ class _CommunityPageState extends State<CommunityPage> {
     return enteredPassword == actualPassword;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Community'),
+      appBar: AppBar(
+        title: Text('Community'),
+      ),
+      body: Stack(fit: StackFit.expand, children: [
+        Positioned.fill(
+          child: Image.asset(
+            'assets/images/comBack.jpg',
+            fit: BoxFit.cover,
+          ),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 15.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Your Community',
-                          style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 15.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Your Community',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddCommunityPage(),
+                          ),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        radius: 25.0,
+                        backgroundColor: Color(0xffc1e1e9),
+                        child: Icon(
+                          Icons.add,
+                          size: 20.0,
+                          color: Colors.black87,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddCommunityPage()),
-                          );
-                        },
-                        child: const CircleAvatar(
-                          radius: 25.0,
-                          backgroundColor: Color(0xffc1e1e9),
-                          child: Icon(
-                            Icons.add,
-                            size: 20.0,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  // User Communities Section
-                  if (userCommunityNames.isEmpty)
-                    const Center(
-                        child: Text(
-                          'No Communities Yet!',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ))
-                  else
-                    Column(
-                      children: List.generate(userCommunityNames.length, (index) {
-                        if (userCommunityDetails.length > index) {
-                          return Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  // Check if the community is private
-                                  if (userCommunityDetails[index]['isPrivate']) {
-                                    // If private, show password dialog
-                                    _showPasswordDialog(userCommunityNames[index]);
-                                  } else {
-                                    // If not private, directly navigate to community detail page
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CommunityDetailPage(
-                                          communityName: userCommunityNames[index],
-                                          isPrivate: userCommunityDetails[index]['isPrivate'],
-                                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // User Communities Section
+                if (userCommunityNames.isEmpty)
+                  const Center(
+                      child: Text(
+                    'No Communities Yet!',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ))
+                else
+                  Column(
+                    children: List.generate(userCommunityNames.length, (index) {
+                      if (userCommunityDetails.length > index) {
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // Check if the community is private
+                                if (userCommunityDetails[index]['isPrivate']) {
+                                  // If private, show password dialog
+                                  _showPasswordDialog(
+                                      userCommunityNames[index]);
+                                } else {
+                                  // If not private, directly navigate to community detail page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CommunityDetailPage(
+                                        communityName:
+                                            userCommunityNames[index],
+                                        isPrivate: userCommunityDetails[index]
+                                            ['isPrivate'],
                                       ),
-                                    );
-                                  }
-                                },
-                                child: CommunityList(
-                                  title: userCommunityNames[index],
-                                  desc: 'You Are the Owner',
-                                  colorl: Colors.blue,
-                                  isPrivate: userCommunityDetails[index]['isPrivate'],
-                                ),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: CommunityList(
+                                title: userCommunityNames[index],
+                                desc: 'You Are the Owner',
+                                colorl: Colors.blue,
+                                isPrivate: userCommunityDetails[index]
+                                    ['isPrivate'],
                               ),
-                              const SizedBox(height: 10),
-                            ],
-                          );
-                        } else {
-                          return Container(); // Return an empty container if details are not available yet
-                        }
-                      }),
-                    ),
-                  const SizedBox(height: 10),
-                  // Other Communities Section
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Other Communities',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      } else {
+                        return Container(); // Return an empty container if details are not available yet
+                      }
+                    }),
                   ),
-                  if (otherCommunityNames.isEmpty)
-                    const Center(
-                        child: Text(
-                          'No Communities Yet!',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ))
-                  else
-                    Column(
-                      children: List.generate(otherCommunityNames.length, (index) {
-                        if (otherCommunityDetails.length > index) {
-                          return Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  // Check if the community is private
-                                  if (otherCommunityDetails[index]['isPrivate']) {
-                                    // If private, show password dialog
-                                    _showPasswordDialog(otherCommunityNames[index]);
-                                  } else {
-                                    // If not private, directly navigate to community detail page
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CommunityDetailPage(
-                                          communityName: otherCommunityNames[index],
-                                          isPrivate: otherCommunityDetails[index]['isPrivate'],
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: CommunityList(
-                                  title: otherCommunityNames[index],
-                                  desc: 'Other Community',
-                                  colorl: Colors.green,
-                                  isPrivate: otherCommunityDetails[index]['isPrivate'],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          );
-                        } else {
-                          return Container(); // Return an empty container if details are not available yet
-                        }
-                      }),
+                const SizedBox(height: 10),
+                // Other Communities Section
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Other Communities',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (otherCommunityNames.isEmpty)
+                  const Center(
+                      child: Text(
+                    'No Communities Yet!',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
                     ),
-                ],
-              ),
+                  ))
+                else
+                  Column(
+                    children:
+                        List.generate(otherCommunityNames.length, (index) {
+                      if (otherCommunityDetails.length > index) {
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                // Check if the community is private
+                                if (otherCommunityDetails[index]['isPrivate']) {
+                                  // If private, show password dialog
+                                  _showPasswordDialog(
+                                      otherCommunityNames[index]);
+                                } else {
+                                  // If not private, directly navigate to community detail page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CommunityDetailPage(
+                                        communityName:
+                                            otherCommunityNames[index],
+                                        isPrivate: otherCommunityDetails[index]
+                                            ['isPrivate'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: CommunityList(
+                                title: otherCommunityNames[index],
+                                desc: 'Other Community',
+                                colorl: Colors.green,
+                                isPrivate: otherCommunityDetails[index]
+                                    ['isPrivate'],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      } else {
+                        return Container(); // Return an empty container if details are not available yet
+                      }
+                    }),
+                  ),
+              ],
             ),
-            ),
-        );
-    }
+          ),
+        ),
+      ]),
+    );
+  }
 }

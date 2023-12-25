@@ -71,66 +71,76 @@ class _ChatPDFPageState extends State<ChatPDFPage> {
       appBar: AppBar(
         title: Text('Chat PDF'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                String message = messages[index];
-                bool isUserMessage = message.startsWith('You: ');
-
-                return ChatBubble(
-                  clipper: isUserMessage
-                      ? ChatBubbleClipper5(type: BubbleType.sendBubble)
-                      : ChatBubbleClipper5(type: BubbleType.receiverBubble),
-                  alignment:
-                      isUserMessage ? Alignment.topRight : Alignment.topLeft,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                  backGroundColor: isUserMessage ? Colors.green : Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    // Adjust the padding values here
-                    child: Text(isUserMessage ? message.substring(4) : message,
-                      style: GoogleFonts.openSans( // Use GoogleFonts to apply Poppins font
-                        textStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/chatBack.jpeg'),
+            fit: BoxFit.cover,
           ),
-          isLoading
-              ? CircularProgressIndicator()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _messageController,
-                          decoration: InputDecoration(
-                            hintText: 'Type a message...',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  String message = messages[index];
+                  bool isUserMessage = message.startsWith('You: ');
+
+                  return ChatBubble(
+                    clipper: isUserMessage
+                        ? ChatBubbleClipper5(type: BubbleType.sendBubble)
+                        : ChatBubbleClipper5(type: BubbleType.receiverBubble),
+                    alignment:
+                        isUserMessage ? Alignment.topRight : Alignment.topLeft,
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                    backGroundColor: isUserMessage ? Colors.green : Colors.lightBlue,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4.0),
+                      // Adjust the padding values here
+                      child: Text(isUserMessage ? message.substring(4) : message,
+                        style: GoogleFonts.openSans( // Use GoogleFonts to apply Poppins font
+                          textStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: _sendMessage,
-                      ),
-                    ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            isLoading
+                ? CircularProgressIndicator()
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _messageController,
+                            decoration: InputDecoration(
+                              hintText: 'Type a message...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              filled: true, // Enable fill color
+                              fillColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: _sendMessage,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }
