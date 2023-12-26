@@ -251,7 +251,7 @@ class _CommunityPageState extends State<CommunityPage> {
       body: Stack(fit: StackFit.expand, children: [
         Positioned.fill(
           child: Image.asset(
-            'assets/images/comBack.jpg',
+            'assets/images/newBack.jpg',
             fit: BoxFit.cover,
           ),
         ),
