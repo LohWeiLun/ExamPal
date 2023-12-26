@@ -15,7 +15,7 @@ class StudyScheduleForm extends StatefulWidget {
 
 class _StudyScheduleFormState extends State<StudyScheduleForm> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   final TextEditingController examTitleController = TextEditingController();
   DateTime? examDate;
   DateTime? startDate;
@@ -79,7 +79,10 @@ class _StudyScheduleFormState extends State<StudyScheduleForm> {
         title: const Text('Add a Study Schedule'),
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SchedulePage()),
+            );
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -276,7 +279,6 @@ class _StudyScheduleFormState extends State<StudyScheduleForm> {
       }).toList(),
     );
   }
-
 
   Widget buildDifficultyDropdown(int index) {
     return DropdownButtonFormField<int>(
