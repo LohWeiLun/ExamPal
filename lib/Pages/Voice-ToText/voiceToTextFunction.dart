@@ -146,15 +146,18 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          child: Text(
-                                            'Selected File: $_selectedFileName',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w400,
+                                          child: Flexible(
+                                            child: Text(
+                                              '$_selectedFileName',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
                                         ),
                                         IconButton(
@@ -170,14 +173,15 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
                               ElevatedButton(
                                 onPressed: () async {
                                   setState(() {
-                                    _isConverting = true; // Set to true when "Convert Now" is pressed
+                                    _isConverting =
+                                        true; // Set to true when "Convert Now" is pressed
                                   });
                                   await _convertAudioToText(_filePath);
                                 },
                                 child: Text('Convert Now'),
                               ),
-                            if (_isConverting)
-                              CircularProgressIndicator(), // Show only when converting
+                            if (_isConverting) CircularProgressIndicator(),
+                            // Show only when converting
                             if (_selectedFileName == null)
                               InkWell(
                                 onTap: () async {
