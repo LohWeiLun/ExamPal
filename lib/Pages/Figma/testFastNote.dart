@@ -96,7 +96,7 @@ class _FastNoteBackupFunctionPageState
                         fontFamily: 'Poppins',
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     Container(
