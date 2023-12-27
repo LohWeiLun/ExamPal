@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:exampal/Pages/Figma/chatPDF.dart';
@@ -9,12 +11,14 @@ import 'package:exampal/Pages/UserProfile/profile_page.dart';
 import 'package:exampal/Pages/Voice-ToText/voiceToTextFunction.dart';
 import 'package:exampal/Providers/user_provider.dart';
 import 'package:exampal/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'Notifications/notification_services.dart';
@@ -25,13 +29,12 @@ import 'Pages/Figma/testFastNote.dart';
 import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'Pages/Timetable/timer_page.dart';
 
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print('Handling a background message ${message.messageId}');
 }
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   await GetStorage.init();
@@ -41,7 +44,6 @@ Future<void> main() async {
   NotificationService().initNotification();
   tz.initializeTimeZones();
 
-  //final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.local);
   runApp(const MyApp());
 }
@@ -74,34 +76,32 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        //
-        // home: StreamBuilder(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.active) {
-        //       // Checking if the snapshot has any data or not
-        //       if (snapshot.hasData) {
-        //         // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-        //         return UpdatedHomePage();
-        //       } else if (snapshot.hasError) {
-        //         return Center(
-        //           child: Text('${snapshot.error}'),
-        //         );
-        //       }
-        //     }
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return const Center(
-        //         child: CircularProgressIndicator(
-        //           color: Colors.white,
-        //         ),
-        //       );
-        //     }
-        //     return SignInPage();
-        //   },
-        // ),
-        home: SignInPage(),
+        home: FutureBuilder<String>(
+          future: _getInitialRoute(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              return Builder(
+                builder: (BuildContext context) {
+                  return _buildPage(context, snapshot.data!);
+                },
+              );
+            }
+          },
+        ),
       ),
     );
+  }
+
+  Widget _buildPage(BuildContext context, String initialRoute) {
+    return initialRoute == '/' ? const RootPage() : SignInPage();
+  }
+
+  Future<String> _getInitialRoute() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userId = prefs.getString('rememberedEmail');
+    return userId != null ? '/' : '/signin';
   }
 }
 
@@ -116,7 +116,7 @@ class _RootPageState extends State<RootPage> {
   final List<Widget> _tabItems = [
     CommunityPage(),
     Homepage(),
-    ProfilePage()
+    ProfilePage(),
   ];
   int _activePage = 1;
 
@@ -129,7 +129,6 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.transparent,
       body: _tabItems[_activePage],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,

@@ -121,7 +121,7 @@ class CategoryCard extends StatelessWidget {
     } else if (category.name == 'Image-To-Text') {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const ImageToTextPage()));
-    } else if (category.name == 'Dictonary') {
+    } else if (category.name == 'Dictionary') {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const DictionaryPage()));
     }

@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Notifications/notification_services.dart';
 
@@ -644,8 +645,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         ],
                       );
                     },
-                  ).then((value) {
+                  ).then((value) async {
                     if (value != null && value) {
+                      await _clearRememberedEmail();
                       FirebaseAuth.instance.signOut();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => SignInPage()),
@@ -903,4 +905,9 @@ Future<List<Map<String, dynamic>>> getTodaysTasks() async {
     print('Error fetching todaysTasks: $error');
     return [];
   }
+}
+
+Future<void> _clearRememberedEmail() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('rememberedEmail');
 }

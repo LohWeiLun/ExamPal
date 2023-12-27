@@ -28,7 +28,7 @@ List<Category> categoryList = [
   ),
   Category(
     name: 'File Conversion',
-    noOfCourses: 'Convert various file formats effortlessly。',
+    noOfCourses: 'Convert various file formats effortlessly.',
     thumbnail: 'assets/icons/conversion.jpg',
   ),
   Category(
@@ -37,7 +37,7 @@ List<Category> categoryList = [
     thumbnail: 'assets/icons/imageText.jpg',
   ),
   Category(
-    name: 'Dictonary',
+    name: 'Dictionary',
     noOfCourses: 'Unlock the meaning of any word at your fingertips.',
     thumbnail: 'assets/icons/dictonary.png',
   ),
