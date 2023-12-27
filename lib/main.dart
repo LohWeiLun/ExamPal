@@ -26,7 +26,6 @@ import 'Pages/ChatGPT/providers/chats_providers.dart';
 import 'Pages/ChatGPT/providers/models_provider.dart';
 import 'Pages/Community/community_mainpage.dart';
 import 'Pages/Figma/testFastNote.dart';
-import 'Pages/Friends/Screen/cameraScreen.dart';
 import 'Pages/Timetable/timer_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -36,7 +35,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
   await GetStorage.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
