@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../Dictonary/dictonary.dart';
 import '../Figma/testFastNote.dart';
 import '../FileConversion/FileConversionPage.dart';
+import '../OCR/imageToText.dart';
 import '../Timetable/schedule_mainpage.dart';
 import '../Voice-ToText/voiceToTextFunction.dart';
 
 class PageSearch extends SearchDelegate<String> {
-  final List<String> pages = ['Schedule', 'Fast Note', 'Voice to Text', 'File Conversion'];
+  final List<String> pages = ['Schedule', 'Fast Note', 'Voice to Text', 'File Conversion', 'Image To Text', 'Dictionary'];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -68,6 +70,12 @@ class PageSearch extends SearchDelegate<String> {
         break;
       case 'File Conversion':
         Navigator.push(context, MaterialPageRoute(builder: (context) => const FileConversionFunctionPage()));
+        break;
+      case 'Image To Text':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const ImageToTextPage()));
+        break;
+      case 'Dictionary':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const DictionaryPage()));
         break;
       default:
       // Handle unknown page

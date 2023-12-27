@@ -2,14 +2,14 @@ import 'package:exampal/Pages/Dictonary/api.dart';
 import 'package:exampal/Pages/Dictonary/response_model.dart';
 import 'package:flutter/material.dart';
 
-class DictonaryPage extends StatefulWidget {
-  const DictonaryPage({super.key});
+class DictionaryPage extends StatefulWidget {
+  const DictionaryPage({super.key});
 
   @override
-  State<DictonaryPage> createState() => _DictonaryPageState();
+  State<DictionaryPage> createState() => _DictionaryPageState();
 }
 
-class _DictonaryPageState extends State<DictonaryPage> {
+class _DictionaryPageState extends State<DictionaryPage> {
   bool inProgress = false;
   ResponseModel? responseModel;
   String noDataText = "Welcome, Start searching";

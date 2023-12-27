@@ -1,6 +1,8 @@
 import 'package:exampal/Constants/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../Pages/Login/page_search.dart';
+
 class SearchTextField extends StatelessWidget {
   const SearchTextField({
     Key? key,
@@ -9,6 +11,9 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: () {
+        showSearch(context: context, delegate: PageSearch());
+      },
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.search,

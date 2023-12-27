@@ -123,7 +123,7 @@ class CategoryCard extends StatelessWidget {
           MaterialPageRoute(builder: (context) => const ImageToTextPage()));
     } else if (category.name == 'Dictonary') {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const DictonaryPage()));
+          MaterialPageRoute(builder: (context) => const DictionaryPage()));
     }
   }
 

@@ -655,7 +655,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 child: const Text("SIGN OUT",
                     style: TextStyle(
-                        fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+                        fontSize: 16, letterSpacing: 2.2, color: Colors.white)),
               ),
             )
           ],
