@@ -24,7 +24,7 @@ class _VoiceToTextFunctionPageState extends State<VoiceToTextFunctionPage> {
       _isConverting = true;
     });
 
-    var url = 'http://192.168.100.14:5000/upload';
+    var url = 'http://192.168.159.175:5000/upload';
     var request = http.MultipartRequest('POST', Uri.parse(url))
       ..files.add(await http.MultipartFile.fromPath('file', filePath));
 

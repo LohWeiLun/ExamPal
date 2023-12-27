@@ -36,7 +36,7 @@ class _FastNoteBackupFunctionPageState
 
   bool isSummarizing = false;
 
-  final url = 'http://192.168.100.14:5000/upload_pdf';
+  final url = 'http://192.168.159.175:5000/upload_pdf';
 
   @override
   void initState() {
@@ -477,7 +477,7 @@ class _FastNoteBackupFunctionPageState
       });
 
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://192.168.100.14:5000/upload_pdf'));
+          'POST', Uri.parse('http://192.168.159.175:5000/upload_pdf'));
       request.files.add(
           await http.MultipartFile.fromPath('pdf_file', _selectedFilePath));
 
