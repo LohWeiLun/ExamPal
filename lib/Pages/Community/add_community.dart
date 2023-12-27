@@ -129,7 +129,12 @@ class _AddCommunityPageState extends State<AddCommunityPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('File: ${_fileUploads[index].name}'),
+                              Flexible(
+                                child: Text(
+                                  'File: ${_fileUploads[index].name}',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                               if (uploadProgress.containsKey(index))
                                 Expanded(
                                   child: LinearProgressIndicator(
