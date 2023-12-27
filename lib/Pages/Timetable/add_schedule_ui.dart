@@ -79,10 +79,7 @@ class _StudyScheduleFormState extends State<StudyScheduleForm> {
         title: const Text('Add a Study Schedule'),
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SchedulePage()),
-            );
+            Navigator.of(context).pop();
           },
           icon: const Icon(
             Icons.arrow_back,
